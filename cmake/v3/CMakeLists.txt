@@ -12,11 +12,10 @@ add_executable(main.exe ${SRCS})
 # custom compile option
 option(USE_CALC "use libcalc for calculation ?" ON)
 
+# f(a, b), parse cmake-vars in a, then create b
 configure_file(
-    # config file src path
     "${PROJECT_SOURCE_DIR}/config.h.in"
-    # I used to compile in PROJECT_SOURCE_DIR/_build
-    "${PROJECT_BINARY_DIR}/../config.h"
+    "${PROJECT_SOURCE_DIR}/config.h"
 )
 
 if (USE_CALC)
