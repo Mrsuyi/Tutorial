@@ -1,46 +1,59 @@
 CC    = g++
 FLAGS = -I top_flag
 MAKE  = make -e
-DIR   = _build
-LIB   = $(DIR)/lib.a
-BIN   = $(DIR)/main.exe
-SUBS  = 
-MAIN  = _test.exe
 
-BIN_SRCS = $(wildcard *.cpp)
-BIN_OBJS = $(BIN_SRCS:%.cpp=$(DIR)/%.o)
-SUB_LIBS = $(SUBS:%=%/$(LIB))
-LIB_SRCS = $(filter-out $(MAIN), $(BIN_SRCS))
-LIB_OBJS = $(LIB_SRCS:%.cpp=$(DIR)/%.o)
+DIR   = _build
+BIN   = $(DIR)/main.exe
+LIB   = $(DIR)/lib.a
+SUBS  =
+LIBS  =
+MAIN  = _test.cpp
+
 
 # bin 
-all: $(DIR) $(BIN) 
 
-$(BIN): $(BIN_OBJS) $(SUB_LIBS)
+SRCS := $(wildcard *.cpp) $(wildcard $($(SUBS):%=%/*.cpp))
+OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
+LIBS := $(LIBS:%=%/$(LIB))
+
+all: $(BIN)
+
+$(BIN): $(OBJS) $(LIBS)
+	@-mkdir -p $(@D)
 	$(CC) $(FLAGS) -o $@ $^ 
 
-$(SUB_LIBS): $(SUBS)
+
+# lib
+
+SRCS := $(filter-out $(MAIN), $(SRCS))
+OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
+
+lib: $(LIB)
+
+$(LIB): $(OBJS) $(LIBS)
+	@-mkdir -p $(@D)
+	ar rcs $@ $^
+
+
+# make sub-folders
+
+%/$(LIB): % 
 	export FLAGS
 	export DIR
-	export LIB
+	export ARC
 	export MAKE	
 	$(MAKE) lib -C ./$<
 
-# lib
-lib: $(DIR) $(LIB)
-
-$(LIB): $(LIB_OBJS)
-	ar rcs $@ $^
-
-# mkdir
-$(DIR):
-	@-mkdir -p $@
 
 # compile
+
 $(DIR)/%.o: %.cpp
+	@-mkdir -p $(@D)
 	$(CC) $(FLAGS) -c -o $@ $<
 
+
 # clean
+
 .PHONY: clean
 clean:
 	rm -rf $(DIR)
