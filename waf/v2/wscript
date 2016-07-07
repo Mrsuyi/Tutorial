@@ -1,0 +1,12 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+top = '.'
+out = '_build'
+
+def configure(ctx):
+    print('configure the project in ' + ctx.path.abspath())
+
+def hello(ctx):
+    print('hello world' + ctx.path.abspath())
+    ctx.recurse('sub')

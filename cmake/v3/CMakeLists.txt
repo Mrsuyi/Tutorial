@@ -14,8 +14,8 @@ option(USE_CALC "use libcalc for calculation ?" ON)
 
 # f(a, b), parse cmake-vars in a, then create b
 configure_file(
-    "${PROJECT_SOURCE_DIR}/config.h.in"
-    "${PROJECT_SOURCE_DIR}/config.h"
+    "${CMAKE_CURRENT_LIST_FILE}/config.h.in"
+    "${CMAKE_CURRENT_LIST_FILE}/config.h"
 )
 
 if (USE_CALC)
