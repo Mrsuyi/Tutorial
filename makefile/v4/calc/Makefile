@@ -1,5 +1,5 @@
 CC    = g++
-FLAGS = -I top_flag
+FLAGS = -std=c++11 
 MAKE  = make -e
 
 DIR   = _build
@@ -9,12 +9,14 @@ SUBS  =
 LIBS  =
 MAIN  = _test.cpp
 
-
-# bin 
-
-SRCS := $(wildcard *.cpp) $(wildcard $($(SUBS):%=%/*.cpp))
+#
+SRCS := $(wildcard *.cpp) $(wildcard $(SUBS:%=%/**.cpp))
 OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
 LIBS := $(LIBS:%=%/$(LIB))
+DEPS := $(OBJS:%.o=%.d)
+
+
+# bin 
 
 all: $(BIN)
 
@@ -38,12 +40,21 @@ $(LIB): $(OBJS) $(LIBS)
 # make sub-folders
 
 %/$(LIB): % 
-	export FLAGS
-	export DIR
-	export ARC
-	export MAKE	
+	@export DIR
+	@export LIB
+	@export MAKE	
 	$(MAKE) lib -C ./$<
 
+
+# headers
+
+-include $(DEPS)
+
+$(DIR)/%.d: %.cpp
+	@-mkdir -p $(@D)
+	@set -e; rm -f $@; $(CC) $(FLAGS) -MM $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
 
 # compile
 

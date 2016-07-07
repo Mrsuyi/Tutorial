@@ -40,18 +40,15 @@ $(LIB): $(OBJS) $(LIBS)
 # make sub-folders
 
 %/$(LIB): % 
-	export FLAGS
-	export DIR
-	export ARC
-	export MAKE	
+	@export DIR
+	@export LIB
+	@export MAKE	
 	$(MAKE) lib -C ./$<
 
 
 # headers
 
 -include $(DEPS)
-
-$(info $(DEPS))
 
 $(DIR)/%.d: %.cpp
 	@-mkdir -p $(@D)
