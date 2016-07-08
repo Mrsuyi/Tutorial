@@ -1,6 +1,6 @@
-CC    = g++
-FLAGS = -std=c++11 
-MAKE  = make -e
+CC    := g++
+FLAGS := -std=c++11 
+MAKE  := make -e
 
 DIR   := _build
 BIN   := $(DIR)/main.exe
@@ -42,9 +42,6 @@ $(LIB): $(OBJS) $(LIBS)
 
 .PHONY: $(LIBS)
 $(LIBS):
-	@export DIR
-	@export LIB
-	@export MAKE
 	$(MAKE) lib -C $(patsubst %/$(LIB), %, $@)
 
 #==================== generate .d ====================#
