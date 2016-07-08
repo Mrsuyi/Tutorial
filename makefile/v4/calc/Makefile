@@ -2,21 +2,27 @@ CC    = g++
 FLAGS = -std=c++11 
 MAKE  = make -e
 
-DIR   = _build
-BIN   = $(DIR)/main.exe
-LIB   = $(DIR)/lib.a
-SUBS  =
-LIBS  =
-MAIN  = _test.cpp
+DIR   := _build
+BIN   := $(DIR)/main.exe
+LIB   := $(DIR)/lib.a
+SUBS  :=
+LIBS  :=
+MAIN  := _test.cpp
 
-#
+#==================== files ====================#
+
 SRCS := $(wildcard *.cpp) $(wildcard $(SUBS:%=%/**.cpp))
 OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
 LIBS := $(LIBS:%=%/$(LIB))
+
+ifeq ($(MAKECMDGOALS), lib)
+	SRCS := $(filter-out $(MAIN), $(SRCS))
+	OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
+endif	
+
 DEPS := $(OBJS:%.o=%.d)
 
-
-# bin 
+#==================== make bin ====================#
 
 all: $(BIN)
 
@@ -24,11 +30,7 @@ $(BIN): $(OBJS) $(LIBS)
 	@-mkdir -p $(@D)
 	$(CC) $(FLAGS) -o $@ $^ 
 
-
-# lib
-
-SRCS := $(filter-out $(MAIN), $(SRCS))
-OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
+#==================== make lib ====================#
 
 lib: $(LIB)
 
@@ -36,34 +38,32 @@ $(LIB): $(OBJS) $(LIBS)
 	@-mkdir -p $(@D)
 	ar rcs $@ $^
 
+#==================== make sub-folders ====================#
 
-# make sub-folders
-
-%/$(LIB): % 
+.PHONY: $(LIBS)
+$(LIBS):
 	@export DIR
 	@export LIB
-	@export MAKE	
-	$(MAKE) lib -C ./$<
+	@export MAKE
+	$(MAKE) lib -C $(patsubst %/$(LIB), %, $@)
 
-
-# headers
+#==================== generate .d ====================#
 
 -include $(DEPS)
 
 $(DIR)/%.d: %.cpp
 	@-mkdir -p $(@D)
-	@set -e; rm -f $@; $(CC) $(FLAGS) -MM $< > $@.$$$$; \
+	@set -e; rm -f $@; $(CC) $(FLAGS) -MM -MT $(patsubst %.d,%.o,$@) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
-# compile
+#==================== compile ====================#
 
 $(DIR)/%.o: %.cpp
 	@-mkdir -p $(@D)
 	$(CC) $(FLAGS) -c -o $@ $<
 
-
-# clean
+#==================== clean ====================#
 
 .PHONY: clean
 clean:
