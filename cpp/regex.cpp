@@ -37,12 +37,31 @@ void sub()
     for (sregex_iterator it(s.begin(), s.end(), r), end_it; it != end_it; ++it)
     {
         cout << it->str(1) << endl;
+        const smatch& results = *it;
+        cout << results[1] << endl;
     }
+}
+
+void substitute()
+{
+    string pattern = "\\[([A-Z]+\\d+)\\]";
+    regex r(pattern);
+    string s = "abc[A1]def[B2]hij[C3]";
+
+    cout << s << endl;
+
+    for (sregex_iterator it(s.begin(), s.end(), r), end_it; it != end_it; ++it)
+    {
+        cout << it->str() << endl; 
+        s.replace(s.begin() + it->position(), s.begin() + it->position() + it->length(), "shit");
+    }
+
+    cout << s << endl;
 }
 
 int main()
 {
-    sub();
+    substitute();
 
     return 0;
 }
