@@ -41,7 +41,7 @@ public:
     class Iter
     {
     public:
-        Iter(Fuck* ptr, int idx, int len) : ptr(ptr), idx(idx), len(len) {};
+        Iter(Fuck* ptr, int idx) : ptr(ptr), idx(idx) {};
 
         int& operator * ()
         {
@@ -56,9 +56,7 @@ public:
 
         bool operator != (const Iter& it)
         {
-            return this->ptr != it.ptr || 
-                   this->idx != it.idx || 
-                   this->len != it.len;
+            return this->ptr != it.ptr || this->idx != it.idx;
         }
 
         int idx;
@@ -68,12 +66,12 @@ public:
 
     Iter begin()
     {
-        return Iter(this, 0, nums.size());
+        return Iter(this, 0);
     }
 
     Iter end()
     {
-        return Iter(this, nums.size(), nums.size());
+        return Iter(this, nums.size());
     }
 
     vector<int> nums = {5, 6, 7, 8};
