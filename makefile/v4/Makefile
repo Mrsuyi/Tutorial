@@ -1,36 +1,34 @@
 CC    := g++
 FLAGS := -std=c++11 
-MAKE  := make -e
-
-DIR   := _build
-BIN   := $(DIR)/main.exe
-LIB   := $(DIR)/lib.a
+MAKE  := make
 SUBS  := formula
 LIBS  := calc
-MAIN  := _test.cpp
 
 #==================== files ====================#
 
-SRCS := $(wildcard *.cpp) $(wildcard $(SUBS:%=%/**.cpp))
+DIR  := _bin
+LIB  := $(DIR)/lib.a
+ALL  := $(wildcard *.cpp) $(wildcard $(SUBS:%=%/**.cpp))
+DEPS := $(ALL:%.cpp=$(DIR)/%.d)
+BINS := $(wildcard _*.cpp)
+SRCS := $(filter-out $(BINS), $(ALL)) 
+BINS := $(BINS:_%.cpp=%)
 OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
 LIBS := $(LIBS:%=%/$(LIB))
 
-ifeq ($(MAKECMDGOALS), lib)
-	SRCS := $(filter-out $(MAIN), $(SRCS))
-	OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
-endif	
+.PRECIOUS: $(DIR)/%.o $(DIR)/**/%.d
 
-DEPS := $(OBJS:%.o=%.d)
+#==================== exe ====================#
 
-#==================== make bin ====================#
+all: $(BINS)
 
-all: $(BIN)
+$(BINS): %: $(DIR)/%.exe
 
-$(BIN): $(OBJS) $(LIBS)
+$(DIR)/%.exe: $(DIR)/_%.o $(OBJS) $(LIBS)
 	@-mkdir -p $(@D)
 	$(CC) $(FLAGS) -o $@ $^ 
 
-#==================== make lib ====================#
+#==================== archive ====================#
 
 lib: $(LIB)
 
@@ -38,27 +36,25 @@ $(LIB): $(OBJS) $(LIBS)
 	@-mkdir -p $(@D)
 	ar rcs $@ $^
 
-#==================== make sub-folders ====================#
+#==================== ref-libs ====================#
 
 .PHONY: $(LIBS)
 $(LIBS):
 	$(MAKE) lib -C $(patsubst %/$(LIB), %, $@)
 
-#==================== generate .d ====================#
+#==================== .o ====================#
 
--include $(DEPS)
+$(DIR)/%.o: $(DIR)/%.d %.cpp
+	@-mkdir -p $(@D)
+	$(CC) $(FLAGS) -c -o $@ $(patsubst $(DIR)/%.o, %.cpp, $@) 
+
+#==================== .d ====================#
 
 $(DIR)/%.d: %.cpp
 	@-mkdir -p $(@D)
-	@set -e; rm -f $@; $(CC) $(FLAGS) -MM -MT $(patsubst %.d,%.o,$@) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+	$(CC) $(FLAGS) -MM -MT $(patsubst %.d, %.o, $@) -MF $@ $<
 
-#==================== compile ====================#
-
-$(DIR)/%.o: %.cpp
-	@-mkdir -p $(@D)
-	$(CC) $(FLAGS) -c -o $@ $<
+include $(DEPS)
 
 #==================== clean ====================#
 
