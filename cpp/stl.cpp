@@ -38,8 +38,24 @@ using uptr = unique_ptr<T>;
 template <typename T>
 using wptr = weak_ptr<T>;
 
+class shit
+{
+    union
+    {
+        char valc;
+        int  vali;
+    };
+
+    public:
+    void test()
+    {
+        vali = 123;
+        cout << vali << endl;
+    }
+};
 
 int main(int argc, char* argv[])
 {
+    shit().test();
     return 0;
 } 
