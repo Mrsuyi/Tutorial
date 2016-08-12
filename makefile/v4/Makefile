@@ -16,13 +16,13 @@ BINS := $(BINS:_%.cpp=%)
 OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
 LIBS := $(LIBS:%=%/$(LIB))
 
-.PRECIOUS: $(DIR)/%.o $(DIR)/**/%.d
+.PRECIOUS: $(DIR)/**/%.o
 
 #==================== exe ====================#
 
 all: $(BINS)
 
-$(BINS): %: $(DIR)/%.exe
+$(BINS): %: cleand $(DEPS) $(DIR)/%.exe
 
 $(DIR)/%.exe: $(DIR)/_%.o $(OBJS) $(LIBS)
 	@-mkdir -p $(@D)
@@ -30,7 +30,7 @@ $(DIR)/%.exe: $(DIR)/_%.o $(OBJS) $(LIBS)
 
 #==================== archive ====================#
 
-lib: $(LIB)
+lib: cleand $(DEPS) $(LIB)
 
 $(LIB): $(OBJS) $(LIBS)
 	@-mkdir -p $(@D)
@@ -44,7 +44,7 @@ $(LIBS):
 
 #==================== .o ====================#
 
-$(DIR)/%.o: $(DIR)/%.d %.cpp
+$(DIR)/%.o: %.cpp
 	@-mkdir -p $(@D)
 	$(CC) $(FLAGS) -c -o $@ $(patsubst $(DIR)/%.o, %.cpp, $@) 
 
@@ -57,6 +57,10 @@ $(DIR)/%.d: %.cpp
 include $(DEPS)
 
 #==================== clean ====================#
+
+.PHONY: cleand
+cleand:
+	rm **/*.d
 
 .PHONY: clean
 clean:

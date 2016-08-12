@@ -12,23 +12,25 @@ ALL  := $(wildcard *.cpp) $(wildcard $(SUBS:%=%/**.cpp))
 DEPS := $(ALL:%.cpp=$(DIR)/%.d)
 BINS := $(wildcard _*.cpp)
 SRCS := $(filter-out $(BINS), $(ALL)) 
-BINS := $(BINS:%.cpp=$(DIR)/%.exe)
+BINS := $(BINS:_%.cpp=%)
 OBJS := $(SRCS:%.cpp=$(DIR)/%.o)
 LIBS := $(LIBS:%=%/$(LIB))
 
-.PRECIOUS: $(DIR)/%.o $(DIR)/%.d
+.PRECIOUS: $(DIR)/**/%.o
 
-#==================== bin ====================#
+#==================== exe ====================#
 
 all: $(BINS)
 
-$(DIR)/%.exe: $(DIR)/%.o $(OBJS) $(LIBS)
+$(BINS): %: cleand $(DEPS) $(DIR)/%.exe
+
+$(DIR)/%.exe: $(DIR)/_%.o $(OBJS) $(LIBS)
 	@-mkdir -p $(@D)
-	$(CC) $(FLAGS) -o $(patsubst $(DIR)/_%, $(DIR)/%, $@) $^ 
+	$(CC) $(FLAGS) -o $@ $^ 
 
-#==================== lib ====================#
+#==================== archive ====================#
 
-lib: $(LIB)
+lib: cleand $(DEPS) $(LIB)
 
 $(LIB): $(OBJS) $(LIBS)
 	@-mkdir -p $(@D)
@@ -42,19 +44,23 @@ $(LIBS):
 
 #==================== .o ====================#
 
-$(DIR)/%.o: $(DIR)/%.d %.cpp
+$(DIR)/%.o: %.cpp
 	@-mkdir -p $(@D)
 	$(CC) $(FLAGS) -c -o $@ $(patsubst $(DIR)/%.o, %.cpp, $@) 
 
 #==================== .d ====================#
 
+include $(DEPS)
+
 $(DIR)/%.d: %.cpp
 	@-mkdir -p $(@D)
 	$(CC) $(FLAGS) -MM -MT $(patsubst %.d, %.o, $@) -MF $@ $<
 
-include $(DEPS)
-
 #==================== clean ====================#
+
+.PHONY: cleand
+cleand:
+	rm **/*.d
 
 .PHONY: clean
 clean:
