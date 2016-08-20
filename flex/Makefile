@@ -18,4 +18,4 @@ $(BINS): %: %.exe
 
 .PHONY: clean
 clean:
-	rm -f *.c *.exe
+	rm -f *.c *.exe *.out
