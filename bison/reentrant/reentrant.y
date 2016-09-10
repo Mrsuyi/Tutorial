@@ -1,5 +1,4 @@
 %{
-#define YYSTYPE int
 #include <stdio.h>
 #include "reentrant.lexer.h"
 
@@ -7,10 +6,11 @@ void yyerror(yyscan_t scanner, char* s)
 {
     printf("%s\n", s);
 }
-
 %}
 
-%define      api.pure full
+%define api.pure full
+%define api.value.type { int }
+
 %lex-param   { yyscan_t scanner }
 %parse-param { yyscan_t scanner }
 

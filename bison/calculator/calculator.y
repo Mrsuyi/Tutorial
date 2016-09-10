@@ -11,7 +11,6 @@ void yyerror(char* s)
 }
 %}
 
-
 %union {
     int    vali;
     double valf;

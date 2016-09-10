@@ -1,14 +1,14 @@
 %{
+#define YYSTYPE int
 #include <stdio.h>
-#include "hello.lexer.h" /* defines yylex yyin yy_scan_buffer ... */
+
+#include "hello.lexer.h"
 
 void yyerror(char* s)
 {
     printf("%s\n", s);
 }
 %}
-
-%define api.value.type { int }
 
 %token INT
 

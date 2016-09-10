@@ -3,7 +3,7 @@
 
 %{
 #include <stdio.h>
-#include "hello.parser.h" /* define YYSTYPE yylval */
+#include "hello.parser.h"
 %}
 
 DIGIT [0-9]

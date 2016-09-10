@@ -15,6 +15,9 @@ all: $(BINS) ;
 .PHONY: $(BINS)
 $(BINS): %: %.exe
 
+lexer:  $(BINS:%=%.lexer.c) ;
+parser: $(BINS:%=%.parser.c) ;
+
 %.exe: %.parser.c %.lexer.c
 	$(CC) $(CFLAGS) -o $@ $^
 
