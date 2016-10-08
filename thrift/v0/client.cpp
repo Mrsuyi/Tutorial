@@ -11,12 +11,16 @@ using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
-
 int main(int argc, char* argv[])
 {
-    cout << "client run on " << argv[1] << endl;
+    if (argc < 3)
+    {
+        printf("usage: %s <ip> <port>\n", argv[0]);
+        return 0;
+    }
+    printf("client connect to %s:%s\n", argv[1], argv[2]); 
     
-    boost::shared_ptr<TTransport> socket(new TSocket("localhost", atoi(argv[1])));
+    boost::shared_ptr<TTransport> socket(new TSocket(argv[1], atoi(argv[2])));
     boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
     boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
     CalcClient client(protocol);
