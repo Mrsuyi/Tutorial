@@ -11,28 +11,19 @@ using namespace std;
 //
 // and these functions should return something behaves like an iterator
 
-
 // so you can use std-iterator
 class Shit
 {
 public:
-    auto begin() -> decltype(vector<int>().begin())
-    {
-        return nums.begin();
-    }
-    auto end()   -> decltype(vector<int>().end())
-    {
-        return nums.end();
-    }
-    
+    auto begin() -> decltype(vector<int>().begin()) { return nums.begin(); }
+    auto end() -> decltype(vector<int>().end()) { return nums.end(); }
     vector<int> nums = {0, 1, 2, 3};
 };
-
 
 // or define your own iterator[D], which should supprot
 //
 //      ++D
-//      D1 != D2 
+//      D1 != D2
 //      *D
 //
 class Fuck
@@ -41,20 +32,16 @@ public:
     class Iter
     {
     public:
-        Iter(Fuck* ptr, int idx) : ptr(ptr), idx(idx) {};
+        Iter(Fuck* ptr, int idx) : ptr(ptr), idx(idx){};
 
-        int& operator * ()
-        {
-            return ptr->nums[idx]; 
-        }
-
-        Iter& operator ++ ()
+        int& operator*() { return ptr->nums[idx]; }
+        Iter& operator++()
         {
             idx++;
             return *this;
         }
 
-        bool operator != (const Iter& it)
+        bool operator!=(const Iter& it)
         {
             return this->ptr != it.ptr || this->idx != it.idx;
         }
@@ -64,20 +51,13 @@ public:
         Fuck* ptr;
     };
 
-    Iter begin()
-    {
-        return Iter(this, 0);
-    }
-
-    Iter end()
-    {
-        return Iter(this, nums.size());
-    }
-
+    Iter begin() { return Iter(this, 0); }
+    Iter end() { return Iter(this, nums.size()); }
     vector<int> nums = {5, 6, 7, 8};
 };
 
-int main()
+int
+main()
 {
     Shit shit;
 

@@ -17,7 +17,7 @@ enum Operation
 exception CalcError
 {
     1: Operation oper,
-    2: string    what
+    2: string    str
 }
 
 service Calc

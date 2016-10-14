@@ -52,7 +52,7 @@ class CalcHandler : public CalcIf
                 if (b == 0)
                 {
                     CalcError err;
-                    err.what = "div 0";
+                    err.str = "div 0";
                     err.oper = Operation::DIV;
                     throw err;
                 }
@@ -70,7 +70,12 @@ class CalcHandler : public CalcIf
 
 int main(int argc, char* argv[])
 {
-    cout << "server begin on " << atoi(argv[1]) << endl;
+    if (argc == 1)
+    {
+        printf("usage: %s <port>\n", argv[0]);
+        exit(0);
+    }
+    printf("server listening on %s\n", argv[1]);
 
     TThreadedServer server
     (

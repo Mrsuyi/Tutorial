@@ -3,24 +3,29 @@ CFLAGS := -std=c99 -lm
 LEX    := flex
 LFLAGS :=
 YACC   := bison
-YFLAGS := -d
+YFLAGS :=
 
 YACS := $(wildcard *.y)
 BINS := $(YACS:%.y=%)
+
+.PRECIOUS: %.lexer.c %.parser.c
 
 all: $(BINS) ;
 
 .PHONY: $(BINS)
 $(BINS): %: %.exe
 
-%.exe: %.tab.c %.c
+lexer:  $(BINS:%=%.lexer.c) ;
+parser: $(BINS:%=%.parser.c) ;
+
+%.exe: %.parser.c %.lexer.c
 	$(CC) $(CFLAGS) -o $@ $^
 
-%.c: %.l %.tab.h
-	$(LEX) $(LFLAGS) -o $@ $<
+%.lexer.c %.lexer.h: %.l
+	$(LEX) $(LFLAGS) --outfile=$*.lexer.c --header-file=$*.lexer.h $<
 
-%.tab.c %.tab.h: %.y
-	$(YACC) $(YFLAGS) $<
+%.parser.c %.parser.h: %.y
+	$(YACC) $(YFLAGS) --out=$*.parser.c -d $< 
 
 .PHONY: clean
 clean:

@@ -26,7 +26,7 @@ using namespace apache::thrift::server;
 
 class CalcHandler : public CalcIf
 {
-    int32_t add(const int32_t a, const int32_t b)
+    virtual int32_t add(const int32_t a, const int32_t b) override
     {
         cout << a << " + " << b << " = " << a + b + 1 << endl;
         return a + b + 1;
@@ -35,7 +35,12 @@ class CalcHandler : public CalcIf
 
 int main(int argc, char* argv[])
 {
-    cout << "server begin on " << atoi(argv[1]) << endl;
+    if (argc == 1)
+    {
+        printf("usage: %s <port>\n", argv[0]);
+        exit(0);
+    }
+    printf("server listening on %s\n", argv[1]);
 
     TThreadedServer server
     (
