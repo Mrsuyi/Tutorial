@@ -23,8 +23,6 @@ int main()
 {
     Outer<int>::Inner i;
 
-    i.show();
-
     return 0;
 };
 
