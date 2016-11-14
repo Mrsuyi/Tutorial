@@ -1,2 +1,4 @@
-**/core.*
+*.core*
+*.out
+*.o
 *.swp
