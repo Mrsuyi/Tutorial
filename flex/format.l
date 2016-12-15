@@ -11,7 +11,6 @@
 %{
 #include <stdio.h>
 #define FUCK 200
-#define YY_DECL extern "C" int yylex()
 %}
 
  /* %top{...} will be copied to the top of output */ 
