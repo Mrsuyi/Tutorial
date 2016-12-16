@@ -71,6 +71,11 @@ void longer(int argc, char* argv[])
                 ;
        }
     }
+
+    for (int nxt = optind; nxt != argc; ++nxt)
+    {
+        printf("non-option arg: %s\n", argv[nxt]);
+    }
 }
 
 int main(int argc, char* argv[])
