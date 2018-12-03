@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:common/common.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:foundation/foundation.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:uikit/uikit.xcodeproj">
    </FileRef>
 </Workspace>
