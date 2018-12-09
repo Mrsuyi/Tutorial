@@ -1,28 +1,25 @@
 //
 //  AppDelegate.m
-//  url
+//  foundation
 //
-//  Created by Yi Su on 03/12/2018.
+//  Created by Yi Su on 08/12/2018.
 //  Copyright © 2018 google. All rights reserved.
 //
 
-#import "AppDelegate.h"
-#import "ViewController.h"
+#import <Foundation/Foundation.h>
 
-@interface AppDelegate ()
+#import "CtrlAppDelegate.h"
 
-@end
-
-@implementation AppDelegate
+@implementation CtrlAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
-
+  
   self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-  self.window.rootViewController = [ViewController new];
+  self.window.rootViewController = [UIViewController new];
+  self.window.rootViewController.view.backgroundColor = UIColor.redColor;
   [self.window makeKeyAndVisible];
-
   return YES;
 }
 

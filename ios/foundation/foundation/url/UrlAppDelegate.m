@@ -6,17 +6,22 @@
 //  Copyright © 2018 google. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "UrlAppDelegate.h"
+#import "UrlViewController.h"
 
-@interface AppDelegate ()
+@interface UrlAppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation UrlAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
+  
+  self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+  self.window.rootViewController = [UrlViewController new];
+  [self.window makeKeyAndVisible];
   return YES;
 }
 

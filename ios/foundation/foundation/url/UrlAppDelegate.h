@@ -1,17 +1,21 @@
 //
 //  AppDelegate.h
-//  url
+//  foundation
 //
 //  Created by Yi Su on 03/12/2018.
 //  Copyright © 2018 google. All rights reserved.
 //
 
+#ifndef AppDelegate_h
+#define AppDelegate_h
+
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface UrlAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 
 @end
 
+#endif /* AppDelegate_h */
