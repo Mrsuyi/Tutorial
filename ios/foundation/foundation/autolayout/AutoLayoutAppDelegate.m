@@ -1,22 +1,25 @@
 //
-//  AppDelegate.m
-//  uikit
+//  AutoLayoutAppDelegate.m
+//  foundation
 //
-//  Created by Yi Su on 02/12/2018.
+//  Created by Yi Su on 12/11/18.
 //  Copyright © 2018 google. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import <Foundation/Foundation.h>
 
-@interface AppDelegate ()
+#import "AutoLayoutAppDelegate.h"
+#import "UrlViewController.h"
 
-@end
-
-@implementation AppDelegate
+@implementation AutoLayoutAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
+  
+  self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+  self.window.rootViewController = [UrlViewController new];
+  [self.window makeKeyAndVisible];
   return YES;
 }
 

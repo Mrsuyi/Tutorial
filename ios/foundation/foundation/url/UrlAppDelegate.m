@@ -9,10 +9,6 @@
 #import "UrlAppDelegate.h"
 #import "UrlViewController.h"
 
-@interface UrlAppDelegate ()
-
-@end
-
 @implementation UrlAppDelegate
 
 

@@ -1,26 +1,26 @@
 //
-//  AppDelegate.m
+//  TableViewAppDelegate.m
 //  SearchBar
 //
 //  Created by Yi Su on 02/12/2018.
 //  Copyright © 2018 google. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "TableViewAppDelegate.h"
 #import "TableViewController.h"
 
-@interface AppDelegate ()
+@interface TableViewAppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation TableViewAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
-
+  
   UINavigationController* nvc = [[UINavigationController alloc] initWithRootViewController:[TableViewController new]];
-
+  
   self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
   self.window.rootViewController = nvc;
   [self.window makeKeyAndVisible];

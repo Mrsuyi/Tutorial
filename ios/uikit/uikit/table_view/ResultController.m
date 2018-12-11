@@ -9,12 +9,24 @@
 #import <Foundation/Foundation.h>
 
 #import "ResultController.h"
+#import "BarButtonItem.h"
 
 @implementation ResultController
 
 # pragma UIViewController
 
 @synthesize label = _label;
+
+- (instancetype)init {
+  self = [super init];
+  if (self) {
+    self.navigationItem.leftBarButtonItem = [LeftBarButton new];
+    self.navigationItem.rightBarButtonItem = [RightBarButton new];
+    self.navigationItem.hidesBackButton = NO;
+    self.navigationItem.leftItemsSupplementBackButton = YES;
+  }
+  return self;
+}
 
 - (void)viewDidLoad {
   [super viewDidLoad];

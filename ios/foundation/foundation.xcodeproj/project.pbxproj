@@ -13,6 +13,8 @@
 		FD1C48CD21B5BB6100FD55C8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1C48CC21B5BB6100FD55C8 /* main.m */; };
 		FD65B72321BC2E21001A56CE /* UrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD65B72221BC2E21001A56CE /* UrlViewController.m */; };
 		FD65B72921BC4645001A56CE /* CtrlAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD65B72821BC4645001A56CE /* CtrlAppDelegate.m */; };
+		FD95BB3021BFAD46008F7FB6 /* AutoLayoutAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD95BB2F21BFAD46008F7FB6 /* AutoLayoutAppDelegate.m */; };
+		FD95BB3321BFADCD008F7FB6 /* AutoLayoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD95BB3221BFADCD008F7FB6 /* AutoLayoutViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,10 @@
 		FD65B72221BC2E21001A56CE /* UrlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlViewController.m; sourceTree = "<group>"; };
 		FD65B72721BC4637001A56CE /* CtrlAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CtrlAppDelegate.h; sourceTree = "<group>"; };
 		FD65B72821BC4645001A56CE /* CtrlAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CtrlAppDelegate.m; sourceTree = "<group>"; };
+		FD95BB2E21BFAD36008F7FB6 /* AutoLayoutAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoLayoutAppDelegate.h; sourceTree = "<group>"; };
+		FD95BB2F21BFAD46008F7FB6 /* AutoLayoutAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutAppDelegate.m; sourceTree = "<group>"; };
+		FD95BB3121BFADBB008F7FB6 /* AutoLayoutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoLayoutViewController.h; sourceTree = "<group>"; };
+		FD95BB3221BFADCD008F7FB6 /* AutoLayoutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,7 @@
 		FD1C48BC21B5BB6000FD55C8 /* foundation */ = {
 			isa = PBXGroup;
 			children = (
+				FD95BB2D21BFAD08008F7FB6 /* autolayout */,
 				FD65B72021BC2DFD001A56CE /* url */,
 				FD65B71B21BC2D48001A56CE /* control */,
 				FD1C48C621B5BB6100FD55C8 /* Assets.xcassets */,
@@ -87,6 +94,17 @@
 				FD65B72121BC2E21001A56CE /* UrlViewController.h */,
 			);
 			path = url;
+			sourceTree = "<group>";
+		};
+		FD95BB2D21BFAD08008F7FB6 /* autolayout */ = {
+			isa = PBXGroup;
+			children = (
+				FD95BB2E21BFAD36008F7FB6 /* AutoLayoutAppDelegate.h */,
+				FD95BB2F21BFAD46008F7FB6 /* AutoLayoutAppDelegate.m */,
+				FD95BB3121BFADBB008F7FB6 /* AutoLayoutViewController.h */,
+				FD95BB3221BFADCD008F7FB6 /* AutoLayoutViewController.m */,
+			);
+			path = autolayout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,7 +179,9 @@
 				FD65B72321BC2E21001A56CE /* UrlViewController.m in Sources */,
 				FD1C48CD21B5BB6100FD55C8 /* main.m in Sources */,
 				FD1C48BF21B5BB6000FD55C8 /* UrlAppDelegate.m in Sources */,
+				FD95BB3321BFADCD008F7FB6 /* AutoLayoutViewController.m in Sources */,
 				FD65B72921BC4645001A56CE /* CtrlAppDelegate.m in Sources */,
+				FD95BB3021BFAD46008F7FB6 /* AutoLayoutAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
