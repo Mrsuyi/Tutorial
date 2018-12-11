@@ -6,8 +6,8 @@
 //  Copyright © 2018 google. All rights reserved.
 //
 
-#ifndef AppDelegate_h
-#define AppDelegate_h
+#ifndef UrlAppDelegate_h
+#define UrlAppDelegate_h
 
 #import <UIKit/UIKit.h>
 
@@ -15,7 +15,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-
 @end
 
-#endif /* AppDelegate_h */
+#endif /* UrlAppDelegate_h */

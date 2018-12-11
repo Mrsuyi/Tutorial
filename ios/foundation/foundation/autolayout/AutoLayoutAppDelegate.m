@@ -1,15 +1,17 @@
 //
-//  AppDelegate.m
+//  AutoLayoutAppDelegate.m
 //  foundation
 //
-//  Created by Yi Su on 03/12/2018.
+//  Created by Yi Su on 12/11/18.
 //  Copyright © 2018 google. All rights reserved.
 //
 
-#import "UrlAppDelegate.h"
+#import <Foundation/Foundation.h>
+
+#import "AutoLayoutAppDelegate.h"
 #import "UrlViewController.h"
 
-@implementation UrlAppDelegate
+@implementation AutoLayoutAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

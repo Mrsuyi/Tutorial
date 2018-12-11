@@ -6,10 +6,13 @@
 //  Copyright © 2018 google. All rights reserved.
 //
 
+#ifndef UrlViewController_h
+#define UrlViewController_h
+
 #import <UIKit/UIKit.h>
 
 @interface UrlViewController : UIViewController
 
-
 @end
 
+#endif /* UrlViewController_h */
