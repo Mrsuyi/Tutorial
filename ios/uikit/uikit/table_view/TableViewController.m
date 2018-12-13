@@ -43,7 +43,7 @@ UISearchBarDelegate, UISearchControllerDelegate>
   _searchController.delegate = self;
   _searchController.searchBar.delegate = self;
   _searchController.dimsBackgroundDuringPresentation = YES;
-
+  
   self.navigationItem.searchController = _searchController;
   self.navigationItem.hidesSearchBarWhenScrolling = NO;
   self.navigationItem.rightBarButtonItem = [RightBarButton new];
