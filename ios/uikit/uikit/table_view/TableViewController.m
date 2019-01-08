@@ -27,7 +27,8 @@ UISearchBarDelegate, UISearchControllerDelegate>
   if (!(self = [super init]))
     return nil;
   
-  self.title = @"TableViewController";
+//  self.title = @"TableViewController";
+  self.title = @"very very very very very long";
   
   _cells = [NSMutableArray new];
   for (int i = 0; i < 6; ++i) {
@@ -61,6 +62,9 @@ UISearchBarDelegate, UISearchControllerDelegate>
   self.tableView.estimatedRowHeight = 100;
 //  self.tableView.estimatedSectionHeaderHeight = 100;
   self.tableView.estimatedSectionFooterHeight = 100;
+
+  NSLog(@"back: %s", self.navigationItem.backBarButtonItem.isAccessibilityElement ? "yes" : "no");
+  NSLog(@"right: %s", self.navigationItem.rightBarButtonItem.isAccessibilityElement ? "yes" : "no");
 }
 
 # pragma UITableViewDataSource
@@ -80,7 +84,8 @@ UISearchBarDelegate, UISearchControllerDelegate>
 # pragma UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  [self.navigationController pushViewController:[ResultController new] animated:YES];
+//  [self.navigationController pushViewController:[ResultController new] animated:YES];
+  [self.navigationController pushViewController:[TableViewController new] animated:YES];
   [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

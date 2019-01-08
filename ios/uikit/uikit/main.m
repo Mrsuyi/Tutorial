@@ -12,7 +12,7 @@
 
 int main(int argc, char * argv[]) {
   @autoreleasepool {
-//      return UIApplicationMain(argc, argv, nil, NSStringFromClass([TableViewAppDelegate class]));
-    return UIApplicationMain(argc, argv, nil, NSStringFromClass([ToolbarAppDelegate class]));
+    return UIApplicationMain(argc, argv, nil, NSStringFromClass([TableViewAppDelegate class]));
+//    return UIApplicationMain(argc, argv, nil, NSStringFromClass([ToolbarAppDelegate class]));
   }
 }

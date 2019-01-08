@@ -30,7 +30,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
+
   self.view.backgroundColor = UIColor.whiteColor;
 
   _label = [[UILabel alloc] initWithFrame:CGRectMake(20, 100, 100, 50)];
