@@ -14,6 +14,12 @@
 		FDD1688221C15C2800A9F37F /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1C48AC21B418C200FD55C8 /* TableViewController.m */; };
 		FDD1688321C15C2F00A9F37F /* ResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1C48AF21B4557A00FD55C8 /* ResultController.m */; };
 		FDD1688621C15F9A00A9F37F /* BarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD1688521C15F9A00A9F37F /* BarButtonItem.m */; };
+		FDD1688A21CBF1D400A9F37F /* ToolbarAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD1688921CBF1D400A9F37F /* ToolbarAppDelegate.m */; };
+		FDD1688F21CBF21500A9F37F /* ToolbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD1688E21CBF21500A9F37F /* ToolbarViewController.m */; };
+		FDD1689121CBFF3100A9F37F /* chrome_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = FDD1689021CBFF3100A9F37F /* chrome_32_32.png */; };
+		FDD1689321CCFDF100A9F37F /* new_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = FDD1689221CCFDF100A9F37F /* new_tab.png */; };
+		FDD1689521CD16DD00A9F37F /* new_tab_2.png in Resources */ = {isa = PBXBuildFile; fileRef = FDD1689421CD16DD00A9F37F /* new_tab_2.png */; };
+		FDD1689721DE413800A9F37F /* new_tab_incognito.png in Resources */ = {isa = PBXBuildFile; fileRef = FDD1689621DE413800A9F37F /* new_tab_incognito.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +36,14 @@
 		FDD1688021C15C1300A9F37F /* TableViewAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewAppDelegate.m; sourceTree = "<group>"; };
 		FDD1688421C15F8400A9F37F /* BarButtonItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BarButtonItem.h; sourceTree = "<group>"; };
 		FDD1688521C15F9A00A9F37F /* BarButtonItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BarButtonItem.m; sourceTree = "<group>"; };
+		FDD1688821CBF1C300A9F37F /* ToolbarAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToolbarAppDelegate.h; sourceTree = "<group>"; };
+		FDD1688921CBF1D400A9F37F /* ToolbarAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToolbarAppDelegate.m; sourceTree = "<group>"; };
+		FDD1688D21CBF20600A9F37F /* ToolbarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToolbarViewController.h; sourceTree = "<group>"; };
+		FDD1688E21CBF21500A9F37F /* ToolbarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToolbarViewController.m; sourceTree = "<group>"; };
+		FDD1689021CBFF3100A9F37F /* chrome_32_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chrome_32_32.png; sourceTree = "<group>"; };
+		FDD1689221CCFDF100A9F37F /* new_tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_tab.png; sourceTree = "<group>"; };
+		FDD1689421CD16DD00A9F37F /* new_tab_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_tab_2.png; sourceTree = "<group>"; };
+		FDD1689621DE413800A9F37F /* new_tab_incognito.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_tab_incognito.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +76,7 @@
 		FD1C487A21B3F16400FD55C8 /* uikit */ = {
 			isa = PBXGroup;
 			children = (
+				FDD1688721CBF0D600A9F37F /* toolbar */,
 				FDD1687E21C15BC400A9F37F /* table_view */,
 				FD1C488421B3F16600FD55C8 /* Assets.xcassets */,
 				FD1C488621B3F16600FD55C8 /* LaunchScreen.storyboard */,
@@ -84,6 +99,21 @@
 				FDD1688521C15F9A00A9F37F /* BarButtonItem.m */,
 			);
 			path = table_view;
+			sourceTree = "<group>";
+		};
+		FDD1688721CBF0D600A9F37F /* toolbar */ = {
+			isa = PBXGroup;
+			children = (
+				FDD1689221CCFDF100A9F37F /* new_tab.png */,
+				FDD1689621DE413800A9F37F /* new_tab_incognito.png */,
+				FDD1689021CBFF3100A9F37F /* chrome_32_32.png */,
+				FDD1689421CD16DD00A9F37F /* new_tab_2.png */,
+				FDD1688821CBF1C300A9F37F /* ToolbarAppDelegate.h */,
+				FDD1688921CBF1D400A9F37F /* ToolbarAppDelegate.m */,
+				FDD1688D21CBF20600A9F37F /* ToolbarViewController.h */,
+				FDD1688E21CBF21500A9F37F /* ToolbarViewController.m */,
+			);
+			path = toolbar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,8 +173,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDD1689121CBFF3100A9F37F /* chrome_32_32.png in Resources */,
 				FD1C488821B3F16600FD55C8 /* LaunchScreen.storyboard in Resources */,
+				FDD1689321CCFDF100A9F37F /* new_tab.png in Resources */,
+				FDD1689521CD16DD00A9F37F /* new_tab_2.png in Resources */,
 				FD1C488521B3F16600FD55C8 /* Assets.xcassets in Resources */,
+				FDD1689721DE413800A9F37F /* new_tab_incognito.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,9 +191,11 @@
 			files = (
 				FDD1688121C15C1300A9F37F /* TableViewAppDelegate.m in Sources */,
 				FDD1688621C15F9A00A9F37F /* BarButtonItem.m in Sources */,
+				FDD1688A21CBF1D400A9F37F /* ToolbarAppDelegate.m in Sources */,
 				FDD1688321C15C2F00A9F37F /* ResultController.m in Sources */,
 				FD1C488B21B3F16600FD55C8 /* main.m in Sources */,
 				FDD1688221C15C2800A9F37F /* TableViewController.m in Sources */,
+				FDD1688F21CBF21500A9F37F /* ToolbarViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +332,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D528WGC5JH;
 				INFOPLIST_FILE = uikit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -313,6 +350,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D528WGC5JH;
 				INFOPLIST_FILE = uikit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

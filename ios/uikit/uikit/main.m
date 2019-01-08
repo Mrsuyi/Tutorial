@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "table_view/TableViewAppDelegate.h"
+#import "toolbar/ToolbarAppDelegate.h"
 
 int main(int argc, char * argv[]) {
   @autoreleasepool {
-      return UIApplicationMain(argc, argv, nil, NSStringFromClass([TableViewAppDelegate class]));
+//      return UIApplicationMain(argc, argv, nil, NSStringFromClass([TableViewAppDelegate class]));
+    return UIApplicationMain(argc, argv, nil, NSStringFromClass([ToolbarAppDelegate class]));
   }
 }
