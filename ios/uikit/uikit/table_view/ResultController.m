@@ -43,7 +43,7 @@
 # pragma UISearchResultsUpdating
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-  NSLog(@"updateSearchResultsForSearchController");
+  NSLog(@"updateSearchResultsForSearchController with text:%@", searchController.searchBar.text);
   _label.text = searchController.searchBar.text;
 }
 

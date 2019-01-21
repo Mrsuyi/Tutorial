@@ -21,36 +21,38 @@ UISearchBarDelegate, UISearchControllerDelegate>
   ResultController* _resultController;
   UISearchController* _searchController;
   NSMutableArray<UITableViewCell*>* _cells;
+  BOOL _hideTop;
 }
 
 - (instancetype)init {
   if (!(self = [super init]))
     return nil;
   
-//  self.title = @"TableViewController";
-  self.title = @"very very very very very long";
+  _hideTop = NO;
+  self.title = @"TableViewController";
   
   _cells = [NSMutableArray new];
-  for (int i = 0; i < 6; ++i) {
+  for (int i = 0; i < 9; ++i) {
     UITableViewCell* cell = [UITableViewCell new];
     cell.textLabel.text = [NSString stringWithFormat:@"cell %d", i];
     [_cells addObject:cell];
   }
-  
+
   _resultController = [ResultController new];
-  
-  _searchController = [[UISearchController alloc] initWithSearchResultsController:_resultController];
-  _searchController.searchResultsUpdater = _resultController;
+
+  _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+  _searchController.searchResultsUpdater = self;
   _searchController.delegate = self;
   _searchController.searchBar.delegate = self;
-  _searchController.dimsBackgroundDuringPresentation = YES;
-  
+  _searchController.obscuresBackgroundDuringPresentation = YES;
+
   self.navigationItem.searchController = _searchController;
   self.navigationItem.hidesSearchBarWhenScrolling = NO;
-  self.navigationItem.rightBarButtonItem = [RightBarButton new];
+//  self.navigationItem.rightBarButtonItem = [RightBarButton new];
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEdit)];
 
   self.definesPresentationContext = YES;
-  
+
   return self;
 }
 
@@ -58,19 +60,22 @@ UISearchBarDelegate, UISearchControllerDelegate>
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
+
   self.tableView.estimatedRowHeight = 100;
 //  self.tableView.estimatedSectionHeaderHeight = 100;
   self.tableView.estimatedSectionFooterHeight = 100;
+}
 
-  NSLog(@"back: %s", self.navigationItem.backBarButtonItem.isAccessibilityElement ? "yes" : "no");
-  NSLog(@"right: %s", self.navigationItem.rightBarButtonItem.isAccessibilityElement ? "yes" : "no");
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  NSLog(@"changed!!!!");
 }
 
 # pragma UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return 2;
+  if (_hideTop)
+    return 2;
+  return 3;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -91,31 +96,34 @@ UISearchBarDelegate, UISearchControllerDelegate>
 
 - (UIView *)tableView:(UITableView *)tableView
 viewForHeaderInSection:(NSInteger)section {
-  UILabel* label = [[UILabel alloc] init];
-  label.text = [NSString stringWithFormat:@"Section %ld", section];
-  return label;
+  UITableViewHeaderFooterView* header = [UITableViewHeaderFooterView new];
+  header.textLabel.text = @"shit";
+  header.detailTextLabel.text = @"sub-shit";
+  return header;
+//  UILabel* label = [[UILabel alloc] init];
+//  label.text = [NSString stringWithFormat:@"Section %ld", section];
+//  return label;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView
-heightForHeaderInSection:(NSInteger)section {
-  return 50;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView
-heightForFooterInSection:(NSInteger)section {
-  return 10;
-}
-
-# pragma UISearchResultsUpdating
-
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-  NSLog(@"updateSearchResultsForSearchController");
-}
+//- (CGFloat)tableView:(UITableView *)tableView
+//heightForHeaderInSection:(NSInteger)section {
+//  return 50;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView
+//heightForFooterInSection:(NSInteger)section {
+//  return 10;
+//}
 
 # pragma UISearchBarDelegate
 
+- (void)searchBar:(UISearchBar *)searchBar
+    textDidChange:(NSString *)searchText {
+  NSLog(@"searchBar:textDidChange:");
+}
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-  NSLog(@"search button clicked");
+  NSLog(@"searchBarSearchButtonClicked:");
   [searchBar resignFirstResponder];
 }
 
@@ -123,6 +131,44 @@ heightForFooterInSection:(NSInteger)section {
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
   NSLog(@"willPresentSearchController");
+  _hideTop = YES;
+  [self.tableView performBatchUpdates:^{
+    [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+  } completion:nil];
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+  NSLog(@"willDismissSearchController");
+  _hideTop = NO;
+  [self.tableView performBatchUpdates:^{
+    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+  } completion:nil];
+}
+
+# pragma UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+  NSLog(@"updateSearchResultsForSearchController with text:%@", searchController.searchBar.text);
+  if ([searchController.searchBar.text isEqualToString:@""]) {
+    searchController.obscuresBackgroundDuringPresentation = YES;
+  }
+  else {
+    searchController.obscuresBackgroundDuringPresentation = NO;
+  }
+}
+
+#pragma Private
+
+- (void)onEdit {
+  if (self.editing) {
+    self.navigationItem.searchController.searchBar.userInteractionEnabled = YES;
+    self.navigationItem.searchController.searchBar.alpha = 1.0;
+  }
+  else {
+    self.navigationItem.searchController.searchBar.userInteractionEnabled = NO;
+    self.navigationItem.searchController.searchBar.alpha = 0.5;
+  }
+  [self setEditing:!self.editing animated:YES];
 }
 
 @end
