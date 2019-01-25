@@ -28,6 +28,9 @@
 		FDD1689521CD16DD00A9F37F /* new_tab_2.png in Resources */ = {isa = PBXBuildFile; fileRef = FDD1689421CD16DD00A9F37F /* new_tab_2.png */; };
 		FDD1689721DE413800A9F37F /* new_tab_incognito.png in Resources */ = {isa = PBXBuildFile; fileRef = FDD1689621DE413800A9F37F /* new_tab_incognito.png */; };
 		FDE18EA321ECC48C00EEECCB /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA221ECC48B00EEECCB /* Button.m */; };
+		FDE18EA721F6308000EEECCB /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA621F6308000EEECCB /* TableViewCell.m */; };
+		FDE18EAA21F630AF00EEECCB /* TableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA921F630AF00EEECCB /* TableViewHeaderFooterView.m */; };
+		FDE18EAC21F6319C00EEECCB /* chrome_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = FDE18EAB21F6319C00EEECCB /* chrome_32_32.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +70,11 @@
 		FDD1689621DE413800A9F37F /* new_tab_incognito.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_tab_incognito.png; sourceTree = "<group>"; };
 		FDE18EA221ECC48B00EEECCB /* Button.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Button.m; sourceTree = "<group>"; };
 		FDE18EA421ECC4A800EEECCB /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
+		FDE18EA521F6307100EEECCB /* TableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
+		FDE18EA621F6308000EEECCB /* TableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
+		FDE18EA821F6309900EEECCB /* TableViewHeaderFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewHeaderFooterView.h; sourceTree = "<group>"; };
+		FDE18EA921F630AF00EEECCB /* TableViewHeaderFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewHeaderFooterView.m; sourceTree = "<group>"; };
+		FDE18EAB21F6319C00EEECCB /* chrome_32_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = chrome_32_32.png; path = uikit/toolbar/chrome_32_32.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +151,7 @@
 		FDD1687E21C15BC400A9F37F /* table_view */ = {
 			isa = PBXGroup;
 			children = (
+				FDE18EAB21F6319C00EEECCB /* chrome_32_32.png */,
 				FD1C48AB21B4189E00FD55C8 /* TableViewController.h */,
 				FD1C48AC21B418C200FD55C8 /* TableViewController.m */,
 				FD1C48AE21B4556B00FD55C8 /* ResultController.h */,
@@ -151,6 +160,10 @@
 				FDD1688021C15C1300A9F37F /* TableViewAppDelegate.m */,
 				FDD1688421C15F8400A9F37F /* BarButtonItem.h */,
 				FDD1688521C15F9A00A9F37F /* BarButtonItem.m */,
+				FDE18EA521F6307100EEECCB /* TableViewCell.h */,
+				FDE18EA621F6308000EEECCB /* TableViewCell.m */,
+				FDE18EA821F6309900EEECCB /* TableViewHeaderFooterView.h */,
+				FDE18EA921F630AF00EEECCB /* TableViewHeaderFooterView.m */,
 			);
 			path = table_view;
 			sourceTree = "<group>";
@@ -158,9 +171,9 @@
 		FDD1688721CBF0D600A9F37F /* toolbar */ = {
 			isa = PBXGroup;
 			children = (
+				FDD1689021CBFF3100A9F37F /* chrome_32_32.png */,
 				FDD1689221CCFDF100A9F37F /* new_tab.png */,
 				FDD1689621DE413800A9F37F /* new_tab_incognito.png */,
-				FDD1689021CBFF3100A9F37F /* chrome_32_32.png */,
 				FDD1689421CD16DD00A9F37F /* new_tab_2.png */,
 				FDD1688821CBF1C300A9F37F /* ToolbarAppDelegate.h */,
 				FDD1688921CBF1D400A9F37F /* ToolbarAppDelegate.m */,
@@ -228,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDD1689121CBFF3100A9F37F /* chrome_32_32.png in Resources */,
+				FDE18EAC21F6319C00EEECCB /* chrome_32_32.png in Resources */,
 				FD1C488821B3F16600FD55C8 /* LaunchScreen.storyboard in Resources */,
 				FDD1689321CCFDF100A9F37F /* new_tab.png in Resources */,
 				FD8CA8F321E786DD004499AF /* m.png in Resources */,
@@ -256,7 +270,9 @@
 				FD8CA8F121E78566004499AF /* BasicViewController.m in Sources */,
 				FD1C488B21B3F16600FD55C8 /* main.m in Sources */,
 				FDD1688221C15C2800A9F37F /* TableViewController.m in Sources */,
+				FDE18EAA21F630AF00EEECCB /* TableViewHeaderFooterView.m in Sources */,
 				FD8CA8FA21E79CC4004499AF /* CollectionViewController.m in Sources */,
+				FDE18EA721F6308000EEECCB /* TableViewCell.m in Sources */,
 				FDD1688F21CBF21500A9F37F /* ToolbarViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -394,7 +410,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D528WGC5JH;
 				INFOPLIST_FILE = uikit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -412,7 +428,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D528WGC5JH;
 				INFOPLIST_FILE = uikit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
