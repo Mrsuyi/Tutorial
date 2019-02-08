@@ -11,6 +11,8 @@
 #import "TableViewController.h"
 #import "ResultController.h"
 #import "BarButtonItem.h"
+#import "TableViewCell.h"
+#import "TableViewHeaderFooterView.h"
 
 @interface TableViewController ()  <UISearchResultsUpdating,
 UISearchBarDelegate, UISearchControllerDelegate>
@@ -20,38 +22,36 @@ UISearchBarDelegate, UISearchControllerDelegate>
 @implementation TableViewController {
   ResultController* _resultController;
   UISearchController* _searchController;
-  NSMutableArray<UITableViewCell*>* _cells;
   BOOL _hideTop;
 }
 
 - (instancetype)init {
-  if (!(self = [super init]))
-    return nil;
+  self = [super initWithStyle:UITableViewStylePlain];
+  if (self) {
+    self.title = @"TableViewController";
+    _hideTop = NO;
 
-  _hideTop = NO;
-  self.title = @"TableViewController";
-  _cells = [NSMutableArray new];
-  for (int i = 0; i < 9; ++i) {
-    UITableViewCell* cell = [UITableViewCell new];
-    cell.textLabel.text = [NSString stringWithFormat:@"cell %d", i];
-    [_cells addObject:cell];
+    // Search bar.
+    _resultController = [ResultController new];
+
+    _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    _searchController.searchResultsUpdater = self;
+    _searchController.delegate = self;
+    _searchController.searchBar.delegate = self;
+    _searchController.obscuresBackgroundDuringPresentation = YES;
+    
+    self.navigationItem.searchController = _searchController;
+    self.navigationItem.hidesSearchBarWhenScrolling = NO;
+    //  self.navigationItem.rightBarButtonItem = [RightBarButton new];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEdit)];
+
+    self.definesPresentationContext = YES;
+
+    // TableView
+    [self.tableView registerClass:TableViewCell.class forCellReuseIdentifier:kTableViewCellReuseIdentifier];
+    [self.tableView registerClass:TableViewHeaderFooterView.class forHeaderFooterViewReuseIdentifier:kTableViewHeaderFooterViewReuseIdentifier];
+    [self.tableView registerClass:UITableViewHeaderFooterView.class forHeaderFooterViewReuseIdentifier:@"UITableViewHeaderFooterView"];
   }
-
-  _resultController = [ResultController new];
-
-  _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-  _searchController.searchResultsUpdater = self;
-  _searchController.delegate = self;
-  _searchController.searchBar.delegate = self;
-  _searchController.obscuresBackgroundDuringPresentation = YES;
-
-  self.navigationItem.searchController = _searchController;
-  self.navigationItem.hidesSearchBarWhenScrolling = NO;
-//  self.navigationItem.rightBarButtonItem = [RightBarButton new];
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEdit)];
-
-  self.definesPresentationContext = YES;
-
   return self;
 }
 
@@ -60,9 +60,9 @@ UISearchBarDelegate, UISearchControllerDelegate>
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  self.tableView.estimatedRowHeight = 100;
-//  self.tableView.estimatedSectionHeaderHeight = 100;
-  self.tableView.estimatedSectionFooterHeight = 100;
+  self.tableView.estimatedRowHeight = 60;
+  self.tableView.estimatedSectionHeaderHeight = 60;
+  self.tableView.estimatedSectionFooterHeight = 50;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
@@ -73,12 +73,12 @@ UISearchBarDelegate, UISearchControllerDelegate>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   if (_hideTop)
-    return 2;
-  return 3;
+    return 5;
+  return 6;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return _cells[indexPath.section * 3 + indexPath.row];
+  return [self.tableView dequeueReusableCellWithIdentifier:kTableViewCellReuseIdentifier forIndexPath:indexPath];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -88,31 +88,50 @@ UISearchBarDelegate, UISearchControllerDelegate>
 # pragma UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//  [self.navigationController pushViewController:[ResultController new] animated:YES];
-  [self.navigationController pushViewController:[TableViewController new] animated:YES];
   [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+  [self.navigationController pushViewController:[TableViewController new] animated:YES];
 }
 
 - (UIView *)tableView:(UITableView *)tableView
 viewForHeaderInSection:(NSInteger)section {
-  UITableViewHeaderFooterView* header = [UITableViewHeaderFooterView new];
-  header.textLabel.text = @"shit";
-  header.detailTextLabel.text = @"sub-shit";
-  return header;
-//  UILabel* label = [[UILabel alloc] init];
-//  label.text = [NSString stringWithFormat:@"Section %ld", section];
-//  return label;
+  if (section & 1) {
+    UITableViewHeaderFooterView* view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:@"UITableViewHeaderFooterView"];
+    view.textLabel.text = @"shit";
+    view.textLabel.textColor = UIColor.redColor;
+    return view;
+  }
+  TableViewHeaderFooterView* view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:kTableViewHeaderFooterViewReuseIdentifier];
+  if (!view) {
+    view = [[TableViewHeaderFooterView alloc] initWithReuseIdentifier:kTableViewHeaderFooterViewReuseIdentifier];
+  }
+  return view;
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView
-//heightForHeaderInSection:(NSInteger)section {
-//  return 50;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView
-//heightForFooterInSection:(NSInteger)section {
-//  return 10;
-//}
+- (CGFloat)tableView:(UITableView *)tableView
+heightForHeaderInSection:(NSInteger)section {
+  if (_hideTop) {
+    if (section & 1)
+      return 60;
+    else
+      return 30;
+  } else {
+    if (section & 1)
+      return 30;
+    else
+      return 60;
+  }
+  return UITableViewAutomaticDimension;
+//  return 70;
+  UITableViewHeaderFooterView* view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:kTableViewHeaderFooterViewReuseIdentifier];
+  CGSize size = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  return size.height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView
+heightForFooterInSection:(NSInteger)section {
+//  return UITableViewAutomaticDimension;
+  return 0;
+}
 
 # pragma UISearchBarDelegate
 
@@ -136,12 +155,27 @@ viewForHeaderInSection:(NSInteger)section {
   } completion:nil];
 }
 
+- (void)didPresentSearchController:(UISearchController *)searchController {
+  NSLog(@"didPresentSearchController");
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController {
+  NSLog(@"didDismissSearchController");
+}
+
 - (void)willDismissSearchController:(UISearchController *)searchController {
   NSLog(@"willDismissSearchController");
   _hideTop = NO;
   [self.tableView performBatchUpdates:^{
     [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
-  } completion:nil];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0],
+                                             //                                             [NSIndexPath indexPathForRow:1 inSection:0],
+                                             //                                             [NSIndexPath indexPathForRow:2 inSection:0],
+                                             ] withRowAnimation:UITableViewRowAnimationMiddle];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:4] withRowAnimation:UITableViewRowAnimationAutomatic];
+  } completion:^(BOOL finished) {
+    //    [self.tableView reloadData];
+  }];
 }
 
 # pragma UISearchResultsUpdating
