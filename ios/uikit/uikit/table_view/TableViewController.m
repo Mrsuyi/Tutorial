@@ -27,10 +27,9 @@ UISearchBarDelegate, UISearchControllerDelegate>
 - (instancetype)init {
   if (!(self = [super init]))
     return nil;
-  
+
   _hideTop = NO;
   self.title = @"TableViewController";
-  
   _cells = [NSMutableArray new];
   for (int i = 0; i < 9; ++i) {
     UITableViewCell* cell = [UITableViewCell new];
