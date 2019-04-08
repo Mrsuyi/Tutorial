@@ -8,6 +8,7 @@
 
 #import "TableViewAppDelegate.h"
 #import "TableViewController.h"
+#import "RootViewController.h"
 
 @interface TableViewAppDelegate ()
 
@@ -15,14 +16,15 @@
 
 @implementation TableViewAppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
-  
-  UINavigationController* nvc = [[UINavigationController alloc] initWithRootViewController:[TableViewController new]];
-  
+
   self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-  self.window.rootViewController = nvc;
+
+//  UINavigationController* nvc = [[UINavigationController alloc] initWithRootViewController:[TableViewController new]];
+//  self.window.rootViewController = nvc;
+
+  self.window.rootViewController = [RootViewController new];
   [self.window makeKeyAndVisible];
 
   return YES;

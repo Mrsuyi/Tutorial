@@ -16,22 +16,6 @@ NSString* const kTableViewHeaderFooterViewReuseIdentifier = @"TableViewHeaderFoo
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
   self = [super initWithReuseIdentifier:reuseIdentifier];
   if (self) {
-//    self.textLabel.text = @"";
-//    self.detailTextLabel.text = @"detail text";
-
-//    self.textLabel.preferredMaxLayoutWidth = self.window.frame.size.width;
-//    self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-//
-//    UILabel* label = [[UILabel alloc] init];
-//    label.translatesAutoresizingMaskIntoConstraints = NO;
-//    label.text = @"afghrugiheirughaiubiaubdgiuabweiuhasiudfhiauwrbgadiyfbaiusv";
-//    [self.contentView addSubview:label];
-//    [NSLayoutConstraint activateConstraints:@[
-//                                              [label.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
-//                                              [label.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
-//                                              [label.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-//                                              [label.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor]]];
-
     UITextView* view = [UITextView new];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     view.scrollEnabled = NO;
@@ -39,7 +23,7 @@ NSString* const kTableViewHeaderFooterViewReuseIdentifier = @"TableViewHeaderFoo
     view.adjustsFontForContentSizeCategory = YES;
     view.editable = NO;
 
-    NSString* strippedText = @"the URL of the web site is asdfasdgferwgaweasdfasdf www.google.com";
+    NSString* strippedText = @"the header for 1,3,5... sections\na lot of words\na lot of words\nwww.google.com";
     NSRange range = NSMakeRange(strippedText.length - 14, 14);
     NSRange fullRange = NSMakeRange(0, strippedText.length);
     NSMutableAttributedString* attributedText =
