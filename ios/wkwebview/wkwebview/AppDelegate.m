@@ -1,30 +1,26 @@
 //
-//  TableViewAppDelegate.m
-//  SearchBar
+//  AppDelegate.m
+//  wkwebview
 //
-//  Created by Yi Su on 02/12/2018.
-//  Copyright © 2018 google. All rights reserved.
+//  Created by Yi Su on 4/8/19.
+//  Copyright © 2019 google. All rights reserved.
 //
 
-#import "TableViewAppDelegate.h"
-#import "TableViewController.h"
-#import "RootViewController.h"
+#import "AppDelegate.h"
+#import "ViewController.h"
 
-@interface TableViewAppDelegate ()
+@interface AppDelegate ()
 
 @end
 
-@implementation TableViewAppDelegate
+@implementation AppDelegate
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
-
+  
   self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-
-//  UINavigationController* nvc = [[UINavigationController alloc] initWithRootViewController:[TableViewController new]];
-//  self.window.rootViewController = nvc;
-
-  self.window.rootViewController = [RootViewController new];
+  self.window.rootViewController = [ViewController new];
   [self.window makeKeyAndVisible];
 
   return YES;

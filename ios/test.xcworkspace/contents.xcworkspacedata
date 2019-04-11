@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:wkwebview/wkwebview.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:foundation/foundation.xcodeproj">
    </FileRef>
    <FileRef

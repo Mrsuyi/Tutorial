@@ -10,6 +10,7 @@
 		FD1C488521B3F16600FD55C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD1C488421B3F16600FD55C8 /* Assets.xcassets */; };
 		FD1C488821B3F16600FD55C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD1C488621B3F16600FD55C8 /* LaunchScreen.storyboard */; };
 		FD1C488B21B3F16600FD55C8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1C488A21B3F16600FD55C8 /* main.m */; };
+		FD57E3C62248DB0800FD4849 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD57E3C52248DB0800FD4849 /* RootViewController.m */; };
 		FD8CA8EF21E78525004499AF /* BasicAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD8CA8EE21E78525004499AF /* BasicAppDelegate.m */; };
 		FD8CA8F121E78566004499AF /* BasicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD8CA8F021E78566004499AF /* BasicViewController.m */; };
 		FD8CA8F321E786DD004499AF /* m.png in Resources */ = {isa = PBXBuildFile; fileRef = FD8CA8F221E786DC004499AF /* m.png */; };
@@ -30,8 +31,24 @@
 		FDE18EA321ECC48C00EEECCB /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA221ECC48B00EEECCB /* Button.m */; };
 		FDE18EA721F6308000EEECCB /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA621F6308000EEECCB /* TableViewCell.m */; };
 		FDE18EAA21F630AF00EEECCB /* TableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA921F630AF00EEECCB /* TableViewHeaderFooterView.m */; };
-		FDE18EAC21F6319C00EEECCB /* chrome_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = FDE18EAB21F6319C00EEECCB /* chrome_32_32.png */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FD57E3D1224BB2FC00FD4849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD1C487021B3F16400FD55C8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD1C487721B3F16400FD55C8;
+			remoteInfo = uikit;
+		};
+		FD57E3DF224BB35900FD4849 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FD1C487021B3F16400FD55C8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD1C487721B3F16400FD55C8;
+			remoteInfo = uikit;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		FD1C487821B3F16400FD55C8 /* uikit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uikit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,6 +60,10 @@
 		FD1C48AC21B418C200FD55C8 /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		FD1C48AE21B4556B00FD55C8 /* ResultController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultController.h; sourceTree = "<group>"; };
 		FD1C48AF21B4557A00FD55C8 /* ResultController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResultController.m; sourceTree = "<group>"; };
+		FD57E3C52248DB0800FD4849 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		FD57E3C72248DB1D00FD4849 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		FD57E3CC224BB2FC00FD4849 /* uikitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = uikitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD57E3DA224BB35900FD4849 /* uikitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = uikitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD8CA8EC21E784F4004499AF /* BasicAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicAppDelegate.h; sourceTree = "<group>"; };
 		FD8CA8ED21E78511004499AF /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
 		FD8CA8EE21E78525004499AF /* BasicAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BasicAppDelegate.m; sourceTree = "<group>"; };
@@ -85,6 +106,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FD57E3C9224BB2FC00FD4849 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD57E3D7224BB35900FD4849 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -100,6 +135,8 @@
 			isa = PBXGroup;
 			children = (
 				FD1C487821B3F16400FD55C8 /* uikit.app */,
+				FD57E3CC224BB2FC00FD4849 /* uikitTests.xctest */,
+				FD57E3DA224BB35900FD4849 /* uikitUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,6 +201,8 @@
 				FDE18EA621F6308000EEECCB /* TableViewCell.m */,
 				FDE18EA821F6309900EEECCB /* TableViewHeaderFooterView.h */,
 				FDE18EA921F630AF00EEECCB /* TableViewHeaderFooterView.m */,
+				FD57E3C52248DB0800FD4849 /* RootViewController.m */,
+				FD57E3C72248DB1D00FD4849 /* RootViewController.h */,
 			);
 			path = table_view;
 			sourceTree = "<group>";
@@ -203,17 +242,61 @@
 			productReference = FD1C487821B3F16400FD55C8 /* uikit.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FD57E3CB224BB2FC00FD4849 /* uikitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD57E3D3224BB2FC00FD4849 /* Build configuration list for PBXNativeTarget "uikitTests" */;
+			buildPhases = (
+				FD57E3C8224BB2FC00FD4849 /* Sources */,
+				FD57E3C9224BB2FC00FD4849 /* Frameworks */,
+				FD57E3CA224BB2FC00FD4849 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD57E3D2224BB2FC00FD4849 /* PBXTargetDependency */,
+			);
+			name = uikitTests;
+			productName = uikitTests;
+			productReference = FD57E3CC224BB2FC00FD4849 /* uikitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		FD57E3D9224BB35900FD4849 /* uikitUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD57E3E1224BB35900FD4849 /* Build configuration list for PBXNativeTarget "uikitUITests" */;
+			buildPhases = (
+				FD57E3D6224BB35900FD4849 /* Sources */,
+				FD57E3D7224BB35900FD4849 /* Frameworks */,
+				FD57E3D8224BB35900FD4849 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD57E3E0224BB35900FD4849 /* PBXTargetDependency */,
+			);
+			name = uikitUITests;
+			productName = uikitUITests;
+			productReference = FD57E3DA224BB35900FD4849 /* uikitUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		FD1C487021B3F16400FD55C8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = google;
 				TargetAttributes = {
 					FD1C487721B3F16400FD55C8 = {
 						CreatedOnToolsVersion = 10.1;
+					};
+					FD57E3CB224BB2FC00FD4849 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = FD1C487721B3F16400FD55C8;
+					};
+					FD57E3D9224BB35900FD4849 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = FD1C487721B3F16400FD55C8;
 					};
 				};
 			};
@@ -231,6 +314,8 @@
 			projectRoot = "";
 			targets = (
 				FD1C487721B3F16400FD55C8 /* uikit */,
+				FD57E3CB224BB2FC00FD4849 /* uikitTests */,
+				FD57E3D9224BB35900FD4849 /* uikitUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -241,13 +326,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDD1689121CBFF3100A9F37F /* chrome_32_32.png in Resources */,
-				FDE18EAC21F6319C00EEECCB /* chrome_32_32.png in Resources */,
 				FD1C488821B3F16600FD55C8 /* LaunchScreen.storyboard in Resources */,
 				FDD1689321CCFDF100A9F37F /* new_tab.png in Resources */,
 				FD8CA8F321E786DD004499AF /* m.png in Resources */,
 				FDD1689521CD16DD00A9F37F /* new_tab_2.png in Resources */,
 				FD1C488521B3F16600FD55C8 /* Assets.xcassets in Resources */,
 				FDD1689721DE413800A9F37F /* new_tab_incognito.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD57E3CA224BB2FC00FD4849 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD57E3D8224BB35900FD4849 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD57E3C62248DB0800FD4849 /* RootViewController.m in Sources */,
 				FDD1688121C15C1300A9F37F /* TableViewAppDelegate.m in Sources */,
 				FDE18EA321ECC48C00EEECCB /* Button.m in Sources */,
 				FD8CA90021E7B6B1004499AF /* CollectionViewFlowLayout.m in Sources */,
@@ -277,7 +376,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FD57E3C8224BB2FC00FD4849 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD57E3D6224BB35900FD4849 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FD57E3D2224BB2FC00FD4849 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD1C487721B3F16400FD55C8 /* uikit */;
+			targetProxy = FD57E3D1224BB2FC00FD4849 /* PBXContainerItemProxy */;
+		};
+		FD57E3E0224BB35900FD4849 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FD1C487721B3F16400FD55C8 /* uikit */;
+			targetProxy = FD57E3DF224BB35900FD4849 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		FD1C488621B3F16600FD55C8 /* LaunchScreen.storyboard */ = {
@@ -439,6 +565,80 @@
 			};
 			name = Release;
 		};
+		FD57E3D4224BB2FC00FD4849 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D528WGC5JH;
+				INFOPLIST_FILE = uikitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.mrsuyi.uikitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/uikit.app/uikit";
+			};
+			name = Debug;
+		};
+		FD57E3D5224BB2FC00FD4849 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D528WGC5JH;
+				INFOPLIST_FILE = uikitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.mrsuyi.uikitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/uikit.app/uikit";
+			};
+			name = Release;
+		};
+		FD57E3E2224BB35900FD4849 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D528WGC5JH;
+				INFOPLIST_FILE = uikitUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.mrsuyi.uikitUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = uikit;
+			};
+			name = Debug;
+		};
+		FD57E3E3224BB35900FD4849 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D528WGC5JH;
+				INFOPLIST_FILE = uikitUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.mrsuyi.uikitUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = uikit;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -456,6 +656,24 @@
 			buildConfigurations = (
 				FD1C488F21B3F16600FD55C8 /* Debug */,
 				FD1C489021B3F16600FD55C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD57E3D3224BB2FC00FD4849 /* Build configuration list for PBXNativeTarget "uikitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD57E3D4224BB2FC00FD4849 /* Debug */,
+				FD57E3D5224BB2FC00FD4849 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD57E3E1224BB35900FD4849 /* Build configuration list for PBXNativeTarget "uikitUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD57E3E2224BB35900FD4849 /* Debug */,
+				FD57E3E3224BB35900FD4849 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

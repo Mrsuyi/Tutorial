@@ -21,7 +21,6 @@ UISearchBarDelegate, UISearchControllerDelegate>
 
 @implementation TableViewController {
   ResultController* _resultController;
-  UISearchController* _searchController;
   BOOL _hideTop;
 }
 
@@ -29,9 +28,12 @@ UISearchBarDelegate, UISearchControllerDelegate>
   self = [super initWithStyle:UITableViewStylePlain];
   if (self) {
     self.title = @"TableViewController";
+    self.tableView.allowsMultipleSelectionDuringEditing = YES;
     _hideTop = NO;
 
     // Search bar.
+    UISearchController* _searchController;
+
     _resultController = [ResultController new];
 
     _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -39,13 +41,11 @@ UISearchBarDelegate, UISearchControllerDelegate>
     _searchController.delegate = self;
     _searchController.searchBar.delegate = self;
     _searchController.obscuresBackgroundDuringPresentation = YES;
-    
+
     self.navigationItem.searchController = _searchController;
     self.navigationItem.hidesSearchBarWhenScrolling = NO;
     //  self.navigationItem.rightBarButtonItem = [RightBarButton new];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEdit)];
-
-    self.definesPresentationContext = YES;
 
     // TableView
     [self.tableView registerClass:TableViewCell.class forCellReuseIdentifier:kTableViewCellReuseIdentifier];
@@ -64,6 +64,17 @@ UISearchBarDelegate, UISearchControllerDelegate>
   self.tableView.estimatedSectionHeaderHeight = 60;
   self.tableView.estimatedSectionFooterHeight = 50;
 }
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+  NSLog(@"didMoveToParentViewController");
+  if (!parent && self.navigationItem.searchController.active == YES) {
+    self.navigationItem.searchController.active = NO;
+    NSLog(@"Deactivate UISearchController");
+  }
+  [super didMoveToParentViewController:parent];
+}
+
+# pragma UITraitEnvironment
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
   NSLog(@"changed!!!!");
@@ -85,6 +96,13 @@ UISearchBarDelegate, UISearchControllerDelegate>
   return 3;
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+  return indexPath.section & 1;
+}
+
 # pragma UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -94,9 +112,9 @@ UISearchBarDelegate, UISearchControllerDelegate>
 
 - (UIView *)tableView:(UITableView *)tableView
 viewForHeaderInSection:(NSInteger)section {
-  if (section & 1) {
+  if ((section ^ _hideTop) & 1) {
     UITableViewHeaderFooterView* view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:@"UITableViewHeaderFooterView"];
-    view.textLabel.text = @"shit";
+    view.textLabel.text = @"the header of 2,4,6... sections";
     view.textLabel.textColor = UIColor.redColor;
     return view;
   }
@@ -109,27 +127,13 @@ viewForHeaderInSection:(NSInteger)section {
 
 - (CGFloat)tableView:(UITableView *)tableView
 heightForHeaderInSection:(NSInteger)section {
-  if (_hideTop) {
-    if (section & 1)
-      return 60;
-    else
-      return 30;
-  } else {
-    if (section & 1)
-      return 30;
-    else
-      return 60;
-  }
-  return UITableViewAutomaticDimension;
-//  return 70;
   UITableViewHeaderFooterView* view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:kTableViewHeaderFooterViewReuseIdentifier];
-  CGSize size = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  CGSize size = [view systemLayoutSizeFittingSize:tableView.bounds.size withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:1];
   return size.height;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView
 heightForFooterInSection:(NSInteger)section {
-//  return UITableViewAutomaticDimension;
   return 0;
 }
 
@@ -137,6 +141,12 @@ heightForFooterInSection:(NSInteger)section {
 
 - (void)searchBar:(UISearchBar *)searchBar
     textDidChange:(NSString *)searchText {
+  if ([searchText isEqualToString:@"Shit"]) {
+//    self.navigationItem.searchController.active = NO;
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+      NSLog(@"dismissed!!");
+    }];
+  }
   NSLog(@"searchBar:textDidChange:");
 }
 
@@ -168,13 +178,9 @@ heightForFooterInSection:(NSInteger)section {
   _hideTop = NO;
   [self.tableView performBatchUpdates:^{
     [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0],
-                                             //                                             [NSIndexPath indexPathForRow:1 inSection:0],
-                                             //                                             [NSIndexPath indexPathForRow:2 inSection:0],
-                                             ] withRowAnimation:UITableViewRowAnimationMiddle];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationMiddle];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:4] withRowAnimation:UITableViewRowAnimationAutomatic];
   } completion:^(BOOL finished) {
-    //    [self.tableView reloadData];
   }];
 }
 
@@ -193,15 +199,17 @@ heightForFooterInSection:(NSInteger)section {
 #pragma Private
 
 - (void)onEdit {
+  [self setEditing:!self.editing animated:YES];
   if (self.editing) {
-    self.navigationItem.searchController.searchBar.userInteractionEnabled = YES;
-    self.navigationItem.searchController.searchBar.alpha = 1.0;
-  }
-  else {
+    self.navigationItem.rightBarButtonItem.title = @"Done";
     self.navigationItem.searchController.searchBar.userInteractionEnabled = NO;
     self.navigationItem.searchController.searchBar.alpha = 0.5;
   }
-  [self setEditing:!self.editing animated:YES];
+  else {
+    self.navigationItem.rightBarButtonItem.title = @"Edit";
+    self.navigationItem.searchController.searchBar.userInteractionEnabled = YES;
+    self.navigationItem.searchController.searchBar.alpha = 1.0;
+  }
 }
 
 @end
