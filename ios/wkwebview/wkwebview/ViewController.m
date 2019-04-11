@@ -11,10 +11,7 @@
 #import "browser/BrowserViewController.h"
 #import "tab_switcher/TabSwitcherViewController.h"
 
-@interface ViewController ()<UITextFieldDelegate, UIToolbarDelegate, TabSwitcherDelegate, BrowserDelegate>
-
-@property(nonatomic, readonly)WebViewController* currentWebVC;
-
+@interface ViewController ()<TabSwitcherDelegate, BrowserDelegate, WebObserver>
 @end
 
 @implementation ViewController {
@@ -43,7 +40,7 @@
   [self.view addSubview:_browserVC.view];
 
   // Init and display first WebVC.
-  [self addNtp];
+  [self addAndShowWebVC:[self createNtp]];
 }
 
 #pragma mark - TabSwitcherDelegate
@@ -61,7 +58,7 @@
 }
 
 - (void)didTapNewTabButton {
-  [self addNtp];
+  [self addAndShowWebVC:[self createNtp]];
   [self dismissViewControllerAnimated:YES completion:^{
   }];
 }
@@ -73,16 +70,25 @@
   }];
 }
 
+#pragma mark - WebDelegate
+
+- (void)webViewController:(WebViewController*)oldWebVC didCreateWebViewController:(WebViewController*)newWebVC {
+  [self addAndShowWebVC:newWebVC];
+}
+
 #pragma mark - Helper methods
 
-- (void)addNtp {
-  WebViewController* webVC = [WebViewController new];
+- (WebViewController*)createNtp {
+  WebViewController* ntp = [WebViewController new];
+  [ntp.webView loadHTMLString:@"<html><head><title>NTP</title></head><body><h1>NTP</h1></body></html>" baseURL:[NSURL URLWithString:@"http://ntp.com"]];
+  return ntp;
+}
+
+- (void)addAndShowWebVC:(WebViewController*)webVC {
   [_webVCs addObject:webVC];
-
+  [webVC addObserver:self];
+  [_tabSwitcherVC addTabModel:[TabModel modelWithID:webVC title:webVC.title screenShot:nil]];
   _browserVC.webVC = webVC;
-  [webVC.webView loadHTMLString:@"<html><body><h1>NTP</h1></body></html>" baseURL:[NSURL URLWithString:@"http://ntp.com"]];
-
-  [_tabSwitcherVC addTabModel:[TabModel modelWithID:webVC title:@"http://ntp.com" screenShot:nil]];
 }
 
 @end

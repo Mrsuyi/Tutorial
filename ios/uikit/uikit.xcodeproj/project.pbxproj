@@ -31,7 +31,6 @@
 		FDE18EA321ECC48C00EEECCB /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA221ECC48B00EEECCB /* Button.m */; };
 		FDE18EA721F6308000EEECCB /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA621F6308000EEECCB /* TableViewCell.m */; };
 		FDE18EAA21F630AF00EEECCB /* TableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE18EA921F630AF00EEECCB /* TableViewHeaderFooterView.m */; };
-		FDE18EAC21F6319C00EEECCB /* chrome_32_32.png in Resources */ = {isa = PBXBuildFile; fileRef = FDE18EAB21F6319C00EEECCB /* chrome_32_32.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -285,7 +284,7 @@
 		FD1C487021B3F16400FD55C8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = google;
 				TargetAttributes = {
 					FD1C487721B3F16400FD55C8 = {
@@ -327,7 +326,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDD1689121CBFF3100A9F37F /* chrome_32_32.png in Resources */,
-				FDE18EAC21F6319C00EEECCB /* chrome_32_32.png in Resources */,
 				FD1C488821B3F16600FD55C8 /* LaunchScreen.storyboard in Resources */,
 				FDD1689321CCFDF100A9F37F /* new_tab.png in Resources */,
 				FD8CA8F321E786DD004499AF /* m.png in Resources */,

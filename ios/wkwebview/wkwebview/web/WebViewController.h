@@ -14,16 +14,22 @@
 
 @class WebViewController;
 
-@protocol WebViewControllerDelegate
+@protocol WebObserver <NSObject>
 
-- (void)webViewController:(WebViewController*)oldWebVC didCreateNewWebViewController:(WebViewController*)newWebVC;
+@optional
+- (void)webViewController:(WebViewController*)WebVC didCreateWebViewController:(WebViewController*)newWebVC;
+- (void)webViewController:(WebViewController*)webVC didChangeURL:(NSURL*)URL;
 
 @end
 
 @interface WebViewController : UIViewController
 
+- (instancetype)init;
+- (instancetype)initWithWKWebViewConfiguration:(WKWebViewConfiguration*)configuration;
+
 @property(nonatomic, strong)WKWebView* webView;
-@property(nonatomic, weak)id<WebViewControllerDelegate> delegate;
+
+- (void)addObserver:(id<WebObserver>)delegate;
 
 @end
 

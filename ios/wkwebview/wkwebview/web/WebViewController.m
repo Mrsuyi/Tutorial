@@ -7,18 +7,28 @@
 //
 
 #import "WebViewController.h"
+#import "../base/Observers.h"
 
 @interface WebViewController ()<WKUIDelegate, WKNavigationDelegate>
-
 @end
 
 @implementation WebViewController {
-  WKWebViewConfiguration* _webViewConf;
+  Observers<id<WebObserver>>* _observers;
 }
 
 - (instancetype)init {
+  return [self initWithWKWebViewConfiguration:[WKWebViewConfiguration new]];
+}
+
+- (instancetype)initWithWKWebViewConfiguration:(WKWebViewConfiguration*)configuration {
   self = [super init];
   if (self) {
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
+    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.webView.UIDelegate = self;
+    self.webView.navigationDelegate = self;
+
+    _observers = [Observers new];
   }
   return self;
 }
@@ -27,14 +37,6 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-
-  // Init WKWebView.
-  _webViewConf = [WKWebViewConfiguration new];
-
-  self.webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:_webViewConf];
-  self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-  self.webView.UIDelegate = self;
-  self.webView.navigationDelegate = self;
 
   // Layout self.view.
   self.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -53,7 +55,9 @@
 createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
   forNavigationAction:(WKNavigationAction *)navigationAction
        windowFeatures:(WKWindowFeatures *)windowFeatures {
-  return nil;
+  WebViewController* newWebVC = [[WebViewController alloc] initWithWKWebViewConfiguration:configuration];
+  [_observers notify:@selector(webViewController:didCreateWebViewController:) withObject:newWebVC];
+  return newWebVC.webView;
 }
 
 - (void)webView:(WKWebView *)webView
@@ -149,6 +153,12 @@ decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse
 decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
   NSLog(@"webView:decidePolicyForNavigationResponse:decisionHandler:");
   decisionHandler(WKNavigationResponsePolicyAllow);
+}
+
+#pragma mark - Public methods
+
+- (void)addObserver:(id<WebObserver>)delegate {
+  [_observers addObserver:delegate];
 }
 
 @end

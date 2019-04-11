@@ -67,6 +67,9 @@
   [self.delegate didSelectTab:tabModel];
 }
 
+- (void)willCloseTab:(TabModel *)tabModel {
+}
+
 #pragma mark - Button callbacks
 
 - (void)onIncognitoBtnTapped:(id)sender {

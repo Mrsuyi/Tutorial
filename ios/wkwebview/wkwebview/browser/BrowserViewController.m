@@ -37,6 +37,7 @@
   _omnibox.text = @"https://www.google.com";
   _omnibox.autocapitalizationType = UITextAutocapitalizationTypeNone;
   _omnibox.delegate = self;
+  _omnibox.autocorrectionType = UITextAutocorrectionTypeNo;
   UIBarButtonItem* omniboxItem = [[UIBarButtonItem alloc] initWithCustomView:_omnibox];
 
   UIToolbar* topToolbar = [UIToolbar new];

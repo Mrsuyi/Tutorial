@@ -18,6 +18,7 @@
 		FD03BEA0225CD256005FEB54 /* TabsCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE9F225CD256005FEB54 /* TabsCollectionViewController.m */; };
 		FD03BEA3225CD2F9005FEB54 /* TabModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BEA2225CD2F9005FEB54 /* TabModel.m */; };
 		FDE2FF78225F4CEA00E950BD /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF77225F4CEA00E950BD /* BrowserViewController.m */; };
+		FDE2FF7C225F7E7600E950BD /* Observers.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF7B225F7E7600E950BD /* Observers.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,8 @@
 		FD03BEA4225CD333005FEB54 /* TabModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabModel.h; sourceTree = "<group>"; };
 		FDE2FF77225F4CEA00E950BD /* BrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
 		FDE2FF79225F4D0600E950BD /* BrowserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
+		FDE2FF7B225F7E7600E950BD /* Observers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Observers.m; sourceTree = "<group>"; };
+		FDE2FF7D225F7E8400E950BD /* Observers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Observers.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +77,7 @@
 		FD03BE7D225B7224005FEB54 /* wkwebview */ = {
 			isa = PBXGroup;
 			children = (
+				FDE2FF7A225F7E1500E950BD /* base */,
 				FDE2FF76225F4CB600E950BD /* browser */,
 				FD03BE98225CC7DF005FEB54 /* tab_switcher */,
 				FD03BE94225CC287005FEB54 /* web */,
@@ -120,6 +124,15 @@
 				FDE2FF79225F4D0600E950BD /* BrowserViewController.h */,
 			);
 			path = browser;
+			sourceTree = "<group>";
+		};
+		FDE2FF7A225F7E1500E950BD /* base */ = {
+			isa = PBXGroup;
+			children = (
+				FDE2FF7B225F7E7600E950BD /* Observers.m */,
+				FDE2FF7D225F7E8400E950BD /* Observers.h */,
+			);
+			path = base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +207,7 @@
 				FD03BEA0225CD256005FEB54 /* TabsCollectionViewController.m in Sources */,
 				FD03BE83225B7224005FEB54 /* ViewController.m in Sources */,
 				FD03BE8E225B7226005FEB54 /* main.m in Sources */,
+				FDE2FF7C225F7E7600E950BD /* Observers.m in Sources */,
 				FD03BE80225B7224005FEB54 /* AppDelegate.m in Sources */,
 				FD03BE9D225CD223005FEB54 /* TabCell.m in Sources */,
 				FD03BEA3225CD2F9005FEB54 /* TabModel.m in Sources */,

@@ -81,11 +81,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
 - (void)addTabModel:(TabModel *)tabModel {
   [_tabModels addObject:tabModel];
-  if (_tabModels.count == 1) {
-    [self.collectionView reloadData];
-  } else {
-    [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:(_tabModels.count - 1) inSection:0]]];
-  }
+  [self.collectionView reloadData];
 }
 
 - (void)updateTabModel:(TabModel*)tabModel {
