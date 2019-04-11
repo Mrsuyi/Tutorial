@@ -12,10 +12,12 @@
 #import <UIKit/UIKit.h>
 #import "TabModel.h"
 
+@class TabsCollectionViewController;
+
 @protocol TabsCollectionDelegate
 
-- (void)didSelectTab:(TabModel*)tabModel;
-- (void)willCloseTab:(TabModel*)tabModel;
+- (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC didSelectTab:(TabModel*)tabModel;
+- (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC willCloseTab:(TabModel*)tabModel;
 
 @end
 

@@ -19,6 +19,8 @@
 @optional
 - (void)webViewController:(WebViewController*)WebVC didCreateWebViewController:(WebViewController*)newWebVC;
 - (void)webViewController:(WebViewController*)webVC didChangeURL:(NSURL*)URL;
+- (void)webViewController:(WebViewController*)WebVC didChangeTitle:(NSString*)title;
+- (void)webViewController:(WebViewController*)WebVC didChangeEstimatedProgress:(NSNumber*)estimatedProgress;
 
 @end
 
@@ -30,6 +32,7 @@
 @property(nonatomic, strong)WKWebView* webView;
 
 - (void)addObserver:(id<WebObserver>)delegate;
+- (void)removeObserver:(id<WebObserver>)delegate;
 
 @end
 

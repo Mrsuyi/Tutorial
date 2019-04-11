@@ -47,6 +47,11 @@
                                             [self.webView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
                                             [self.webView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
                                             ]];
+
+  // Listen to property change on WKWebView.
+  [self.webView addObserver:self forKeyPath:@"title" options:0 context:nil];
+  [self.webView addObserver:self forKeyPath:@"URL" options:0 context:nil];
+  [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:0 context:nil];
 }
 
 #pragma mark - WKUIDelegate
@@ -97,7 +102,6 @@ previewingViewControllerForElement:(WKPreviewElementInfo *)elementInfo
 }
 
 - (void)webView:(WKWebView *)webView commitPreviewingViewController:(UIViewController *)previewingViewController {
-  
 }
 
 #pragma mark - WKNavigationDelegate
@@ -155,10 +159,34 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
   decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
+#pragma mark - NSObject
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSKeyValueChangeKey,id> *)change
+                       context:(void *)context {
+  if ([keyPath isEqualToString:@"title"]) {
+    [_observers notify:@selector(webViewController:didChangeTitle:) withObject:self.webView.title];
+  }
+  else if ([keyPath isEqualToString:@"URL"]) {
+    [_observers notify:@selector(webViewController:didChangeURL:) withObject:self.webView.URL];
+  }
+  else if ([keyPath isEqualToString:@"estimatedProgress"]) {
+    [_observers notify:@selector(webViewController:didChangeEstimatedProgress:) withObject:[NSNumber numberWithDouble:self.webView.estimatedProgress]];
+  }
+  else {
+    NSAssert(NO, @"Unexpected observe keyPath");
+  }
+}
+
 #pragma mark - Public methods
 
 - (void)addObserver:(id<WebObserver>)delegate {
   [_observers addObserver:delegate];
+}
+
+- (void)removeObserver:(id<WebObserver>)delegate {
+  [_observers removeObserver:delegate];
 }
 
 @end

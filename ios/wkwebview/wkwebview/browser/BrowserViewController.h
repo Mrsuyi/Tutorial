@@ -12,9 +12,11 @@
 #import <UIKit/UIKit.h>
 #import "../web/WebViewController.h"
 
+@class BrowserViewController;
+
 @protocol BrowserDelegate
 
-- (void)onTapTabSwitcherBtn;
+- (void)browserDidTapTabSwitcherButton:(BrowserViewController*)browser;
 
 @end
 

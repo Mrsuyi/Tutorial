@@ -8,7 +8,7 @@
 
 #import "BrowserViewController.h"
 
-@interface BrowserViewController ()<UIToolbarDelegate, UITextFieldDelegate>
+@interface BrowserViewController ()<UIToolbarDelegate, UITextFieldDelegate, WebObserver>
 
 @end
 
@@ -34,7 +34,6 @@
   _omnibox.translatesAutoresizingMaskIntoConstraints = NO;
   _omnibox.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   _omnibox.borderStyle = UITextBorderStyleRoundedRect;
-  _omnibox.text = @"https://www.google.com";
   _omnibox.autocapitalizationType = UITextAutocapitalizationTypeNone;
   _omnibox.delegate = self;
   _omnibox.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -93,15 +92,46 @@
   
 }
 
-#pragma mark - Update WebViewController
+#pragma mark - UIBarPositioningDelegate
+
+- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+  return UIBarPositionTopAttached;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [textField resignFirstResponder];
+  NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_omnibox.text]];
+  [self.webVC.webView loadRequest:request];
+  return YES;
+}
+
+#pragma mark - WebObserver
+
+- (void)webViewController:(WebViewController *)WebVC didChangeTitle:(NSString *)title {
+  
+}
+
+- (void)webViewController:(WebViewController *)webVC didChangeURL:(NSURL *)URL {
+  _omnibox.text = URL.absoluteString;
+}
+
+- (void)webViewController:(WebViewController *)WebVC didChangeEstimatedProgress:(NSNumber *)estimatedProgress {
+  
+}
+
+#pragma mark - Property accessors
 
 - (void)setWebVC:(WebViewController *)webVC {
   if (_webVC) {
     [_webVC.view removeFromSuperview];
     [_webVC removeFromParentViewController];
+    [_webVC removeObserver:self];
     [NSLayoutConstraint deactivateConstraints:_webViewConstraints];
   }
   _webVC = webVC;
+  [webVC addObserver:self];
   [_webViewContainer addSubview:webVC.view];
   _webViewConstraints = @[[webVC.view.topAnchor constraintEqualToAnchor:_webViewContainer.topAnchor],
                           [webVC.view.bottomAnchor constraintEqualToAnchor:_webViewContainer.bottomAnchor],
@@ -126,22 +156,7 @@
 }
 
 - (void)onTapTabSwitcherBtn {
-  [self.delegate onTapTabSwitcherBtn];
-}
-
-#pragma mark - UIBarPositioningDelegate
-
-- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
-  return UIBarPositionTopAttached;
-}
-
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-  [textField resignFirstResponder];
-  NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_omnibox.text]];
-  [self.webVC.webView loadRequest:request];
-  return YES;
+  [self.delegate browserDidTapTabSwitcherButton:self];
 }
 
 @end

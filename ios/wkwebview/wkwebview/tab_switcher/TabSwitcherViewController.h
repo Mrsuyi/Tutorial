@@ -12,11 +12,13 @@
 #import <UIKit/UIKit.h>
 #import "TabModel.h"
 
+@class TabSwitcherViewController;
+
 @protocol TabSwitcherDelegate
 
-- (void)didSelectTab:(TabModel*)tabModel;
-- (void)didTapNewTabButton;
-- (void)didTapDoneButton;
+- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher didSelectTab:(TabModel*)tabModel;
+- (void)tabSwitcherDidTapNewTabButton:(TabSwitcherViewController*)tabSwitcher;
+- (void)tabSwitcherDidTapDoneButton:(TabSwitcherViewController*)tabSwitcher;
 
 @end
 

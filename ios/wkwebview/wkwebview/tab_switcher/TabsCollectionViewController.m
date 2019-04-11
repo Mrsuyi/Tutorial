@@ -73,7 +73,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  [self.delegate didSelectTab:_tabModels[indexPath.item]];
+  [self.delegate tabsCollection:self didSelectTab:_tabModels[indexPath.item]];
   [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 

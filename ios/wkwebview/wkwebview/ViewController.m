@@ -45,19 +45,19 @@
 
 #pragma mark - TabSwitcherDelegate
 
-- (void)didSelectTab:(TabModel *)tabModel {
+- (void)tabSwitcher:(id)tabSwitcher didSelectTab:(TabModel *)tabModel {
   [self dismissViewControllerAnimated:YES completion:^{
   }];
   WebViewController* webVC = (WebViewController*)tabModel.ID;
   _browserVC.webVC = webVC;
 }
 
-- (void)didTapDoneButton {
+- (void)tabSwitcherDidTapDoneButton:(id)tabSwitcher {
   [self dismissViewControllerAnimated:YES completion:^{
   }];
 }
 
-- (void)didTapNewTabButton {
+- (void)tabSwitcherDidTapNewTabButton:(id)tabSwitcher {
   [self addAndShowWebVC:[self createNtp]];
   [self dismissViewControllerAnimated:YES completion:^{
   }];
@@ -65,7 +65,7 @@
 
 #pragma mark - BrowserDelegate
 
-- (void)onTapTabSwitcherBtn {
+- (void)browserDidTapTabSwitcherButton:(BrowserViewController *)browser {
   [self presentViewController:_tabSwitcherVC animated:YES completion:^{
   }];
 }

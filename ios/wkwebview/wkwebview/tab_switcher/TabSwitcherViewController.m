@@ -63,11 +63,11 @@
 
 #pragma mark - TabsCollectionDelegate
 
-- (void)didSelectTab:(TabModel *)tabModel {
-  [self.delegate didSelectTab:tabModel];
+- (void)tabsCollection:(id)tabsCollectionVC didSelectTab:(TabModel *)tabModel {
+  [self.delegate tabSwitcher:self didSelectTab:tabModel];
 }
 
-- (void)willCloseTab:(TabModel *)tabModel {
+- (void)tabsCollection:(id)tabsCollectionVC willCloseTab:(TabModel *)tabModel:(TabModel *)tabModel {
 }
 
 #pragma mark - Button callbacks
@@ -76,11 +76,11 @@
 }
 
 - (void)onNewTabBtnTapped:(id)sender {
-  [self.delegate didTapNewTabButton];
+  [self.delegate tabSwitcherDidTapNewTabButton:self];
 }
 
 - (void)onDoneBtnTapped:(id)sender {
-  [self.delegate didTapDoneButton];
+  [self.delegate tabSwitcherDidTapDoneButton:self];
 }
 
 #pragma mark - Public methods
