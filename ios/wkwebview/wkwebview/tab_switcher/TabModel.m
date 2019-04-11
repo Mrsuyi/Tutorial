@@ -10,7 +10,7 @@
 
 @implementation TabModel
 
-+ (instancetype)modelWithID:(NSInteger)ID title:(NSString*)title screenShot:(UIImage*)screenShot {
++ (instancetype)modelWithID:(id)ID title:(NSString*)title screenShot:(UIImage*)screenShot {
   TabModel* model = [TabModel new];
   model.ID = ID;
   model.title = title;

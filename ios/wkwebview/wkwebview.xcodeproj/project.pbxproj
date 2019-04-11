@@ -17,6 +17,7 @@
 		FD03BE9D225CD223005FEB54 /* TabCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE9C225CD223005FEB54 /* TabCell.m */; };
 		FD03BEA0225CD256005FEB54 /* TabsCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE9F225CD256005FEB54 /* TabsCollectionViewController.m */; };
 		FD03BEA3225CD2F9005FEB54 /* TabModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BEA2225CD2F9005FEB54 /* TabModel.m */; };
+		FDE2FF78225F4CEA00E950BD /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF77225F4CEA00E950BD /* BrowserViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,8 @@
 		FD03BEA1225CD26E005FEB54 /* TabsCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabsCollectionViewController.h; sourceTree = "<group>"; };
 		FD03BEA2225CD2F9005FEB54 /* TabModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabModel.m; sourceTree = "<group>"; };
 		FD03BEA4225CD333005FEB54 /* TabModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabModel.h; sourceTree = "<group>"; };
+		FDE2FF77225F4CEA00E950BD /* BrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
+		FDE2FF79225F4D0600E950BD /* BrowserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +74,7 @@
 		FD03BE7D225B7224005FEB54 /* wkwebview */ = {
 			isa = PBXGroup;
 			children = (
+				FDE2FF76225F4CB600E950BD /* browser */,
 				FD03BE98225CC7DF005FEB54 /* tab_switcher */,
 				FD03BE94225CC287005FEB54 /* web */,
 				FD03BE7E225B7224005FEB54 /* AppDelegate.h */,
@@ -107,6 +111,15 @@
 				FD03BEA4225CD333005FEB54 /* TabModel.h */,
 			);
 			path = tab_switcher;
+			sourceTree = "<group>";
+		};
+		FDE2FF76225F4CB600E950BD /* browser */ = {
+			isa = PBXGroup;
+			children = (
+				FDE2FF77225F4CEA00E950BD /* BrowserViewController.m */,
+				FDE2FF79225F4D0600E950BD /* BrowserViewController.h */,
+			);
+			path = browser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,6 +199,7 @@
 				FD03BEA3225CD2F9005FEB54 /* TabModel.m in Sources */,
 				FD03BE96225CC2B6005FEB54 /* WebViewController.m in Sources */,
 				FD03BE9A225CCF41005FEB54 /* TabSwitcherViewController.m in Sources */,
+				FDE2FF78225F4CEA00E950BD /* BrowserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

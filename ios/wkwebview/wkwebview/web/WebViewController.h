@@ -12,9 +12,18 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 
+@class WebViewController;
+
+@protocol WebViewControllerDelegate
+
+- (void)webViewController:(WebViewController*)oldWebVC didCreateNewWebViewController:(WebViewController*)newWebVC;
+
+@end
+
 @interface WebViewController : UIViewController
 
 @property(nonatomic, strong)WKWebView* webView;
+@property(nonatomic, weak)id<WebViewControllerDelegate> delegate;
 
 @end
 

@@ -13,9 +13,9 @@
 
 @interface TabModel : NSObject
 
-+ (instancetype)modelWithID:(NSInteger)ID title:(NSString*)title screenShot:(UIImage*)screenShot;
++ (instancetype)modelWithID:(id)ID title:(NSString*)title screenShot:(UIImage*)screenShot;
 
-@property(nonatomic, assign)NSInteger ID;
+@property(nonatomic, assign)id ID;
 @property(nonatomic, copy)NSString* title;
 @property(nonatomic, strong)UIImage* screenShot;
 

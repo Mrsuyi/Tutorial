@@ -25,6 +25,7 @@
 
     _screenShotView = [UIImageView new];
     _screenShotView.translatesAutoresizingMaskIntoConstraints = NO;
+    _screenShotView.contentMode = UIViewContentModeTop;
 
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:_titleLabel];
