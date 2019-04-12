@@ -33,7 +33,7 @@
     [NSLayoutConstraint activateConstraints:@[[_titleLabel.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
                                               [_titleLabel.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
                                               [_titleLabel.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
-                                              [_titleLabel.bottomAnchor constraintEqualToAnchor:_screenShotView.bottomAnchor],
+                                              [_titleLabel.bottomAnchor constraintEqualToAnchor:_screenShotView.topAnchor],
                                               //
                                               [_screenShotView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
                                               [_screenShotView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],

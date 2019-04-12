@@ -76,6 +76,10 @@
   [self addAndShowWebVC:newWebVC];
 }
 
+- (void)webViewController:(WebViewController *)webVC didChangeTitle:(NSString *)title {
+  [_tabSwitcherVC updateTabModel:[TabModel modelWithID:webVC title:title screenShot:nil]];
+}
+
 #pragma mark - Helper methods
 
 - (WebViewController*)createNtp {

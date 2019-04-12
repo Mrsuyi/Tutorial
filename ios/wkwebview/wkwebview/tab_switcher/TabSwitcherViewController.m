@@ -11,17 +11,28 @@
 
 @interface TabSwitcherViewController ()<TabsCollectionDelegate>
 
+@property(nonatomic, strong)TabsCollectionViewController* regularTabsCollectionVC;
+@property(nonatomic, strong)TabsCollectionViewController* incognitoTabsCollectionVC;
+@property(nonatomic, strong)TabsCollectionViewController* shownTabsCollectionVC;
+
+- (UIBarButtonItem*)newTabBtn __attribute__((objc_method_family(none)));
+@property(nonatomic, strong)UIBarButtonItem* incognitoBtn;
+@property(nonatomic, strong)UIBarButtonItem* newTabBtn;
+@property(nonatomic, strong)UIBarButtonItem* doneBtn;
+
 @end
 
-@implementation TabSwitcherViewController {
-  TabsCollectionViewController* _tabsCollectionVC;
-}
+@implementation TabSwitcherViewController
 
 - (instancetype)init {
   self = [super init];
   if (self) {
-    _tabsCollectionVC = [TabsCollectionViewController new];
-    _tabsCollectionVC.delegate = self;
+    _regularTabsCollectionVC = [TabsCollectionViewController new];
+    _regularTabsCollectionVC.delegate = self;
+    _incognitoTabsCollectionVC = [TabsCollectionViewController new];
+    _incognitoTabsCollectionVC.delegate = self;
+
+    _shownTabsCollectionVC = nil;
   }
   return self;
 }
@@ -32,33 +43,52 @@
   [super viewDidLoad];
 
   // Setup bottom toolbar.
-  UIBarButtonItem* incognitoBtn = [[UIBarButtonItem alloc] initWithTitle:@"Incognito" style:UIBarButtonItemStylePlain target:self action:@selector(onIncognitoBtnTapped:)];
-  UIBarButtonItem* newTabBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onNewTabBtnTapped:)];
-  UIBarButtonItem* doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneBtnTapped:)];
+  self.incognitoBtn = [[UIBarButtonItem alloc] initWithTitle:@"Incognito" style:UIBarButtonItemStylePlain target:self action:@selector(onIncognitoBtnTapped:)];
+  self.newTabBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onNewTabBtnTapped:)];
+  self.doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneBtnTapped:)];
   UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
   UIToolbar* toolbar = [UIToolbar new];
   toolbar.translatesAutoresizingMaskIntoConstraints = NO;
-  [toolbar setItems:@[incognitoBtn, space, newTabBtn, space, doneBtn]];
+  [toolbar setItems:@[self.incognitoBtn, space, self.newTabBtn, space, self.doneBtn]];
   toolbar.translucent = YES;
   toolbar.barStyle = UIBarStyleBlack;
   [toolbar setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
 
   // Setup TabsCollection.
-  [self addChildViewController:_tabsCollectionVC];
-  _tabsCollectionVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+  [self addChildViewController:_regularTabsCollectionVC];
+  self.regularTabsCollectionVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+  [self addChildViewController:_incognitoTabsCollectionVC];
+  self.incognitoTabsCollectionVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+  
+  // Setup TabsCollectionContainer.
+  UIView* tabsCollectionContainer = [UIView new];
+  tabsCollectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
+  [tabsCollectionContainer addSubview:self.incognitoTabsCollectionVC.view];
+  [tabsCollectionContainer addSubview:self.regularTabsCollectionVC.view];
+  [NSLayoutConstraint activateConstraints:@[[self.incognitoTabsCollectionVC.view.leadingAnchor constraintEqualToAnchor:tabsCollectionContainer.leadingAnchor],
+                                            [self.incognitoTabsCollectionVC.view.trailingAnchor constraintEqualToAnchor:tabsCollectionContainer.trailingAnchor],
+                                            [self.incognitoTabsCollectionVC.view.topAnchor constraintEqualToAnchor:tabsCollectionContainer.topAnchor],
+                                            [self.incognitoTabsCollectionVC.view.bottomAnchor constraintEqualToAnchor:tabsCollectionContainer.bottomAnchor],
+                                            //
+                                            [self.regularTabsCollectionVC.view.leadingAnchor constraintEqualToAnchor:tabsCollectionContainer.leadingAnchor],
+                                            [self.regularTabsCollectionVC.view.trailingAnchor constraintEqualToAnchor:tabsCollectionContainer.trailingAnchor],
+                                            [self.regularTabsCollectionVC.view.topAnchor constraintEqualToAnchor:tabsCollectionContainer.topAnchor],
+                                            [self.regularTabsCollectionVC.view.bottomAnchor constraintEqualToAnchor:tabsCollectionContainer.bottomAnchor],]];
 
   // Setup self.view.
   [self.view addSubview:toolbar];
-  [self.view addSubview:_tabsCollectionVC.view];
-  [NSLayoutConstraint activateConstraints:@[
-                                            [_tabsCollectionVC.view.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
-                                            [_tabsCollectionVC.view.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
-                                            [_tabsCollectionVC.view.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-                                            [_tabsCollectionVC.view.bottomAnchor constraintEqualToAnchor:toolbar.topAnchor],
+  [self.view addSubview:tabsCollectionContainer];
+  [NSLayoutConstraint activateConstraints:@[[tabsCollectionContainer.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                                            [tabsCollectionContainer.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+                                            [tabsCollectionContainer.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+                                            [tabsCollectionContainer.bottomAnchor constraintEqualToAnchor:toolbar.topAnchor],
+                                            //
                                             [toolbar.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
                                             [toolbar.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
                                             [toolbar.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor]]];
+  self.incognitoTabsCollectionVC.view.hidden = YES;
+  self.shownTabsCollectionVC = self.regularTabsCollectionVC;
 }
 
 #pragma mark - TabsCollectionDelegate
@@ -67,12 +97,23 @@
   [self.delegate tabSwitcher:self didSelectTab:tabModel];
 }
 
-- (void)tabsCollection:(id)tabsCollectionVC willCloseTab:(TabModel *)tabModel:(TabModel *)tabModel {
+- (void)tabsCollection:(id)tabsCollectionVC willCloseTab:(TabModel *)tabModel {
 }
 
 #pragma mark - Button callbacks
 
 - (void)onIncognitoBtnTapped:(id)sender {
+  self.newTabBtn.enabled = NO;
+
+  TabsCollectionViewController* hiddenTabsCollectionVC = (self.shownTabsCollectionVC == self.regularTabsCollectionVC) ? self.incognitoTabsCollectionVC : self.regularTabsCollectionVC;
+  [UIView transitionFromView:self.shownTabsCollectionVC.view
+                      toView:hiddenTabsCollectionVC.view
+                    duration:0.4
+                     options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionFlipFromLeft
+                  completion:^(BOOL finished) {
+    self.shownTabsCollectionVC = hiddenTabsCollectionVC;
+    self.newTabBtn.enabled = YES;
+  }];
 }
 
 - (void)onNewTabBtnTapped:(id)sender {
@@ -86,11 +127,11 @@
 #pragma mark - Public methods
 
 - (void)addTabModel:(TabModel*)tabModel {
-  [_tabsCollectionVC addTabModel:tabModel];
+  [_regularTabsCollectionVC addTabModel:tabModel];
 }
 
 - (void)updateTabModel:(TabModel*)tabModel {
-  [_tabsCollectionVC updateTabModel:tabModel];
+  [_regularTabsCollectionVC updateTabModel:tabModel];
 }
 
 @end

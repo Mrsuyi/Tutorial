@@ -166,13 +166,13 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
                         change:(NSDictionary<NSKeyValueChangeKey,id> *)change
                        context:(void *)context {
   if ([keyPath isEqualToString:@"title"]) {
-    [_observers notify:@selector(webViewController:didChangeTitle:) withObject:self.webView.title];
+    [_observers notify:@selector(webViewController:didChangeTitle:) withObject:self withObject:self.webView.title];
   }
   else if ([keyPath isEqualToString:@"URL"]) {
-    [_observers notify:@selector(webViewController:didChangeURL:) withObject:self.webView.URL];
+    [_observers notify:@selector(webViewController:didChangeURL:) withObject:self withObject:self.webView.URL];
   }
   else if ([keyPath isEqualToString:@"estimatedProgress"]) {
-    [_observers notify:@selector(webViewController:didChangeEstimatedProgress:) withObject:[NSNumber numberWithDouble:self.webView.estimatedProgress]];
+    [_observers notify:@selector(webViewController:didChangeEstimatedProgress:) withObject:self withObject:[NSNumber numberWithDouble:self.webView.estimatedProgress]];
   }
   else {
     NSAssert(NO, @"Unexpected observe keyPath");

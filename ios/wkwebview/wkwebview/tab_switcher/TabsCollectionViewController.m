@@ -21,9 +21,9 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 - (instancetype)init {
   UICollectionViewFlowLayout* layout = [UICollectionViewFlowLayout new];
   layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-  layout.minimumLineSpacing = 20;
-  layout.minimumInteritemSpacing = 20;
-  layout.sectionInset = UIEdgeInsetsMake(30, 30, 30, 30);
+  layout.minimumLineSpacing = 8;
+  layout.minimumInteritemSpacing = 8;
+  layout.sectionInset = UIEdgeInsetsMake(16, 16, 16, 16);
   self = [super initWithCollectionViewLayout:layout];
   if (self) {
     self.collectionView.dataSource = self;
@@ -67,7 +67,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-  return CGSizeMake(80, 140);
+  return CGSizeMake(120, 160);
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -87,7 +87,11 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 - (void)updateTabModel:(TabModel*)tabModel {
   for (NSUInteger i = 0; i < _tabModels.count; ++i) {
     if (_tabModels[i].ID == tabModel.ID) {
-      _tabModels[i] = tabModel;
+      if (tabModel.title)
+        _tabModels[i].title = tabModel.title;
+      if (tabModel.screenShot)
+        _tabModels[i].screenShot = tabModel.screenShot;
+      [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]]];
       return;
     }
   }
