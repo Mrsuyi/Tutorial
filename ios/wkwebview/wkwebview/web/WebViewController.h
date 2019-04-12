@@ -26,9 +26,9 @@
 
 @interface WebViewController : UIViewController
 
-- (instancetype)init;
-- (instancetype)initWithWKWebViewConfiguration:(WKWebViewConfiguration*)configuration;
+- (instancetype)initInIncognitoMode:(BOOL)incognito;
 
+@property(nonatomic, readonly)BOOL incognito;
 @property(nonatomic, strong)WKWebView* webView;
 
 - (void)addObserver:(id<WebObserver>)delegate;

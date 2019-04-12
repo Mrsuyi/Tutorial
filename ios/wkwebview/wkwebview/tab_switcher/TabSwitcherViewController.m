@@ -117,7 +117,7 @@
 }
 
 - (void)onNewTabBtnTapped:(id)sender {
-  [self.delegate tabSwitcherDidTapNewTabButton:self];
+  [self.delegate tabSwitcher:self didTapNewTabButtonInIncognitoMode:self.shownTabsCollectionVC == self.incognitoTabsCollectionVC];
 }
 
 - (void)onDoneBtnTapped:(id)sender {

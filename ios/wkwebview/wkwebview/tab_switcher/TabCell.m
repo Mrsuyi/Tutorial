@@ -7,6 +7,7 @@
 //
 
 #import "TabCell.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation TabCell
 
@@ -19,17 +20,19 @@
 
     _titleLabel = [UILabel new];
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _titleLabel.backgroundColor = UIColor.whiteColor;
     _titleLabel.textColor = UIColor.blackColor;
     _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 
     _screenShotView = [UIImageView new];
     _screenShotView.translatesAutoresizingMaskIntoConstraints = NO;
-    _screenShotView.contentMode = UIViewContentModeTop;
+    _screenShotView.contentMode = UIViewContentModeScaleAspectFill;
 
-    self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView addSubview:_titleLabel];
+    self.contentView.clipsToBounds = YES;
     [self.contentView addSubview:_screenShotView];
+    [self.contentView addSubview:_titleLabel];
     [NSLayoutConstraint activateConstraints:@[[_titleLabel.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
                                               [_titleLabel.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
                                               [_titleLabel.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],

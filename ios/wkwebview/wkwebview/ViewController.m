@@ -12,15 +12,14 @@
 #import "tab_switcher/TabSwitcherViewController.h"
 
 @interface ViewController ()<TabSwitcherDelegate, BrowserDelegate, WebObserver>
+
+@property(nonatomic, strong)NSMutableSet<WebViewController*>* webVCs;
+@property(nonatomic, strong)TabSwitcherViewController* tabSwitcherVC;
+@property(nonatomic, strong)BrowserViewController* browserVC;
+
 @end
 
-@implementation ViewController {
-  NSMutableSet<WebViewController*>* _webVCs;
-
-  // UI.
-  TabSwitcherViewController* _tabSwitcherVC;
-  BrowserViewController* _browserVC;
-}
+@implementation ViewController
 
 - (instancetype)init {
   self = [super init];
@@ -37,10 +36,16 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  [self.view addSubview:_browserVC.view];
+  [self.view addSubview:self.browserVC.view];
 
   // Init and display first WebVC.
   [self addAndShowWebVC:[self createNtp]];
+}
+
+#pragma mark - UIViewController
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
 }
 
 #pragma mark - TabSwitcherDelegate
@@ -49,7 +54,7 @@
   [self dismissViewControllerAnimated:YES completion:^{
   }];
   WebViewController* webVC = (WebViewController*)tabModel.ID;
-  _browserVC.webVC = webVC;
+  self.browserVC.webVC = webVC;
 }
 
 - (void)tabSwitcherDidTapDoneButton:(id)tabSwitcher {
@@ -57,7 +62,7 @@
   }];
 }
 
-- (void)tabSwitcherDidTapNewTabButton:(id)tabSwitcher {
+- (void)tabSwitcher:(TabSwitcherViewController *)tabSwitcher didTapNewTabButtonInIncognitoMode:(BOOL)inIncognitoMode {
   [self addAndShowWebVC:[self createNtp]];
   [self dismissViewControllerAnimated:YES completion:^{
   }];
@@ -66,6 +71,16 @@
 #pragma mark - BrowserDelegate
 
 - (void)browserDidTapTabSwitcherButton:(BrowserViewController *)browser {
+  WKWebView* webView = self.browserVC.webVC.webView;
+  WKSnapshotConfiguration* conf = [WKSnapshotConfiguration new];
+  __weak ViewController* weakSelf = self;
+  [webView takeSnapshotWithConfiguration:conf completionHandler:^(UIImage * _Nullable snapshotImage, NSError * _Nullable error) {
+    if (error) {
+      NSLog(@"WKWebView takeSnapshot failed: %@", error);
+      return;
+    }
+    [weakSelf.tabSwitcherVC updateTabModel:[TabModel modelWithID:weakSelf.browserVC.webVC title:nil screenShot:snapshotImage]];
+  }];
   [self presentViewController:_tabSwitcherVC animated:YES completion:^{
   }];
 }
@@ -77,7 +92,7 @@
 }
 
 - (void)webViewController:(WebViewController *)webVC didChangeTitle:(NSString *)title {
-  [_tabSwitcherVC updateTabModel:[TabModel modelWithID:webVC title:title screenShot:nil]];
+  [self.tabSwitcherVC updateTabModel:[TabModel modelWithID:webVC title:title screenShot:nil]];
 }
 
 #pragma mark - Helper methods
@@ -89,10 +104,10 @@
 }
 
 - (void)addAndShowWebVC:(WebViewController*)webVC {
-  [_webVCs addObject:webVC];
+  [self.webVCs addObject:webVC];
   [webVC addObserver:self];
-  [_tabSwitcherVC addTabModel:[TabModel modelWithID:webVC title:webVC.title screenShot:nil]];
-  _browserVC.webVC = webVC;
+  [self.tabSwitcherVC addTabModel:[TabModel modelWithID:webVC title:webVC.title screenShot:nil]];
+  self.browserVC.webVC = webVC;
 }
 
 @end

@@ -16,7 +16,7 @@
   Observers<id<WebObserver>>* _observers;
 }
 
-- (instancetype)init {
+- (instancetype)initInIncognitoMode:(BOOL)incognito {
   return [self initWithWKWebViewConfiguration:[WKWebViewConfiguration new]];
 }
 
