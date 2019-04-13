@@ -19,6 +19,7 @@
 		FD03BEA3225CD2F9005FEB54 /* TabModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BEA2225CD2F9005FEB54 /* TabModel.m */; };
 		FDE2FF78225F4CEA00E950BD /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF77225F4CEA00E950BD /* BrowserViewController.m */; };
 		FDE2FF7C225F7E7600E950BD /* Observers.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF7B225F7E7600E950BD /* Observers.m */; };
+		FDE2FF7F2260E36D00E950BD /* WebsiteDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF7E2260E36D00E950BD /* WebsiteDataStore.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,8 @@
 		FDE2FF79225F4D0600E950BD /* BrowserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
 		FDE2FF7B225F7E7600E950BD /* Observers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Observers.m; sourceTree = "<group>"; };
 		FDE2FF7D225F7E8400E950BD /* Observers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Observers.h; sourceTree = "<group>"; };
+		FDE2FF7E2260E36D00E950BD /* WebsiteDataStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebsiteDataStore.m; sourceTree = "<group>"; };
+		FDE2FF802260E37C00E950BD /* WebsiteDataStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebsiteDataStore.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,8 @@
 			children = (
 				FD03BE95225CC2B6005FEB54 /* WebViewController.m */,
 				FD03BE97225CC2CB005FEB54 /* WebViewController.h */,
+				FDE2FF7E2260E36D00E950BD /* WebsiteDataStore.m */,
+				FDE2FF802260E37C00E950BD /* WebsiteDataStore.h */,
 			);
 			path = web;
 			sourceTree = "<group>";
@@ -208,6 +213,7 @@
 				FD03BE83225B7224005FEB54 /* ViewController.m in Sources */,
 				FD03BE8E225B7226005FEB54 /* main.m in Sources */,
 				FDE2FF7C225F7E7600E950BD /* Observers.m in Sources */,
+				FDE2FF7F2260E36D00E950BD /* WebsiteDataStore.m in Sources */,
 				FD03BE80225B7224005FEB54 /* AppDelegate.m in Sources */,
 				FD03BE9D225CD223005FEB54 /* TabCell.m in Sources */,
 				FD03BEA3225CD2F9005FEB54 /* TabModel.m in Sources */,

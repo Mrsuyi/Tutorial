@@ -17,7 +17,7 @@
 @protocol TabSwitcherDelegate
 
 - (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher didSelectTab:(TabModel*)tabModel;
-- (void)tabSwitcherDidTapNewTabButton:(TabSwitcherViewController*)tabSwitcher;
+- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher didTapNewTabButtonInIncognitoMode:(BOOL)inIncognitoMode;
 - (void)tabSwitcherDidTapDoneButton:(TabSwitcherViewController*)tabSwitcher;
 
 @end
