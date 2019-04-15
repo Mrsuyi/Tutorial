@@ -11,7 +11,7 @@
 
 #import <WebKit/WebKit.h>
 
-WKWebsiteDataStore* GetRegularWKWebsiteDataStore();
-WKWebsiteDataStore* GetIncognitoWKWebsiteDataStore();
+WKWebsiteDataStore* GetRegularWKWebsiteDataStore(void);
+WKWebsiteDataStore* GetIncognitoWKWebsiteDataStore(void);
 
 #endif /* WebsiteDataStorage_h */

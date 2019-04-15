@@ -28,7 +28,7 @@
 
     _screenShotView = [UIImageView new];
     _screenShotView.translatesAutoresizingMaskIntoConstraints = NO;
-    _screenShotView.contentMode = UIViewContentModeScaleAspectFit;
+    _screenShotView.contentMode = UIViewContentModeScaleAspectFill;
 
     self.contentView.clipsToBounds = YES;
     [self.contentView addSubview:_screenShotView];

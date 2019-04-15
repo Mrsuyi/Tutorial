@@ -16,15 +16,16 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
 @implementation TabsCollectionViewController {
   NSMutableArray<TabModel*>* _tabModels;
+  UICollectionViewFlowLayout* _flowLayout;
   TabCell* _sizeReferenceCell;
 }
 
 - (instancetype)init {
-  UICollectionViewFlowLayout* layout = [UICollectionViewFlowLayout new];
+  UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
   layout.scrollDirection = UICollectionViewScrollDirectionVertical;
   layout.minimumLineSpacing = 8;
   layout.minimumInteritemSpacing = 8;
-  layout.sectionInset = UIEdgeInsetsMake(16, 16, 16, 16);
+  layout.sectionInset = UIEdgeInsetsMake(16, 0, 16, 0);
   self = [super initWithCollectionViewLayout:layout];
   if (self) {
     self.collectionView.dataSource = self;
@@ -35,6 +36,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
     _tabModels = [[NSMutableArray alloc] init];
     _sizeReferenceCell = [[TabCell alloc] init];
     _sizeReferenceCell.titleLabel.text = @"size reference";
+    _flowLayout = layout;
   }
   return self;
 }
@@ -74,19 +76,37 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-  if (_tabModels.count == 0)
+  if (_tabModels.count == 0) {
+    _flowLayout.minimumLineSpacing = 0;
+    _flowLayout.minimumInteritemSpacing = 0;
+    _flowLayout.sectionInset = UIEdgeInsetsZero;
     return CGSizeZero;
-  CGSize screenShotSize = _tabModels[0].screenShot.size;
-  CGSize collectionViewSize = self.collectionView.frame.size;
+  }
+
+  // Calculate number of cells per row.
   NSUInteger maxCellsPerRow = 2;
   if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
     maxCellsPerRow = self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact ? 3 : 4;
   }
   NSUInteger cellsPerRow = MIN(_tabModels.count, maxCellsPerRow);
-  CGFloat width = collectionViewSize.width * 0.9 / cellsPerRow;
-  _sizeReferenceCell.screenShotView.image = _tabModels[0].screenShot;
-  CGSize idealSize = [_sizeReferenceCell systemLayoutSizeFittingSize:CGSizeMake(width, 2000) withHorizontalFittingPriority:UILayoutPriorityRequired verticalFittingPriority:1];
-  return idealSize;
+  CGSize collectionViewSize = self.collectionView.frame.size;
+
+  // Calculate space between rows, columns, and padding.
+  CGFloat totalSpace = floor(collectionViewSize.width * 0.2);
+  CGFloat space = floor(totalSpace / (cellsPerRow + 1));
+  _flowLayout.minimumInteritemSpacing = space;
+  _flowLayout.minimumLineSpacing = space;
+  _flowLayout.sectionInset = UIEdgeInsetsMake(space, space, space, space);
+
+  // Calculate cell size.
+  CGFloat width = floor(collectionViewSize.width * 0.8 / cellsPerRow);
+  CGSize cellSize = [_sizeReferenceCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  cellSize.width = width;
+  if (_tabModels[0].screenShot) {
+    CGSize screenShotSize = _tabModels[0].screenShot.size;
+    cellSize.height += screenShotSize.height * (width / screenShotSize.width);
+  }
+  return cellSize;
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -125,5 +145,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
   }
   NSAssert(NO, @"TabModel not found in TabsCollectionVC");
 }
+
+#pragma mark - Private methods
 
 @end
