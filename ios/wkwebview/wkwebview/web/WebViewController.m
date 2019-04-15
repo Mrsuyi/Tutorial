@@ -8,8 +8,12 @@
 
 #import "WebViewController.h"
 #import "../base/Observers.h"
+#import "WebsiteDataStore.h"
 
 @interface WebViewController ()<WKUIDelegate, WKNavigationDelegate>
+
+@property(nonatomic, readwrite)BOOL incognito;
+
 @end
 
 @implementation WebViewController {
@@ -17,7 +21,13 @@
 }
 
 - (instancetype)initInIncognitoMode:(BOOL)incognito {
-  return [self initWithWKWebViewConfiguration:[WKWebViewConfiguration new]];
+  WKWebViewConfiguration* conf = [WKWebViewConfiguration new];
+  conf.websiteDataStore = incognito ? GetIncognitoWKWebsiteDataStore() : GetRegularWKWebsiteDataStore();
+  self = [self initWithWKWebViewConfiguration:conf];
+  if (self) {
+    _incognito = incognito;
+  }
+  return self;
 }
 
 - (instancetype)initWithWKWebViewConfiguration:(WKWebViewConfiguration*)configuration {
@@ -41,8 +51,7 @@
   // Layout self.view.
   self.view.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addSubview:self.webView];
-  [NSLayoutConstraint activateConstraints:@[
-                                            [self.webView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+  [NSLayoutConstraint activateConstraints:@[[self.webView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
                                             [self.webView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
                                             [self.webView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
                                             [self.webView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
@@ -61,6 +70,7 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
   forNavigationAction:(WKNavigationAction *)navigationAction
        windowFeatures:(WKWindowFeatures *)windowFeatures {
   WebViewController* newWebVC = [[WebViewController alloc] initWithWKWebViewConfiguration:configuration];
+  newWebVC.incognito = _incognito;
   [_observers notify:@selector(webViewController:didCreateWebViewController:) withObject:newWebVC];
   return newWebVC.webView;
 }
@@ -187,6 +197,10 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
 - (void)removeObserver:(id<WebObserver>)delegate {
   [_observers removeObserver:delegate];
+}
+
+- (void)loadNTP {
+  [self.webView loadHTMLString:@"<html><head><title>NTP</title></head><body><h1>NTP</h1></body></html>" baseURL:[NSURL URLWithString:@"http://ntp.com"]];
 }
 
 @end

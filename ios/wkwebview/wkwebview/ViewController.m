@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "base/LayoutUtils.h"
 #import "web/WebViewController.h"
 #import "browser/BrowserViewController.h"
 #import "tab_switcher/TabSwitcherViewController.h"
@@ -36,10 +37,15 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  // Add TabSwitcherVC.
+  [self.view addSubview:self.tabSwitcherVC.view];
+  // Add browserVC.
   [self.view addSubview:self.browserVC.view];
 
   // Init and display first WebVC.
-  [self addAndShowWebVC:[self createNtp]];
+  WebViewController* newTab = [[WebViewController alloc] initInIncognitoMode:NO];
+  [self addAndShowWebVC:newTab];
+  [newTab loadNTP];
 }
 
 #pragma mark - UIViewController
@@ -51,21 +57,20 @@
 #pragma mark - TabSwitcherDelegate
 
 - (void)tabSwitcher:(id)tabSwitcher didSelectTab:(TabModel *)tabModel {
-  [self dismissViewControllerAnimated:YES completion:^{
-  }];
   WebViewController* webVC = (WebViewController*)tabModel.ID;
   self.browserVC.webVC = webVC;
+  [self showBrowserVC];
 }
 
 - (void)tabSwitcherDidTapDoneButton:(id)tabSwitcher {
-  [self dismissViewControllerAnimated:YES completion:^{
-  }];
+  [self showBrowserVC];
 }
 
 - (void)tabSwitcher:(TabSwitcherViewController *)tabSwitcher didTapNewTabButtonInIncognitoMode:(BOOL)inIncognitoMode {
-  [self addAndShowWebVC:[self createNtp]];
-  [self dismissViewControllerAnimated:YES completion:^{
-  }];
+  WebViewController* newTab = [[WebViewController alloc] initInIncognitoMode:inIncognitoMode];
+  [self addAndShowWebVC:newTab];
+  [newTab loadNTP];
+  [self showBrowserVC];
 }
 
 #pragma mark - BrowserDelegate
@@ -79,10 +84,9 @@
       NSLog(@"WKWebView takeSnapshot failed: %@", error);
       return;
     }
-    [weakSelf.tabSwitcherVC updateTabModel:[TabModel modelWithID:weakSelf.browserVC.webVC title:nil screenShot:snapshotImage]];
+    [weakSelf.tabSwitcherVC updateTabModel:[TabModel modelWithID:weakSelf.browserVC.webVC incognito:weakSelf.browserVC.webVC.incognito title:nil screenShot:snapshotImage]];
   }];
-  [self presentViewController:_tabSwitcherVC animated:YES completion:^{
-  }];
+  [self hideBrowserVC];
 }
 
 #pragma mark - WebDelegate
@@ -92,21 +96,29 @@
 }
 
 - (void)webViewController:(WebViewController *)webVC didChangeTitle:(NSString *)title {
-  [self.tabSwitcherVC updateTabModel:[TabModel modelWithID:webVC title:title screenShot:nil]];
+  [self.tabSwitcherVC updateTabModel:[TabModel modelWithID:webVC incognito:webVC.incognito title:title screenShot:nil]];
 }
 
 #pragma mark - Helper methods
 
-- (WebViewController*)createNtp {
-  WebViewController* ntp = [WebViewController new];
-  [ntp.webView loadHTMLString:@"<html><head><title>NTP</title></head><body><h1>NTP</h1></body></html>" baseURL:[NSURL URLWithString:@"http://ntp.com"]];
-  return ntp;
+- (void)showBrowserVC {
+  [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    self.browserVC.view.alpha = 1.0;
+  } completion:^(BOOL finished) {
+  }];
+}
+
+- (void)hideBrowserVC {
+  [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    self.browserVC.view.alpha = 0.0;
+  } completion:^(BOOL finished) {
+  }];
 }
 
 - (void)addAndShowWebVC:(WebViewController*)webVC {
   [self.webVCs addObject:webVC];
   [webVC addObserver:self];
-  [self.tabSwitcherVC addTabModel:[TabModel modelWithID:webVC title:webVC.title screenShot:nil]];
+  [self.tabSwitcherVC addTabModel:[TabModel modelWithID:webVC incognito:webVC.incognito title:webVC.title screenShot:nil]];
   self.browserVC.webVC = webVC;
 }
 

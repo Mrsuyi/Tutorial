@@ -8,3 +8,19 @@
 
 #import "WebsiteDataStore.h"
 
+WKWebsiteDataStore* kRegularStore = nil;
+WKWebsiteDataStore* kIncognitoStore = nil;
+
+WKWebsiteDataStore* GetRegularWKWebsiteDataStore() {
+  if (!kRegularStore) {
+    kRegularStore = [WKWebsiteDataStore defaultDataStore];
+  }
+  return kRegularStore;
+}
+
+WKWebsiteDataStore* GetIncognitoWKWebsiteDataStore() {
+  if (!kIncognitoStore) {
+    kIncognitoStore = [WKWebsiteDataStore nonPersistentDataStore];
+  }
+  return kIncognitoStore;
+}

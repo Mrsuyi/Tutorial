@@ -26,6 +26,7 @@
 @property(nonatomic, weak)id<TabsCollectionDelegate> delegate;
 
 - (void)addTabModel:(TabModel*)tabModel;
+- (BOOL)hasTabModel:(TabModel*)tabModel;
 - (void)updateTabModel:(TabModel*)tabModel;
 
 @end

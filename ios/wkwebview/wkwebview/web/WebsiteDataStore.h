@@ -11,13 +11,7 @@
 
 #import <WebKit/WebKit.h>
 
-@interface WebsiteDataStore : WKWebsiteDataStore
-
-+ (instancetype)regularWebsiteDataStore;
-+ (instancetype)incognitoWebsiteDataStore;
-
-- (void)clearCookies;
-
-@end
+WKWebsiteDataStore* GetRegularWKWebsiteDataStore();
+WKWebsiteDataStore* GetIncognitoWKWebsiteDataStore();
 
 #endif /* WebsiteDataStorage_h */

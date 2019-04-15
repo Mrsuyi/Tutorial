@@ -43,7 +43,7 @@
   [super viewDidLoad];
 
   // Setup bottom toolbar.
-  self.incognitoBtn = [[UIBarButtonItem alloc] initWithTitle:@"Incognito" style:UIBarButtonItemStylePlain target:self action:@selector(onIncognitoBtnTapped:)];
+  self.incognitoBtn = [[UIBarButtonItem alloc] initWithTitle:@"Regular" style:UIBarButtonItemStylePlain target:self action:@selector(onIncognitoBtnTapped:)];
   self.newTabBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onNewTabBtnTapped:)];
   self.doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneBtnTapped:)];
   UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -60,7 +60,7 @@
   self.regularTabsCollectionVC.view.translatesAutoresizingMaskIntoConstraints = NO;
   [self addChildViewController:_incognitoTabsCollectionVC];
   self.incognitoTabsCollectionVC.view.translatesAutoresizingMaskIntoConstraints = NO;
-  
+
   // Setup TabsCollectionContainer.
   UIView* tabsCollectionContainer = [UIView new];
   tabsCollectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
@@ -108,11 +108,12 @@
   TabsCollectionViewController* hiddenTabsCollectionVC = (self.shownTabsCollectionVC == self.regularTabsCollectionVC) ? self.incognitoTabsCollectionVC : self.regularTabsCollectionVC;
   [UIView transitionFromView:self.shownTabsCollectionVC.view
                       toView:hiddenTabsCollectionVC.view
-                    duration:0.4
+                    duration:0.2
                      options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionFlipFromLeft
                   completion:^(BOOL finished) {
     self.shownTabsCollectionVC = hiddenTabsCollectionVC;
     self.newTabBtn.enabled = YES;
+    self.incognitoBtn.title = [self.incognitoBtn.title isEqualToString:@"Regular"] ? @"Incognito" : @"Regular";
   }];
 }
 
@@ -127,11 +128,17 @@
 #pragma mark - Public methods
 
 - (void)addTabModel:(TabModel*)tabModel {
-  [_regularTabsCollectionVC addTabModel:tabModel];
+  if (tabModel.incognito)
+    [_incognitoTabsCollectionVC addTabModel:tabModel];
+  else
+    [_regularTabsCollectionVC addTabModel:tabModel];
 }
 
 - (void)updateTabModel:(TabModel*)tabModel {
-  [_regularTabsCollectionVC updateTabModel:tabModel];
+  if (tabModel.incognito)
+    [_incognitoTabsCollectionVC updateTabModel:tabModel];
+  else
+    [_regularTabsCollectionVC updateTabModel:tabModel];
 }
 
 @end

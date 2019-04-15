@@ -13,9 +13,10 @@
 
 @interface TabModel : NSObject
 
-+ (instancetype)modelWithID:(id)ID title:(NSString*)title screenShot:(UIImage*)screenShot;
++ (instancetype)modelWithID:(id)ID incognito:(BOOL)incognito title:(NSString*)title screenShot:(UIImage*)screenShot;
 
-@property(nonatomic, assign)id ID;
+@property(nonatomic, weak)id ID;
+@property(nonatomic, assign)BOOL incognito;
 @property(nonatomic, copy)NSString* title;
 @property(nonatomic, strong)UIImage* screenShot;
 

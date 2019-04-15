@@ -13,11 +13,13 @@
 @end
 
 @implementation BrowserViewController {
+  UIToolbar* _topToolbar;
   UITextField* _omnibox;
 
   UIView* _webViewContainer;
   NSArray* _webViewConstraints;
 
+  UIToolbar* _bottomToolbar;
   UIBarButtonItem* _backBtn;
   UIBarButtonItem* _forwardBtn;
   UIBarButtonItem* _refreshBtn;
@@ -39,13 +41,12 @@
   _omnibox.autocorrectionType = UITextAutocorrectionTypeNo;
   UIBarButtonItem* omniboxItem = [[UIBarButtonItem alloc] initWithCustomView:_omnibox];
 
-  UIToolbar* topToolbar = [UIToolbar new];
-  topToolbar.translatesAutoresizingMaskIntoConstraints = NO;
-  topToolbar.barTintColor = UIColor.whiteColor;
-  topToolbar.translucent = YES;
-  [topToolbar setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
-  topToolbar.delegate = self;
-  [topToolbar setItems:@[omniboxItem]];
+  _topToolbar = [UIToolbar new];
+  _topToolbar.translatesAutoresizingMaskIntoConstraints = NO;
+  _topToolbar.translucent = YES;
+  [_topToolbar setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
+  _topToolbar.delegate = self;
+  [_topToolbar setItems:@[omniboxItem]];
 
   // Init WebViewContainer.
   _webViewContainer = [UIView new];
@@ -58,29 +59,28 @@
   _tabSwitcherBtn = [[UIBarButtonItem alloc] initWithTitle:@"∑" style:UIBarButtonItemStylePlain target:self action:@selector(onTapTabSwitcherBtn)];
   UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
   
-  UIToolbar* bottomToolbar = [UIToolbar new];
-  bottomToolbar.translatesAutoresizingMaskIntoConstraints = NO;
-  bottomToolbar.barTintColor = UIColor.whiteColor;
-  bottomToolbar.translucent = YES;
-  [bottomToolbar setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
-  [bottomToolbar setItems:@[_backBtn, space, _forwardBtn, space, _refreshBtn, space, _tabSwitcherBtn]];
+  _bottomToolbar = [UIToolbar new];
+  _bottomToolbar.translatesAutoresizingMaskIntoConstraints = NO;
+  _bottomToolbar.translucent = YES;
+  [_bottomToolbar setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionAny];
+  [_bottomToolbar setItems:@[_backBtn, space, _forwardBtn, space, _refreshBtn, space, _tabSwitcherBtn]];
 
   // Layout self.view.
-  [self.view addSubview:topToolbar];
+  [self.view addSubview:_topToolbar];
   [self.view addSubview:_webViewContainer];
-  [self.view addSubview:bottomToolbar];
-  [NSLayoutConstraint activateConstraints:@[[topToolbar.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-                                            [topToolbar.bottomAnchor constraintEqualToAnchor:_webViewContainer.topAnchor],
-                                            [topToolbar.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                                            [topToolbar.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+  [self.view addSubview:_bottomToolbar];
+  [NSLayoutConstraint activateConstraints:@[[_topToolbar.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+                                            [_topToolbar.bottomAnchor constraintEqualToAnchor:_webViewContainer.topAnchor],
+                                            [_topToolbar.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                                            [_topToolbar.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
                                             //
                                             [_webViewContainer.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
                                             [_webViewContainer.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-                                            [_webViewContainer.bottomAnchor constraintEqualToAnchor:bottomToolbar.topAnchor],
+                                            [_webViewContainer.bottomAnchor constraintEqualToAnchor:_bottomToolbar.topAnchor],
                                             //
-                                            [bottomToolbar.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                                            [bottomToolbar.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-                                            [bottomToolbar.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor],
+                                            [_bottomToolbar.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                                            [_bottomToolbar.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+                                            [_bottomToolbar.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor],
                                             ]];
 }
 
@@ -139,6 +139,17 @@
                           [webVC.view.trailingAnchor constraintEqualToAnchor:_webViewContainer.trailingAnchor],];
   [NSLayoutConstraint activateConstraints:_webViewConstraints];
   [self addChildViewController:webVC];
+  if (webVC.incognito) {
+    _topToolbar.barTintColor = UIColor.darkGrayColor;
+    _topToolbar.tintColor = UIColor.whiteColor;
+    _bottomToolbar.barTintColor = UIColor.darkGrayColor;
+    _bottomToolbar.tintColor = UIColor.whiteColor;
+  } else {
+    _topToolbar.barTintColor = UIColor.whiteColor;
+    _topToolbar.tintColor = nil;
+    _bottomToolbar.barTintColor = UIColor.whiteColor;
+    _bottomToolbar.tintColor = nil;
+  }
 }
 
 #pragma mark - Button callbacks
