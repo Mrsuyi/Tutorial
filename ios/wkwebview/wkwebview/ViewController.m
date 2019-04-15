@@ -73,11 +73,15 @@
   [self showBrowserVC];
 }
 
+- (void)tabSwitcher:(TabSwitcherViewController *)tabSwitcher willCloseTab:(TabModel *)tabModel {
+  [_webVCs removeObject:(WebViewController*)tabModel.ID];
+}
+
 #pragma mark - BrowserDelegate
 
 - (void)browserDidTapTabSwitcherButton:(BrowserViewController *)browser {
   WKWebView* webView = self.browserVC.webVC.webView;
-  WKSnapshotConfiguration* conf = [WKSnapshotConfiguration new];
+  WKSnapshotConfiguration* conf = [[WKSnapshotConfiguration alloc] init];
   __weak ViewController* weakSelf = self;
   [webView takeSnapshotWithConfiguration:conf completionHandler:^(UIImage * _Nullable snapshotImage, NSError * _Nullable error) {
     if (error) {
@@ -102,6 +106,7 @@
 #pragma mark - Helper methods
 
 - (void)showBrowserVC {
+  [self.view addSubview:self.browserVC.view];
   [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
     self.browserVC.view.alpha = 1.0;
   } completion:^(BOOL finished) {
@@ -112,6 +117,7 @@
   [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
     self.browserVC.view.alpha = 0.0;
   } completion:^(BOOL finished) {
+    [self.browserVC.view removeFromSuperview];
   }];
 }
 

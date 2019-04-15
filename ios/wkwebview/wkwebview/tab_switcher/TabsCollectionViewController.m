@@ -11,7 +11,7 @@
 
 NSString* const kTabCellReuseIdentifier = @"shit";
 
-@interface TabsCollectionViewController ()<UICollectionViewDelegateFlowLayout>
+@interface TabsCollectionViewController ()<UICollectionViewDelegateFlowLayout, TabCellDelegate>
 @end
 
 @implementation TabsCollectionViewController {
@@ -62,12 +62,10 @@ NSString* const kTabCellReuseIdentifier = @"shit";
                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   TabModel* tabModel = _tabModels[indexPath.item];
   TabCell* cell = (TabCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kTabCellReuseIdentifier forIndexPath:indexPath];
-  if (tabModel.incognito) {
-    cell.titleLabel.backgroundColor = UIColor.darkGrayColor;
-    cell.titleLabel.textColor = UIColor.whiteColor;
-  }
+  cell.incognito = tabModel.incognito;
   cell.titleLabel.text = tabModel.title;
   cell.screenShotView.image = tabModel.screenShot;
+  cell.delegate = self;
   return cell;
 }
 
@@ -114,6 +112,15 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   [self.delegate tabsCollection:self didSelectTab:_tabModels[indexPath.item]];
   [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - TabCellDelegate
+
+- (void)tabCellDidTapCloseButton:(TabCell *)tabCell {
+  NSIndexPath* indexPath = [self.collectionView indexPathForCell:tabCell];
+  [self.delegate tabsCollection:self willCloseTab:_tabModels[indexPath.item]];
+  [_tabModels removeObjectAtIndex:indexPath.item];
+  [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
 }
 
 #pragma mark - Public methods

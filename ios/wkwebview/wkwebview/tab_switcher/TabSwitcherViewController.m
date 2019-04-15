@@ -98,6 +98,7 @@
 }
 
 - (void)tabsCollection:(id)tabsCollectionVC willCloseTab:(TabModel *)tabModel {
+  [self.delegate tabSwitcher:self willCloseTab:tabModel];
 }
 
 #pragma mark - Button callbacks
@@ -108,8 +109,8 @@
   TabsCollectionViewController* hiddenTabsCollectionVC = (self.shownTabsCollectionVC == self.regularTabsCollectionVC) ? self.incognitoTabsCollectionVC : self.regularTabsCollectionVC;
   [UIView transitionFromView:self.shownTabsCollectionVC.view
                       toView:hiddenTabsCollectionVC.view
-                    duration:0.2
-                     options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionFlipFromLeft
+                    duration:0.3
+                     options:UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionFlipFromLeft | UIViewAnimationCurveEaseInOut
                   completion:^(BOOL finished) {
     self.shownTabsCollectionVC = hiddenTabsCollectionVC;
     self.newTabBtn.enabled = YES;

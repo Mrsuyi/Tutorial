@@ -18,6 +18,7 @@
 
 - (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher didSelectTab:(TabModel*)tabModel;
 - (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher didTapNewTabButtonInIncognitoMode:(BOOL)inIncognitoMode;
+- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher willCloseTab:(TabModel*)tabModel;
 - (void)tabSwitcherDidTapDoneButton:(TabSwitcherViewController*)tabSwitcher;
 
 @end

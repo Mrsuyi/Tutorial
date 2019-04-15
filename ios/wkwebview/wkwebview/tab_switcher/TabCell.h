@@ -11,10 +11,20 @@
 
 #import <UIKit/UIKit.h>
 
+@class TabCell;
+
+@protocol TabCellDelegate <NSObject>
+- (void)tabCellDidTapCloseButton:(TabCell*)tabCell;
+@end
+
 @interface TabCell : UICollectionViewCell
 
+@property(nonatomic, assign)BOOL incognito;
 @property(nonatomic, copy)UILabel* titleLabel;
+@property(nonatomic, strong)UIButton* closeButton;
 @property(nonatomic, strong)UIImageView* screenShotView;
+
+@property(nonatomic, weak)id<TabCellDelegate> delegate;
 
 @end
 
