@@ -93,14 +93,14 @@
   [self hideBrowserVC];
 }
 
-#pragma mark - WebDelegate
+#pragma mark - WebObserver
 
 - (void)webViewController:(WebViewController*)oldWebVC didCreateWebViewController:(WebViewController*)newWebVC {
   [self addAndShowWebVC:newWebVC];
 }
 
-- (void)webViewController:(WebViewController *)webVC didChangeTitle:(NSString *)title {
-  [self.tabSwitcherVC updateTabModel:[TabModel modelWithID:webVC incognito:webVC.incognito title:title screenShot:nil]];
+- (void)webViewControllerDidChangeTitle:(WebViewController *)webVC {
+  [self.tabSwitcherVC updateTabModel:[TabModel modelWithID:webVC incognito:webVC.incognito title:webVC.webView.title screenShot:nil]];
 }
 
 #pragma mark - Helper methods

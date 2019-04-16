@@ -18,9 +18,11 @@
 
 @optional
 - (void)webViewController:(WebViewController*)WebVC didCreateWebViewController:(WebViewController*)newWebVC;
-- (void)webViewController:(WebViewController*)webVC didChangeURL:(NSURL*)URL;
-- (void)webViewController:(WebViewController*)WebVC didChangeTitle:(NSString*)title;
-- (void)webViewController:(WebViewController*)WebVC didChangeEstimatedProgress:(NSNumber*)estimatedProgress;
+- (void)webViewControllerDidChangeURL:(WebViewController*)webVC;
+- (void)webViewControllerDidChangeTitle:(WebViewController*)webVC;
+- (void)webViewControllerDidChangeEstimatedProgress:(WebViewController*)webVC;
+- (void)webViewControllerDidChangeCanGoBack:(WebViewController*)webVC;
+- (void)webViewControllerDidChangeCanGoForward:(WebViewController*)webVC;
 
 @end
 

@@ -7,6 +7,7 @@
 //
 
 #import "BrowserViewController.h"
+#import "../base/LayoutUtils.h"
 
 @interface BrowserViewController ()<UIToolbarDelegate, UITextFieldDelegate, WebObserver>
 
@@ -109,36 +110,45 @@
 
 #pragma mark - WebObserver
 
-- (void)webViewController:(WebViewController *)WebVC didChangeTitle:(NSString *)title {
+- (void)webViewControllerDidChangeTitle:(WebViewController *)webVC {
   
 }
 
-- (void)webViewController:(WebViewController *)webVC didChangeURL:(NSURL *)URL {
-  _omnibox.text = URL.absoluteString;
+- (void)webViewControllerDidChangeURL:(WebViewController *)webVC {
+  _omnibox.text = webVC.webView.URL.absoluteString;
 }
 
-- (void)webViewController:(WebViewController *)WebVC didChangeEstimatedProgress:(NSNumber *)estimatedProgress {
+- (void)webViewControllerDidChangeEstimatedProgress:(WebViewController *)webVC {
   
+}
+
+- (void)webViewControllerDidChangeCanGoBack:(WebViewController *)webVC {
+  _backBtn.enabled = webVC.webView.canGoBack;
+}
+
+- (void)webViewControllerDidChangeCanGoForward:(WebViewController *)webVC {
+  _forwardBtn.enabled = webVC.webView.canGoForward;
 }
 
 #pragma mark - Property accessors
 
 - (void)setWebVC:(WebViewController *)webVC {
+  // Remove previous webVC.
   if (_webVC) {
     [_webVC.view removeFromSuperview];
     [_webVC removeFromParentViewController];
     [_webVC removeObserver:self];
     [NSLayoutConstraint deactivateConstraints:_webViewConstraints];
   }
+  // Add current webVC.
   _webVC = webVC;
+  [self addChildViewController:webVC];
   [webVC addObserver:self];
   [_webViewContainer addSubview:webVC.view];
-  _webViewConstraints = @[[webVC.view.topAnchor constraintEqualToAnchor:_webViewContainer.topAnchor],
-                          [webVC.view.bottomAnchor constraintEqualToAnchor:_webViewContainer.bottomAnchor],
-                          [webVC.view.leadingAnchor constraintEqualToAnchor:_webViewContainer.leadingAnchor],
-                          [webVC.view.trailingAnchor constraintEqualToAnchor:_webViewContainer.trailingAnchor],];
+  _webViewConstraints = CreateSameSizeConstraints(_webViewContainer, webVC.view);
   [NSLayoutConstraint activateConstraints:_webViewConstraints];
-  [self addChildViewController:webVC];
+
+  // Update UI.
   if (webVC.incognito) {
     _topToolbar.barTintColor = UIColor.darkGrayColor;
     _topToolbar.tintColor = UIColor.whiteColor;
@@ -150,6 +160,8 @@
     _bottomToolbar.barTintColor = UIColor.whiteColor;
     _bottomToolbar.tintColor = nil;
   }
+  _backBtn.enabled = webVC.webView.canGoBack;
+  _forwardBtn.enabled = webVC.webView.canGoForward;
 }
 
 #pragma mark - Button callbacks

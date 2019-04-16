@@ -10,6 +10,7 @@
 #import "../base/Observers.h"
 #import "WebsiteDataStore.h"
 
+
 @interface WebViewController ()<WKUIDelegate, WKNavigationDelegate>
 
 @property(nonatomic, readwrite)BOOL incognito;
@@ -37,7 +38,7 @@
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     self.webView.UIDelegate = self;
     self.webView.navigationDelegate = self;
-
+    
     _observers = [Observers new];
   }
   return self;
@@ -47,7 +48,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-
+  
   // Layout self.view.
   self.view.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addSubview:self.webView];
@@ -56,11 +57,11 @@
                                             [self.webView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
                                             [self.webView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
                                             ]];
-
+  
   // Listen to property change on WKWebView.
-  [self.webView addObserver:self forKeyPath:@"title" options:0 context:nil];
-  [self.webView addObserver:self forKeyPath:@"URL" options:0 context:nil];
-  [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:0 context:nil];
+  for (NSString* key in [self WKWebViewKVOKeyPaths]) {
+    [self.webView addObserver:self forKeyPath:key options:0 context:nil];
+  }
 }
 
 #pragma mark - WKUIDelegate
@@ -175,18 +176,8 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
                       ofObject:(id)object
                         change:(NSDictionary<NSKeyValueChangeKey,id> *)change
                        context:(void *)context {
-  if ([keyPath isEqualToString:@"title"]) {
-    [_observers notify:@selector(webViewController:didChangeTitle:) withObject:self withObject:self.webView.title];
-  }
-  else if ([keyPath isEqualToString:@"URL"]) {
-    [_observers notify:@selector(webViewController:didChangeURL:) withObject:self withObject:self.webView.URL];
-  }
-  else if ([keyPath isEqualToString:@"estimatedProgress"]) {
-    [_observers notify:@selector(webViewController:didChangeEstimatedProgress:) withObject:self withObject:[NSNumber numberWithDouble:self.webView.estimatedProgress]];
-  }
-  else {
-    NSAssert(NO, @"Unexpected observe keyPath");
-  }
+  SEL sel = NSSelectorFromString([self WKWebViewKVOKeyPaths][keyPath]);
+  [_observers notify:sel withObject:self];
 }
 
 #pragma mark - Public methods
@@ -201,6 +192,16 @@ decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
 - (void)loadNTP {
   [self.webView loadHTMLString:@"<html><head><title>NTP</title></head><body><h1>NTP</h1></body></html>" baseURL:[NSURL URLWithString:@"http://ntp.com"]];
+}
+
+#pragma mark - Private methods
+
+- (NSDictionary<NSString*, NSString*>*)WKWebViewKVOKeyPaths {
+  return @{@"title" : @"webViewControllerDidChangeTitle:",
+           @"URL" : @"webViewControllerDidChangeURL:",
+           @"estimatedProgress" : @"webViewControllerDidChangeEstimatedProgress",
+           @"canGoBack" : @"webViewControllerDidChangeCanGoBack:",
+           @"canGoForward" : @"webViewControllerDidChangeCanGoForward:"};
 }
 
 @end

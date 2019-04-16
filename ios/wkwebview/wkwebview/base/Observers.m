@@ -40,7 +40,9 @@
   for (NSUInteger i = 0; i < _observers.count; ++i) {
     id observer = (id)[_observers pointerAtIndex:i];
     if ([observer respondsToSelector:sel]) {
-      [observer performSelector:sel];
+      IMP imp = [observer methodForSelector:sel];
+      void (*func)(id, SEL) = (void*)imp;
+      func(observer, sel);
     }
   }
 }
@@ -50,7 +52,9 @@
   for (NSUInteger i = 0; i < _observers.count; ++i) {
     id observer = (id)[_observers pointerAtIndex:i];
     if ([observer respondsToSelector:sel]) {
-      [observer performSelector:sel withObject:object];
+      IMP imp = [observer methodForSelector:sel];
+      void (*func)(id, SEL, id) = (void*)imp;
+      func(observer, sel, object);
     }
   }
 }
@@ -60,7 +64,9 @@
   for (NSUInteger i = 0; i < _observers.count; ++i) {
     id observer = (id)[_observers pointerAtIndex:i];
     if ([observer respondsToSelector:sel]) {
-      [observer performSelector:sel withObject:object1 withObject:object2];
+      IMP imp = [observer methodForSelector:sel];
+      void (*func)(id, SEL, id, id) = (void*)imp;
+      func(observer, sel, object1, object2);
     }
   }
 }
