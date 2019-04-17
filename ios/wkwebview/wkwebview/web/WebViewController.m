@@ -80,14 +80,28 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
 runJavaScriptAlertPanelWithMessage:(NSString *)message
 initiatedByFrame:(WKFrameInfo *)frame
 completionHandler:(void (^)(void))completionHandler {
-  completionHandler();
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Alert from page" message:message preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    completionHandler();
+  }];
+  [alert addAction:ok];
+  [self presentViewController:alert animated:YES completion:^{}];
 }
 
 - (void)webView:(WKWebView *)webView
 runJavaScriptConfirmPanelWithMessage:(NSString *)message
 initiatedByFrame:(WKFrameInfo *)frame
 completionHandler:(void (^)(BOOL))completionHandler {
-  completionHandler(NO);
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Confirm from page" message:message preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    completionHandler(YES);
+  }];
+  UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    completionHandler(NO);
+  }];
+  [alert addAction:ok];
+  [alert addAction:cancel];
+  [self presentViewController:alert animated:YES completion:^{}];
 }
 
 - (void)webView:(WKWebView *)webView
@@ -95,7 +109,16 @@ runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt
     defaultText:(NSString *)defaultText
 initiatedByFrame:(WKFrameInfo *)frame
 completionHandler:(void (^)(NSString * _Nullable))completionHandler {
-  completionHandler(@"shit");
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Prompt from page" message:prompt preferredStyle:UIAlertControllerStyleAlert];
+  [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+    textField.text = defaultText;
+  }];
+  __weak UIAlertController* weakAlert = alert;
+  UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    completionHandler(weakAlert.textFields[0].text);
+  }];
+  [alert addAction:ok];
+  [self presentViewController:alert animated:YES completion:^{}];
 }
 
 - (void)webViewDidClose:(WKWebView *)webView {
@@ -145,7 +168,7 @@ didFailNavigation:(WKNavigation *)navigation
 - (void)webView:(WKWebView *)webView
 didFailProvisionalNavigation:(WKNavigation *)navigation
       withError:(NSError *)error {
-  NSLog(@"webView:didFailProvisionalNavigation:withError:");
+  NSLog(@"webView:didFailProvisionalNavigation:withError: %@", error);
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
