@@ -11,6 +11,7 @@
 #import "web/WebViewController.h"
 #import "browser/BrowserViewController.h"
 #import "tab_switcher/TabSwitcherViewController.h"
+#import "web/WebViewConfiguration.h"
 
 @interface ViewController ()<TabSwitcherDelegate, BrowserDelegate, WebObserver>
 

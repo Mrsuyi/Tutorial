@@ -9,7 +9,7 @@
 #import "WebViewController.h"
 #import "../base/Observers.h"
 #import "WebsiteDataStore.h"
-
+#import "WebViewConfiguration.h"
 
 @interface WebViewController ()<WKUIDelegate, WKNavigationDelegate>
 
@@ -22,8 +22,7 @@
 }
 
 - (instancetype)initInIncognitoMode:(BOOL)incognito {
-  WKWebViewConfiguration* conf = [WKWebViewConfiguration new];
-  conf.websiteDataStore = incognito ? GetIncognitoWKWebsiteDataStore() : GetRegularWKWebsiteDataStore();
+  WKWebViewConfiguration* conf = incognito ? GetIncognitoWKWebViewConfiguration() : GetRegularWKWebViewConfiguration();
   self = [self initWithWKWebViewConfiguration:conf];
   if (self) {
     _incognito = incognito;
@@ -38,7 +37,7 @@
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     self.webView.UIDelegate = self;
     self.webView.navigationDelegate = self;
-    
+
     _observers = [Observers new];
   }
   return self;

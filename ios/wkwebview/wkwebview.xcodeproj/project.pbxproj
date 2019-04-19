@@ -20,6 +20,8 @@
 		FDE2FF78225F4CEA00E950BD /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF77225F4CEA00E950BD /* BrowserViewController.m */; };
 		FDE2FF7C225F7E7600E950BD /* Observers.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF7B225F7E7600E950BD /* Observers.m */; };
 		FDE2FF7F2260E36D00E950BD /* WebsiteDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF7E2260E36D00E950BD /* WebsiteDataStore.m */; };
+		FDE2FFA72269B8C800E950BD /* LocalSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FFA62269B8C800E950BD /* LocalSchemeHandler.m */; };
+		FDE2FFAA2269BFE600E950BD /* WebViewConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FFA92269BFE600E950BD /* WebViewConfiguration.m */; };
 		FDFBA39122638B33006EA4F9 /* LayoutUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FDFBA39022638B33006EA4F9 /* LayoutUtils.m */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +51,10 @@
 		FDE2FF7D225F7E8400E950BD /* Observers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Observers.h; sourceTree = "<group>"; };
 		FDE2FF7E2260E36D00E950BD /* WebsiteDataStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebsiteDataStore.m; sourceTree = "<group>"; };
 		FDE2FF802260E37C00E950BD /* WebsiteDataStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebsiteDataStore.h; sourceTree = "<group>"; };
+		FDE2FFA62269B8C800E950BD /* LocalSchemeHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalSchemeHandler.m; sourceTree = "<group>"; };
+		FDE2FFA82269B8DE00E950BD /* LocalSchemeHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalSchemeHandler.h; sourceTree = "<group>"; };
+		FDE2FFA92269BFE600E950BD /* WebViewConfiguration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewConfiguration.m; sourceTree = "<group>"; };
+		FDE2FFAB2269BFFA00E950BD /* WebViewConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewConfiguration.h; sourceTree = "<group>"; };
 		FDFBA39022638B33006EA4F9 /* LayoutUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutUtils.m; sourceTree = "<group>"; };
 		FDFBA39322638B51006EA4F9 /* LayoutUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutUtils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +112,10 @@
 				FD03BE97225CC2CB005FEB54 /* WebViewController.h */,
 				FDE2FF7E2260E36D00E950BD /* WebsiteDataStore.m */,
 				FDE2FF802260E37C00E950BD /* WebsiteDataStore.h */,
+				FDE2FFA62269B8C800E950BD /* LocalSchemeHandler.m */,
+				FDE2FFA82269B8DE00E950BD /* LocalSchemeHandler.h */,
+				FDE2FFA92269BFE600E950BD /* WebViewConfiguration.m */,
+				FDE2FFAB2269BFFA00E950BD /* WebViewConfiguration.h */,
 			);
 			path = web;
 			sourceTree = "<group>";
@@ -216,7 +226,9 @@
 			files = (
 				FD03BEA0225CD256005FEB54 /* TabsCollectionViewController.m in Sources */,
 				FD03BE83225B7224005FEB54 /* ViewController.m in Sources */,
+				FDE2FFA72269B8C800E950BD /* LocalSchemeHandler.m in Sources */,
 				FD03BE8E225B7226005FEB54 /* main.m in Sources */,
+				FDE2FFAA2269BFE600E950BD /* WebViewConfiguration.m in Sources */,
 				FDFBA39122638B33006EA4F9 /* LayoutUtils.m in Sources */,
 				FDE2FF7C225F7E7600E950BD /* Observers.m in Sources */,
 				FDE2FF7F2260E36D00E950BD /* WebsiteDataStore.m in Sources */,
