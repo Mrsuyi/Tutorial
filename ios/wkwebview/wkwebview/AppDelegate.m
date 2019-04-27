@@ -17,34 +17,58 @@
 
 @implementation AppDelegate
 
-// State restore.
-
-- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
-  return YES;
-}
-
-- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
-  return YES;
-}
-
-// State change.
+#pragma mark - Launching
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  NSLog(@"application:willFinishLaunchingWithOptions:");
+
   // Init web.
   [GetIncognitoWKWebViewConfiguration() setURLSchemeHandler:[LocalSchemeHandler defaultHandler] forURLScheme:[LocalSchemeHandler scheme]];
   [GetRegularWKWebViewConfiguration() setURLSchemeHandler:[LocalSchemeHandler defaultHandler] forURLScheme:[LocalSchemeHandler scheme]];
 
-  // Init UI.
+  // Create window.
   self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-  self.window.rootViewController = [ViewController new];
-  [self.window makeKeyAndVisible];
+  ViewController* mainVC = [[ViewController alloc] init];
+  self.window.rootViewController = mainVC;
 
   return YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  NSLog(@"application:didFinishLaunchingWithOptions:");
+  [self.window makeKeyAndVisible];
   return YES;
 }
+
+- (BOOL)application:(UIApplication*)app openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  return YES;
+}
+
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
+  completionHandler(YES);
+}
+
+#pragma mark - Restoration
+
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
+  NSLog(@"application:shouldSaveApplicationState:");
+  return NO;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
+  NSLog(@"application:shouldRestoreApplicationState:");
+  return NO;
+}
+
+- (UIViewController*)application:(UIApplication *)application
+viewControllerWithRestorationIdentifierPath:(NSArray<NSString *> *)identifierComponents
+                           coder:(NSCoder *)coder {
+  NSLog(@"application:viewControllerWithRestorationIdentifierPath:coder:");
+  NSAssert(NO, @"This function should never be called");
+  return nil;
+}
+
+#pragma mark - Transition
 
 - (void)applicationWillResignActive:(UIApplication *)application {
   // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -66,16 +90,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
   // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-// Launch from specific operations.
-
-- (BOOL)application:(UIApplication*)app openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  return YES;
-}
-
-- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
-  completionHandler(YES);
 }
 
 @end

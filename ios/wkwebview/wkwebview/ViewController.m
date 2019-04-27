@@ -24,8 +24,7 @@
 @implementation ViewController
 
 - (instancetype)init {
-  self = [super init];
-  if (self) {
+  if (self = [super init]) {
     _webVCs = [NSMutableSet new];
     _tabSwitcherVC = [TabSwitcherViewController new];
     _tabSwitcherVC.delegate = self;
