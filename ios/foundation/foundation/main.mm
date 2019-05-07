@@ -13,8 +13,6 @@
 
 int main(int argc, char * argv[]) {
   @autoreleasepool {
-    NSURL* url = [NSURL URLWithString:@"file:///Users/mrsuyi/index.html"];
-    NSLog(@"%@", url.scheme);
     return 0;
 //      return UIApplicationMain(argc, argv, nil, NSStringFromClass([AutoLayoutAppDelegate class]));
   }
