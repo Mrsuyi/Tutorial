@@ -19,12 +19,12 @@
 
 @interface TabCell : UICollectionViewCell
 
-@property(nonatomic, assign)BOOL incognito;
-@property(nonatomic, copy)UILabel* titleLabel;
-@property(nonatomic, strong)UIButton* closeButton;
-@property(nonatomic, strong)UIImageView* screenShotView;
+@property(nonatomic, assign) BOOL incognito;
+@property(nonatomic, copy) UILabel* titleLabel;
+@property(nonatomic, strong) UIButton* closeButton;
+@property(nonatomic, strong) UIImageView* screenShotView;
 
-@property(nonatomic, weak)id<TabCellDelegate> delegate;
+@property(nonatomic, weak) id<TabCellDelegate> delegate;
 
 @end
 

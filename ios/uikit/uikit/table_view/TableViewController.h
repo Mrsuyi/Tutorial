@@ -11,7 +11,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate>
+@interface TableViewController
+    : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate>
 
 @end
 

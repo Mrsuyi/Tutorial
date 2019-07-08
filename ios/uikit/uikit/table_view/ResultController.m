@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ResultController.h"
 #import "BarButtonItem.h"
+#import "ResultController.h"
 
 @implementation ResultController
 
-# pragma UIViewController
+#pragma UIViewController
 
 @synthesize label = _label;
 
@@ -40,10 +40,12 @@
   [self.view addSubview:_label];
 }
 
-# pragma UISearchResultsUpdating
+#pragma UISearchResultsUpdating
 
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-  NSLog(@"updateSearchResultsForSearchController with text:%@", searchController.searchBar.text);
+- (void)updateSearchResultsForSearchController:
+    (UISearchController*)searchController {
+  NSLog(@"updateSearchResultsForSearchController with text:%@",
+        searchController.searchBar.text);
   _label.text = searchController.searchBar.text;
 }
 

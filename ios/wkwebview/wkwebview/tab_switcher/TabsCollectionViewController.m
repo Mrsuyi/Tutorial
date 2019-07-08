@@ -11,7 +11,8 @@
 
 NSString* const kTabCellReuseIdentifier = @"shit";
 
-@interface TabsCollectionViewController ()<UICollectionViewDelegateFlowLayout, TabCellDelegate>
+@interface TabsCollectionViewController () <UICollectionViewDelegateFlowLayout,
+                                            TabCellDelegate>
 @end
 
 @implementation TabsCollectionViewController {
@@ -21,7 +22,8 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 }
 
 - (instancetype)init {
-  UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
+  UICollectionViewFlowLayout* layout =
+      [[UICollectionViewFlowLayout alloc] init];
   layout.scrollDirection = UICollectionViewScrollDirectionVertical;
   layout.minimumLineSpacing = 8;
   layout.minimumInteritemSpacing = 8;
@@ -31,7 +33,8 @@ NSString* const kTabCellReuseIdentifier = @"shit";
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
 
-    [self.collectionView registerClass:TabCell.class forCellWithReuseIdentifier:kTabCellReuseIdentifier];
+    [self.collectionView registerClass:TabCell.class
+            forCellWithReuseIdentifier:kTabCellReuseIdentifier];
 
     _tabModels = [[NSMutableArray alloc] init];
     _sizeReferenceCell = [[TabCell alloc] init];
@@ -43,25 +46,28 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
 #pragma mark - UITraitEnvironment
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+- (void)traitCollectionDidChange:(UITraitCollection*)previousTraitCollection {
   [self.collectionView reloadData];
 }
 
 #pragma mark -  UICollectionViewDataSource
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+- (NSInteger)numberOfSectionsInCollectionView:
+    (UICollectionView*)collectionView {
   return 1;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView
+- (NSInteger)collectionView:(UICollectionView*)collectionView
      numberOfItemsInSection:(NSInteger)section {
   return _tabModels.count;
 }
 
-- (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView
-                 cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView
+                 cellForItemAtIndexPath:(NSIndexPath*)indexPath {
   TabModel* tabModel = _tabModels[indexPath.item];
-  TabCell* cell = (TabCell*)[collectionView dequeueReusableCellWithReuseIdentifier:kTabCellReuseIdentifier forIndexPath:indexPath];
+  TabCell* cell = (TabCell*)[collectionView
+      dequeueReusableCellWithReuseIdentifier:kTabCellReuseIdentifier
+                                forIndexPath:indexPath];
   cell.incognito = tabModel.incognito;
   cell.titleLabel.text = tabModel.title;
   cell.screenShotView.image = tabModel.screenShot;
@@ -71,9 +77,9 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout *)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView*)collectionView
+                    layout:(UICollectionViewLayout*)collectionViewLayout
+    sizeForItemAtIndexPath:(NSIndexPath*)indexPath {
   if (_tabModels.count == 0) {
     _flowLayout.minimumLineSpacing = 0;
     _flowLayout.minimumInteritemSpacing = 0;
@@ -83,8 +89,12 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
   // Calculate number of cells per row.
   NSUInteger maxCellsPerRow = 2;
-  if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-    maxCellsPerRow = self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact ? 3 : 4;
+  if (self.traitCollection.horizontalSizeClass ==
+      UIUserInterfaceSizeClassRegular) {
+    maxCellsPerRow = self.traitCollection.verticalSizeClass ==
+                             UIUserInterfaceSizeClassCompact
+                         ? 3
+                         : 4;
   }
   NSUInteger cellsPerRow = MIN(_tabModels.count, maxCellsPerRow);
   CGSize collectionViewSize = self.collectionView.frame.size;
@@ -98,7 +108,8 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
   // Calculate cell size.
   CGFloat width = floor(collectionViewSize.width * 0.8 / cellsPerRow);
-  CGSize cellSize = [_sizeReferenceCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  CGSize cellSize = [_sizeReferenceCell.contentView
+      systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
   cellSize.width = width;
   if (_tabModels[0].screenShot) {
     CGSize screenShotSize = _tabModels[0].screenShot.size;
@@ -109,28 +120,29 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
 #pragma mark - UICollectionViewDelegate
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView*)collectionView
+    didSelectItemAtIndexPath:(NSIndexPath*)indexPath {
   [self.delegate tabsCollection:self didSelectTab:_tabModels[indexPath.item]];
   [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - TabCellDelegate
 
-- (void)tabCellDidTapCloseButton:(TabCell *)tabCell {
+- (void)tabCellDidTapCloseButton:(TabCell*)tabCell {
   NSIndexPath* indexPath = [self.collectionView indexPathForCell:tabCell];
   [self.delegate tabsCollection:self willCloseTab:_tabModels[indexPath.item]];
   [_tabModels removeObjectAtIndex:indexPath.item];
-  [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
+  [self.collectionView deleteItemsAtIndexPaths:@[ indexPath ]];
 }
 
 #pragma mark - Public methods
 
-- (void)addTabModel:(TabModel *)tabModel {
+- (void)addTabModel:(TabModel*)tabModel {
   [_tabModels addObject:tabModel];
   [self.collectionView reloadData];
 }
 
-- (BOOL)hasTabModel:(TabModel *)tabModel {
+- (BOOL)hasTabModel:(TabModel*)tabModel {
   for (NSInteger i = 0; i < _tabModels.count; ++i) {
     if (_tabModels[i].ID == tabModel.ID)
       return YES;
@@ -138,7 +150,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
   return NO;
 }
 
-- (void)updateTabModel:(TabModel *)tabModel {
+- (void)updateTabModel:(TabModel*)tabModel {
   for (NSUInteger i = 0; i < _tabModels.count; ++i) {
     // Ignore TabModel.incognito.
     if (_tabModels[i].ID == tabModel.ID) {
@@ -146,7 +158,9 @@ NSString* const kTabCellReuseIdentifier = @"shit";
         _tabModels[i].title = tabModel.title;
       if (tabModel.screenShot)
         _tabModels[i].screenShot = tabModel.screenShot;
-      [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:i inSection:0]]];
+      [self.collectionView
+          reloadItemsAtIndexPaths:@[ [NSIndexPath indexPathForItem:i
+                                                         inSection:0] ]];
       return;
     }
   }

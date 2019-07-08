@@ -13,9 +13,8 @@
 
 @interface CollectionViewAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property(strong, nonatomic) UIWindow* window;
 
 @end
-
 
 #endif /* CollectionViewAppDelegate_h */

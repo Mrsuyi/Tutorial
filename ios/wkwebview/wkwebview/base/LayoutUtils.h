@@ -11,6 +11,7 @@
 
 #import <UIKit/UIKit.h>
 
-NSArray<NSLayoutConstraint*>* CreateSameSizeConstraints(UIView* view1, UIView* view2);
+NSArray<NSLayoutConstraint*>* CreateSameSizeConstraints(UIView* view1,
+                                                        UIView* view2);
 
 #endif /* LayoutUtils_h */

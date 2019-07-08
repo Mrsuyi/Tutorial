@@ -14,8 +14,8 @@
   self = [super initWithFrame:frame];
   if (self) {
     self.backgroundColor = UIColor.lightGrayColor;
-//    self.backgroundView.alpha = 0.5;
-//    self.backgroundView.backgroundColor = UIColor.lightGrayColor;
+    //    self.backgroundView.alpha = 0.5;
+    //    self.backgroundView.backgroundColor = UIColor.lightGrayColor;
 
     UILabel* label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -24,11 +24,14 @@
     [self.contentView addSubview:label];
 
     [NSLayoutConstraint activateConstraints:@[
-                                              [label.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
-                                              [label.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
-                                              [label.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-                                              [label.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
-                                              ]];
+      [label.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+      [label.bottomAnchor
+          constraintEqualToAnchor:self.contentView.bottomAnchor],
+      [label.leadingAnchor
+          constraintEqualToAnchor:self.contentView.leadingAnchor],
+      [label.trailingAnchor
+          constraintEqualToAnchor:self.contentView.trailingAnchor],
+    ]];
   }
   return self;
 }

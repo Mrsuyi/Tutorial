@@ -13,7 +13,7 @@
 
 @interface ResultController : UIViewController <UISearchResultsUpdating>
 
-@property (strong) UILabel* label;
+@property(strong) UILabel* label;
 
 @end
 

@@ -16,16 +16,19 @@
 
 @protocol TabSwitcherDelegate
 
-- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher didSelectTab:(TabModel*)tabModel;
-- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher didTapNewTabButtonInIncognitoMode:(BOOL)inIncognitoMode;
-- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher willCloseTab:(TabModel*)tabModel;
+- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher
+       didSelectTab:(TabModel*)tabModel;
+- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher
+    didTapNewTabButtonInIncognitoMode:(BOOL)inIncognitoMode;
+- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher
+       willCloseTab:(TabModel*)tabModel;
 - (void)tabSwitcherDidTapDoneButton:(TabSwitcherViewController*)tabSwitcher;
 
 @end
 
 @interface TabSwitcherViewController : UIViewController
 
-@property(nonatomic, weak)id<TabSwitcherDelegate> delegate;
+@property(nonatomic, weak) id<TabSwitcherDelegate> delegate;
 
 - (void)addTabModel:(TabModel*)tabModel;
 - (void)updateTabModel:(TabModel*)tabModel;

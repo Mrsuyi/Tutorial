@@ -13,14 +13,14 @@
 
 @interface LeftBarButton : UIBarButtonItem
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder*)aDecoder NS_UNAVAILABLE;
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 
 @end
 
 @interface RightBarButton : UIBarButtonItem
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder*)aDecoder NS_UNAVAILABLE;
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 
 @end

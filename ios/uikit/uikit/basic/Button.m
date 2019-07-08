@@ -19,7 +19,7 @@
     self.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 10, 10);
 
     UIImage* image = [UIImage imageNamed:@"m.png"];
-//    self.imageView.image = image;
+    //    self.imageView.image = image;
     [self setImage:image forState:UIControlStateNormal];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
   }

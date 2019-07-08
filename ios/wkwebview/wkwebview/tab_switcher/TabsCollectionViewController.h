@@ -16,14 +16,16 @@
 
 @protocol TabsCollectionDelegate
 
-- (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC didSelectTab:(TabModel*)tabModel;
-- (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC willCloseTab:(TabModel*)tabModel;
+- (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC
+          didSelectTab:(TabModel*)tabModel;
+- (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC
+          willCloseTab:(TabModel*)tabModel;
 
 @end
 
 @interface TabsCollectionViewController : UICollectionViewController
 
-@property(nonatomic, weak)id<TabsCollectionDelegate> delegate;
+@property(nonatomic, weak) id<TabsCollectionDelegate> delegate;
 
 - (void)addTabModel:(TabModel*)tabModel;
 - (BOOL)hasTabModel:(TabModel*)tabModel;

@@ -22,8 +22,8 @@
 
 @interface BrowserViewController : UIViewController
 
-@property(nonatomic, weak)id<BrowserDelegate> delegate;
-@property(nonatomic, weak)WebViewController* webVC;
+@property(nonatomic, weak) id<BrowserDelegate> delegate;
+@property(nonatomic, weak) WebViewController* webVC;
 
 @end
 

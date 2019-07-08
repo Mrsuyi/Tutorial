@@ -17,7 +17,8 @@
 @protocol WebObserver <NSObject>
 
 @optional
-- (void)webViewController:(WebViewController*)WebVC didCreateWebViewController:(WebViewController*)newWebVC;
+- (void)webViewController:(WebViewController*)WebVC
+    didCreateWebViewController:(WebViewController*)newWebVC;
 - (void)webViewControllerDidChangeURL:(WebViewController*)webVC;
 - (void)webViewControllerDidChangeTitle:(WebViewController*)webVC;
 - (void)webViewControllerDidChangeEstimatedProgress:(WebViewController*)webVC;
@@ -31,14 +32,13 @@
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initInIncognitoMode:(BOOL)incognito;
 
-@property(nonatomic, readonly)BOOL incognito;
-@property(nonatomic, strong)WKWebView* webView;
+@property(nonatomic, readonly) BOOL incognito;
+@property(nonatomic, strong) WKWebView* webView;
 
 - (void)loadNTP;
 - (void)addObserver:(id<WebObserver>)delegate;
 - (void)removeObserver:(id<WebObserver>)delegate;
 
 @end
-
 
 #endif /* WebViewController_h */

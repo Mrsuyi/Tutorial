@@ -13,14 +13,17 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
+
   self.view.backgroundColor = UIColor.whiteColor;
 
-  UIButton* btn = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 200, 100)];
+  UIButton* btn =
+      [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 200, 100)];
   [btn setTitle:@"present" forState:UIControlStateNormal];
   [btn setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
   [btn setTitleColor:UIColor.redColor forState:UIControlStateHighlighted];
-  [btn addTarget:self action:@selector(onPresent:) forControlEvents:UIControlEventTouchUpInside];
+  [btn addTarget:self
+                action:@selector(onPresent:)
+      forControlEvents:UIControlEventTouchUpInside];
 
   [self.view addSubview:btn];
 }
@@ -30,10 +33,13 @@
 }
 
 - (void)onPresent:(UIButton*)btn {
-  UINavigationController* nvc = [[UINavigationController alloc] initWithRootViewController:[TableViewController new]];
-  [self presentViewController:nvc animated:YES completion:^{
-    NSLog(@"presented!");
-  }];
+  UINavigationController* nvc = [[UINavigationController alloc]
+      initWithRootViewController:[TableViewController new]];
+  [self presentViewController:nvc
+                     animated:YES
+                   completion:^{
+                     NSLog(@"presented!");
+                   }];
 }
 
 @end

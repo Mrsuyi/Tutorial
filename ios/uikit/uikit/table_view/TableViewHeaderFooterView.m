@@ -6,14 +6,14 @@
 //  Copyright © 2019 google. All rights reserved.
 //
 
-
 #import "TableViewHeaderFooterView.h"
 
-NSString* const kTableViewHeaderFooterViewReuseIdentifier = @"TableViewHeaderFooterViewReuseIdentifier";
+NSString* const kTableViewHeaderFooterViewReuseIdentifier =
+    @"TableViewHeaderFooterViewReuseIdentifier";
 
 @implementation TableViewHeaderFooterView
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
+- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier {
   self = [super initWithReuseIdentifier:reuseIdentifier];
   if (self) {
     UITextView* view = [UITextView new];
@@ -23,19 +23,20 @@ NSString* const kTableViewHeaderFooterViewReuseIdentifier = @"TableViewHeaderFoo
     view.adjustsFontForContentSizeCategory = YES;
     view.editable = NO;
 
-    NSString* strippedText = @"the header for 1,3,5... sections\na lot of words\na lot of words\nwww.google.com";
+    NSString* strippedText = @"the header for 1,3,5... sections\na lot of "
+                             @"words\na lot of words\nwww.google.com";
     NSRange range = NSMakeRange(strippedText.length - 14, 14);
     NSRange fullRange = NSMakeRange(0, strippedText.length);
     NSMutableAttributedString* attributedText =
-    [[NSMutableAttributedString alloc] initWithString:strippedText];
+        [[NSMutableAttributedString alloc] initWithString:strippedText];
     [attributedText addAttribute:NSForegroundColorAttributeName
                            value:UIColor.redColor
                            range:fullRange];
 
     [attributedText
-     addAttribute:NSFontAttributeName
-     value:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]
-     range:fullRange];
+        addAttribute:NSFontAttributeName
+               value:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]
+               range:fullRange];
 
     if (range.location != NSNotFound && range.length != 0) {
       NSURL* URL = [NSURL URLWithString:@"www.google.com"];
@@ -49,10 +50,13 @@ NSString* const kTableViewHeaderFooterViewReuseIdentifier = @"TableViewHeaderFoo
 
     [self.contentView addSubview:view];
     [NSLayoutConstraint activateConstraints:@[
-                                              [view.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
-                                              [view.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
-                                              [view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-                                              [view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor]]];
+      [view.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+      [view.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
+      [view.leadingAnchor
+          constraintEqualToAnchor:self.contentView.leadingAnchor],
+      [view.trailingAnchor
+          constraintEqualToAnchor:self.contentView.trailingAnchor]
+    ]];
   }
   return self;
 }
