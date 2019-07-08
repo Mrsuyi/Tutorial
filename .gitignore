@@ -3,3 +3,4 @@
 *.o
 *.swp
 *.DS_Store
+**/test
