@@ -16,11 +16,6 @@ WKWebViewConfiguration* GetRegularWKWebViewConfiguration() {
   if (!kRegularConf) {
     kRegularConf = [[WKWebViewConfiguration alloc] init];
     kRegularConf.websiteDataStore = GetRegularWKWebsiteDataStore();
-
-    SEL sel = @selector(_setSafeBrowsingEnabled:);
-    IMP imp = [kRegularConf.preferences methodForSelector:sel];
-    void (*func)(id, SEL, BOOL) = (void*)imp;
-    func(kRegularConf.preferences, sel, YES);
   }
   return kRegularConf;
 }

@@ -12,7 +12,7 @@
 		FD03BE88225B7226005FEB54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD03BE87225B7226005FEB54 /* Assets.xcassets */; };
 		FD03BE8B225B7226005FEB54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD03BE89225B7226005FEB54 /* LaunchScreen.storyboard */; };
 		FD03BE8E225B7226005FEB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE8D225B7226005FEB54 /* main.m */; };
-		FD03BE96225CC2B6005FEB54 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE95225CC2B6005FEB54 /* WebViewController.m */; };
+		FD03BE96225CC2B6005FEB54 /* WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE95225CC2B6005FEB54 /* WebView.m */; };
 		FD03BE9A225CCF41005FEB54 /* TabSwitcherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE99225CCF41005FEB54 /* TabSwitcherViewController.m */; };
 		FD03BE9D225CD223005FEB54 /* TabCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE9C225CD223005FEB54 /* TabCell.m */; };
 		FD03BEA0225CD256005FEB54 /* TabsCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE9F225CD256005FEB54 /* TabsCollectionViewController.m */; };
@@ -22,6 +22,9 @@
 		FDE2FF7F2260E36D00E950BD /* WebsiteDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FF7E2260E36D00E950BD /* WebsiteDataStore.m */; };
 		FDE2FFA72269B8C800E950BD /* LocalSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FFA62269B8C800E950BD /* LocalSchemeHandler.m */; };
 		FDE2FFAA2269BFE600E950BD /* WebViewConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FFA92269BFE600E950BD /* WebViewConfiguration.m */; };
+		FDEFA72D22D4D0F000228A7F /* WKNavigationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FDEFA72C22D4D0F000228A7F /* WKNavigationHandler.m */; };
+		FDEFA73222D5DD3200228A7F /* error_page_content.html in Resources */ = {isa = PBXBuildFile; fileRef = FDEFA73122D5DD3100228A7F /* error_page_content.html */; };
+		FDEFA73422D5DD5500228A7F /* error_page_placeholder.html in Resources */ = {isa = PBXBuildFile; fileRef = FDEFA73322D5DD5500228A7F /* error_page_placeholder.html */; };
 		FDFBA39122638B33006EA4F9 /* LayoutUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FDFBA39022638B33006EA4F9 /* LayoutUtils.m */; };
 /* End PBXBuildFile section */
 
@@ -35,8 +38,8 @@
 		FD03BE8A225B7226005FEB54 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FD03BE8C225B7226005FEB54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD03BE8D225B7226005FEB54 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		FD03BE95225CC2B6005FEB54 /* WebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
-		FD03BE97225CC2CB005FEB54 /* WebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		FD03BE95225CC2B6005FEB54 /* WebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebView.m; sourceTree = "<group>"; };
+		FD03BE97225CC2CB005FEB54 /* WebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebView.h; sourceTree = "<group>"; };
 		FD03BE99225CCF41005FEB54 /* TabSwitcherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabSwitcherViewController.m; sourceTree = "<group>"; };
 		FD03BE9B225CCF5C005FEB54 /* TabSwitcherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabSwitcherViewController.h; sourceTree = "<group>"; };
 		FD03BE9C225CD223005FEB54 /* TabCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabCell.m; sourceTree = "<group>"; };
@@ -55,6 +58,10 @@
 		FDE2FFA82269B8DE00E950BD /* LocalSchemeHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalSchemeHandler.h; sourceTree = "<group>"; };
 		FDE2FFA92269BFE600E950BD /* WebViewConfiguration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewConfiguration.m; sourceTree = "<group>"; };
 		FDE2FFAB2269BFFA00E950BD /* WebViewConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewConfiguration.h; sourceTree = "<group>"; };
+		FDEFA72C22D4D0F000228A7F /* WKNavigationHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKNavigationHandler.m; sourceTree = "<group>"; };
+		FDEFA72E22D4D10A00228A7F /* WKNavigationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKNavigationHandler.h; sourceTree = "<group>"; };
+		FDEFA73122D5DD3100228A7F /* error_page_content.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = error_page_content.html; sourceTree = "<group>"; };
+		FDEFA73322D5DD5500228A7F /* error_page_placeholder.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = error_page_placeholder.html; sourceTree = "<group>"; };
 		FDFBA39022638B33006EA4F9 /* LayoutUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutUtils.m; sourceTree = "<group>"; };
 		FDFBA39322638B51006EA4F9 /* LayoutUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutUtils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,8 +115,9 @@
 		FD03BE94225CC287005FEB54 /* web */ = {
 			isa = PBXGroup;
 			children = (
-				FD03BE95225CC2B6005FEB54 /* WebViewController.m */,
-				FD03BE97225CC2CB005FEB54 /* WebViewController.h */,
+				FDEFA72B22D4D0BE00228A7F /* navigation */,
+				FD03BE95225CC2B6005FEB54 /* WebView.m */,
+				FD03BE97225CC2CB005FEB54 /* WebView.h */,
 				FDE2FF7E2260E36D00E950BD /* WebsiteDataStore.m */,
 				FDE2FF802260E37C00E950BD /* WebsiteDataStore.h */,
 				FDE2FFA62269B8C800E950BD /* LocalSchemeHandler.m */,
@@ -153,6 +161,17 @@
 				FDFBA39322638B51006EA4F9 /* LayoutUtils.h */,
 			);
 			path = base;
+			sourceTree = "<group>";
+		};
+		FDEFA72B22D4D0BE00228A7F /* navigation */ = {
+			isa = PBXGroup;
+			children = (
+				FDEFA72C22D4D0F000228A7F /* WKNavigationHandler.m */,
+				FDEFA72E22D4D10A00228A7F /* WKNavigationHandler.h */,
+				FDEFA73122D5DD3100228A7F /* error_page_content.html */,
+				FDEFA73322D5DD5500228A7F /* error_page_placeholder.html */,
+			);
+			path = navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,7 +231,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDEFA73422D5DD5500228A7F /* error_page_placeholder.html in Resources */,
 				FD03BE8B225B7226005FEB54 /* LaunchScreen.storyboard in Resources */,
+				FDEFA73222D5DD3200228A7F /* error_page_content.html in Resources */,
 				FD03BE88225B7226005FEB54 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,8 +255,9 @@
 				FDE2FF7F2260E36D00E950BD /* WebsiteDataStore.m in Sources */,
 				FD03BE80225B7224005FEB54 /* AppDelegate.m in Sources */,
 				FD03BE9D225CD223005FEB54 /* TabCell.m in Sources */,
+				FDEFA72D22D4D0F000228A7F /* WKNavigationHandler.m in Sources */,
 				FD03BEA3225CD2F9005FEB54 /* TabModel.m in Sources */,
-				FD03BE96225CC2B6005FEB54 /* WebViewController.m in Sources */,
+				FD03BE96225CC2B6005FEB54 /* WebView.m in Sources */,
 				FD03BE9A225CCF41005FEB54 /* TabSwitcherViewController.m in Sources */,
 				FDE2FF78225F4CEA00E950BD /* BrowserViewController.m in Sources */,
 			);
@@ -374,7 +396,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D528WGC5JH;
 				INFOPLIST_FILE = wkwebview/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -392,7 +414,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D528WGC5JH;
 				INFOPLIST_FILE = wkwebview/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

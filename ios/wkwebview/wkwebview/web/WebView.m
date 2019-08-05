@@ -1,23 +1,26 @@
 //
-//  WebViewController.m
+//  WebView.m
 //  wkwebview
 //
 //  Created by Yi Su on 4/9/19.
 //  Copyright © 2019 google. All rights reserved.
 //
 
-#import "WebViewController.h"
+#import "WebView.h"
+#import "../base/LayoutUtils.h"
 #import "../base/Observers.h"
 #import "WebViewConfiguration.h"
 #import "WebsiteDataStore.h"
+#import "navigation/WKNavigationHandler.h"
 
-@interface WebViewController () <WKUIDelegate, WKNavigationDelegate>
+@interface WebView () <WKUIDelegate>
 
 @property(nonatomic, readwrite) BOOL incognito;
+@property(nonatomic, readonly, strong) WKNavigationHandler* navigationHandler;
 
 @end
 
-@implementation WebViewController {
+@implementation WebView {
   Observers<id<WebObserver>>* _observers;
 }
 
@@ -34,40 +37,26 @@
 
 - (instancetype)initWithWKWebViewConfiguration:
     (WKWebViewConfiguration*)configuration {
-  self = [super init];
+  self = [super initWithFrame:CGRectZero];
   if (self) {
-    self.webView = [[WKWebView alloc] initWithFrame:CGRectZero
-                                      configuration:configuration];
-    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.webView.UIDelegate = self;
-    self.webView.navigationDelegate = self;
+    _WKWebView = [[WKWebView alloc] initWithFrame:CGRectZero
+                                    configuration:configuration];
+    _WKWebView.UIDelegate = self;
 
     _observers = [Observers new];
+    _navigationHandler = [[WKNavigationHandler alloc] init];
+    _WKWebView.navigationDelegate = _navigationHandler;
+
+    for (NSString* key in [self WKWebViewKVOKeyPaths]) {
+      [_WKWebView addObserver:self forKeyPath:key options:0 context:nil];
+    }
+
+    _WKWebView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_WKWebView];
+    [NSLayoutConstraint
+        activateConstraints:CreateSameSizeConstraints(self, _WKWebView)];
   }
   return self;
-}
-
-#pragma mark - UIViewController
-
-- (void)viewDidLoad {
-  [super viewDidLoad];
-
-  // Layout self.view.
-  self.view.translatesAutoresizingMaskIntoConstraints = NO;
-  [self.view addSubview:self.webView];
-  [NSLayoutConstraint activateConstraints:@[
-    [self.webView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-    [self.webView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-    [self.webView.leadingAnchor
-        constraintEqualToAnchor:self.view.leadingAnchor],
-    [self.webView.trailingAnchor
-        constraintEqualToAnchor:self.view.trailingAnchor],
-  ]];
-
-  // Listen to property change on WKWebView.
-  for (NSString* key in [self WKWebViewKVOKeyPaths]) {
-    [self.webView addObserver:self forKeyPath:key options:0 context:nil];
-  }
 }
 
 #pragma mark - WKUIDelegate
@@ -76,12 +65,11 @@
     createWebViewWithConfiguration:(WKWebViewConfiguration*)configuration
                forNavigationAction:(WKNavigationAction*)navigationAction
                     windowFeatures:(WKWindowFeatures*)windowFeatures {
-  WebViewController* newWebVC =
-      [[WebViewController alloc] initWithWKWebViewConfiguration:configuration];
+  WebView* newWebVC =
+      [[WebView alloc] initWithWKWebViewConfiguration:configuration];
   newWebVC.incognito = _incognito;
-  [_observers notify:@selector(webViewController:didCreateWebViewController:)
-          withObject:newWebVC];
-  return newWebVC.webView;
+  [_observers notify:@selector(WebView:didCreateWebView:) withObject:newWebVC];
+  return newWebVC.WKWebView;
 }
 
 - (void)webView:(WKWebView*)webView
@@ -99,10 +87,10 @@
                                completionHandler();
                              }];
   [alert addAction:ok];
-  [self presentViewController:alert
-                     animated:YES
-                   completion:^{
-                   }];
+  //  [self presentViewController:alert
+  //                     animated:YES
+  //                   completion:^{
+  //                   }];
 }
 
 - (void)webView:(WKWebView*)webView
@@ -127,10 +115,10 @@
                              }];
   [alert addAction:ok];
   [alert addAction:cancel];
-  [self presentViewController:alert
-                     animated:YES
-                   completion:^{
-                   }];
+  //  [self presentViewController:alert
+  //                     animated:YES
+  //                   completion:^{
+  //                   }];
 }
 
 - (void)webView:(WKWebView*)webView
@@ -155,10 +143,10 @@
                                completionHandler(weakAlert.textFields[0].text);
                              }];
   [alert addAction:ok];
-  [self presentViewController:alert
-                     animated:YES
-                   completion:^{
-                   }];
+  //  [self presentViewController:alert
+  //                     animated:YES
+  //                   completion:^{
+  //                   }];
 }
 
 - (void)webViewDidClose:(WKWebView*)webView {
@@ -178,70 +166,6 @@
 
 - (void)webView:(WKWebView*)webView
     commitPreviewingViewController:(UIViewController*)previewingViewController {
-}
-
-#pragma mark - WKNavigationDelegate
-
-- (void)webView:(WKWebView*)webView
-    didCommitNavigation:(WKNavigation*)navigation {
-  NSLog(@"webView:didCommitNavigation:");
-}
-
-- (void)webView:(WKWebView*)webView
-    didStartProvisionalNavigation:(WKNavigation*)navigation {
-  NSLog(@"webView:didStartProvisionalNavigation:");
-}
-
-- (void)webView:(WKWebView*)webView
-    didReceiveServerRedirectForProvisionalNavigation:(WKNavigation*)navigation {
-  NSLog(@"webView:didReceiveServerRedirectForProvisioinalNavigation:");
-}
-
-- (void)webView:(WKWebView*)webView
-    didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge*)challenge
-                    completionHandler:
-                        (void (^)(NSURLSessionAuthChallengeDisposition,
-                                  NSURLCredential* _Nullable))
-                            completionHandler {
-  NSLog(@"webView:didReceiveAuthenticationChanllenge:completionHandler:");
-  completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
-}
-
-- (void)webView:(WKWebView*)webView
-    didFailNavigation:(WKNavigation*)navigation
-            withError:(NSError*)error {
-  NSLog(@"webView:didFailNavigation:withError:");
-}
-
-- (void)webView:(WKWebView*)webView
-    didFailProvisionalNavigation:(WKNavigation*)navigation
-                       withError:(NSError*)error {
-  NSLog(@"webView:didFailProvisionalNavigation:withError: %@", error);
-}
-
-- (void)webView:(WKWebView*)webView
-    didFinishNavigation:(WKNavigation*)navigation {
-  NSLog(@"webView:didFinishNavigation:");
-}
-
-- (void)webViewWebContentProcessDidTerminate:(WKWebView*)webView {
-  NSLog(@"webViewWebContentProcessDidTerminate:");
-}
-
-- (void)webView:(WKWebView*)webView
-    decidePolicyForNavigationAction:(WKNavigationAction*)navigationAction
-                    decisionHandler:
-                        (void (^)(WKNavigationActionPolicy))decisionHandler {
-  NSLog(@"webView:decidePolicyForNavigationAction:decisionHandler:");
-  decisionHandler(WKNavigationActionPolicyAllow);
-}
-
-- (void)webView:(WKWebView*)webView
-    decidePolicyForNavigationResponse:(WKNavigationResponse*)navigationResponse
-                      decisionHandler:(void (^)(WKNavigationResponsePolicy))
-                                          decisionHandler {
-  NSLog(@"webView:decidePolicyForNavigationResponse:decisionHandler:");
-  decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 #pragma mark - NSObject
@@ -265,20 +189,20 @@
 }
 
 - (void)loadNTP {
-  [self.webView loadHTMLString:@"<html><head><title>NTP</title></"
-                               @"head><body><h1>NTP</h1></body></html>"
-                       baseURL:[NSURL URLWithString:@"http://ntp.com"]];
+  [self.WKWebView loadHTMLString:@"<html><head><title>NTP</title></"
+                                 @"head><body><h1>NTP</h1></body></html>"
+                         baseURL:[NSURL URLWithString:@"http://ntp.com"]];
 }
 
 #pragma mark - Private methods
 
 - (NSDictionary<NSString*, NSString*>*)WKWebViewKVOKeyPaths {
   return @{
-    @"title" : @"webViewControllerDidChangeTitle:",
-    @"URL" : @"webViewControllerDidChangeURL:",
-    @"estimatedProgress" : @"webViewControllerDidChangeEstimatedProgress",
-    @"canGoBack" : @"webViewControllerDidChangeCanGoBack:",
-    @"canGoForward" : @"webViewControllerDidChangeCanGoForward:"
+    @"title" : @"WebViewDidChangeTitle:",
+    @"URL" : @"WebViewDidChangeURL:",
+    @"estimatedProgress" : @"WebViewDidChangeEstimatedProgress",
+    @"canGoBack" : @"WebViewDidChangeCanGoBack:",
+    @"canGoForward" : @"WebViewDidChangeCanGoForward:"
   };
 }
 

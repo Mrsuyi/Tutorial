@@ -10,7 +10,7 @@
 #define BrowserViewController_h
 
 #import <UIKit/UIKit.h>
-#import "../web/WebViewController.h"
+#import "../web/WebView.h"
 
 @class BrowserViewController;
 
@@ -23,7 +23,7 @@
 @interface BrowserViewController : UIViewController
 
 @property(nonatomic, weak) id<BrowserDelegate> delegate;
-@property(nonatomic, weak) WebViewController* webVC;
+@property(nonatomic, weak) WebView* webView;
 
 @end
 

@@ -10,12 +10,12 @@
 #import "base/LayoutUtils.h"
 #import "browser/BrowserViewController.h"
 #import "tab_switcher/TabSwitcherViewController.h"
+#import "web/WebView.h"
 #import "web/WebViewConfiguration.h"
-#import "web/WebViewController.h"
 
 @interface ViewController () <TabSwitcherDelegate, BrowserDelegate, WebObserver>
 
-@property(nonatomic, strong) NSMutableSet<WebViewController*>* webVCs;
+@property(nonatomic, strong) NSMutableSet<WebView*>* webViews;
 @property(nonatomic, strong) TabSwitcherViewController* tabSwitcherVC;
 @property(nonatomic, strong) BrowserViewController* browserVC;
 
@@ -25,7 +25,7 @@
 
 - (instancetype)init {
   if (self = [super init]) {
-    _webVCs = [NSMutableSet new];
+    _webViews = [NSMutableSet new];
     _tabSwitcherVC = [TabSwitcherViewController new];
     _tabSwitcherVC.delegate = self;
     _browserVC = [BrowserViewController new];
@@ -38,14 +38,15 @@
   [super viewDidLoad];
 
   // Add TabSwitcherVC.
+  [self addChildViewController:self.tabSwitcherVC];
   [self.view addSubview:self.tabSwitcherVC.view];
   // Add browserVC.
+  [self addChildViewController:self.browserVC];
   [self.view addSubview:self.browserVC.view];
 
-  // Init and display first WebVC.
-  WebViewController* newTab =
-      [[WebViewController alloc] initInIncognitoMode:NO];
-  [self addAndShowWebVC:newTab];
+  // Init and display first webView.
+  WebView* newTab = [[WebView alloc] initInIncognitoMode:NO];
+  [self addAndShowWebView:newTab];
   [newTab loadNTP];
 }
 
@@ -58,8 +59,8 @@
 #pragma mark - TabSwitcherDelegate
 
 - (void)tabSwitcher:(id)tabSwitcher didSelectTab:(TabModel*)tabModel {
-  WebViewController* webVC = (WebViewController*)tabModel.ID;
-  self.browserVC.webVC = webVC;
+  WebView* webView = (WebView*)tabModel.ID;
+  self.browserVC.webView = webView;
   [self showBrowserVC];
 }
 
@@ -69,22 +70,21 @@
 
 - (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher
     didTapNewTabButtonInIncognitoMode:(BOOL)inIncognitoMode {
-  WebViewController* newTab =
-      [[WebViewController alloc] initInIncognitoMode:inIncognitoMode];
-  [self addAndShowWebVC:newTab];
+  WebView* newTab = [[WebView alloc] initInIncognitoMode:inIncognitoMode];
+  [self addAndShowWebView:newTab];
   [newTab loadNTP];
   [self showBrowserVC];
 }
 
 - (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher
        willCloseTab:(TabModel*)tabModel {
-  [_webVCs removeObject:(WebViewController*)tabModel.ID];
+  [_webViews removeObject:(WebView*)tabModel.ID];
 }
 
 #pragma mark - BrowserDelegate
 
 - (void)browserDidTapTabSwitcherButton:(BrowserViewController*)browser {
-  WKWebView* webView = self.browserVC.webVC.webView;
+  WKWebView* webView = self.browserVC.webView.WKWebView;
   WKSnapshotConfiguration* conf = [[WKSnapshotConfiguration alloc] init];
   __weak ViewController* weakSelf = self;
   [webView
@@ -97,9 +97,10 @@
                     }
                     [weakSelf.tabSwitcherVC
                         updateTabModel:[TabModel
-                                           modelWithID:weakSelf.browserVC.webVC
-                                             incognito:weakSelf.browserVC.webVC
-                                                           .incognito
+                                           modelWithID:weakSelf.browserVC
+                                                           .webView
+                                             incognito:weakSelf.browserVC
+                                                           .webView.incognito
                                                  title:nil
                                             screenShot:snapshotImage]];
                   }];
@@ -108,21 +109,22 @@
 
 #pragma mark - WebObserver
 
-- (void)webViewController:(WebViewController*)oldWebVC
-    didCreateWebViewController:(WebViewController*)newWebVC {
-  [self addAndShowWebVC:newWebVC];
+- (void)WebView:(WebView*)oldwebView didCreateWebView:(WebView*)newwebView {
+  [self addAndShowWebView:newwebView];
 }
 
-- (void)webViewControllerDidChangeTitle:(WebViewController*)webVC {
-  [self.tabSwitcherVC updateTabModel:[TabModel modelWithID:webVC
-                                                 incognito:webVC.incognito
-                                                     title:webVC.webView.title
-                                                screenShot:nil]];
+- (void)WebViewDidChangeTitle:(WebView*)webView {
+  [self.tabSwitcherVC
+      updateTabModel:[TabModel modelWithID:webView
+                                 incognito:webView.incognito
+                                     title:webView.WKWebView.title
+                                screenShot:nil]];
 }
 
 #pragma mark - Helper methods
 
 - (void)showBrowserVC {
+  [self addChildViewController:self.browserVC];
   [self.view addSubview:self.browserVC.view];
   [UIView animateWithDuration:0.25
                         delay:0
@@ -143,17 +145,18 @@
       }
       completion:^(BOOL finished) {
         [self.browserVC.view removeFromSuperview];
+        [self.browserVC removeFromParentViewController];
       }];
 }
 
-- (void)addAndShowWebVC:(WebViewController*)webVC {
-  [self.webVCs addObject:webVC];
-  [webVC addObserver:self];
-  [self.tabSwitcherVC addTabModel:[TabModel modelWithID:webVC
-                                              incognito:webVC.incognito
-                                                  title:webVC.title
+- (void)addAndShowWebView:(WebView*)webView {
+  [self.webViews addObject:webView];
+  [webView addObserver:self];
+  [self.tabSwitcherVC addTabModel:[TabModel modelWithID:webView
+                                              incognito:webView.incognito
+                                                  title:webView.WKWebView.title
                                              screenShot:nil]];
-  self.browserVC.webVC = webVC;
+  self.browserVC.webView = webView;
 }
 
 @end

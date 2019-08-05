@@ -138,51 +138,49 @@
   [textField resignFirstResponder];
   NSURLRequest* request =
       [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_omnibox.text]];
-  [self.webVC.webView loadRequest:request];
+  [self.webView.WKWebView loadRequest:request];
   return YES;
 }
 
 #pragma mark - WebObserver
 
-- (void)webViewControllerDidChangeTitle:(WebViewController*)webVC {
+- (void)WebViewDidChangeTitle:(WebView*)webView {
 }
 
-- (void)webViewControllerDidChangeURL:(WebViewController*)webVC {
-  _omnibox.text = webVC.webView.URL.absoluteString;
+- (void)WebViewDidChangeURL:(WebView*)webView {
+  _omnibox.text = webView.WKWebView.URL.absoluteString;
 }
 
-- (void)webViewControllerDidChangeEstimatedProgress:(WebViewController*)webVC {
+- (void)WebViewDidChangeEstimatedProgress:(WebView*)webView {
 }
 
-- (void)webViewControllerDidChangeCanGoBack:(WebViewController*)webVC {
-  _backBtn.enabled = webVC.webView.canGoBack;
+- (void)WebViewDidChangeCanGoBack:(WebView*)webView {
+  _backBtn.enabled = webView.WKWebView.canGoBack;
 }
 
-- (void)webViewControllerDidChangeCanGoForward:(WebViewController*)webVC {
-  _forwardBtn.enabled = webVC.webView.canGoForward;
+- (void)WebViewDidChangeCanGoForward:(WebView*)webView {
+  _forwardBtn.enabled = webView.WKWebView.canGoForward;
 }
 
 #pragma mark - Property accessors
 
-- (void)setWebVC:(WebViewController*)webVC {
-  // Remove previous webVC.
-  if (_webVC) {
-    [_webVC.view removeFromSuperview];
-    [_webVC removeFromParentViewController];
-    [_webVC removeObserver:self];
+- (void)setWebView:(WebView*)webView {
+  // Remove previous webView.
+  if (_webView) {
+    [_webView removeFromSuperview];
+    [_webView removeObserver:self];
     [NSLayoutConstraint deactivateConstraints:_webViewConstraints];
   }
-  // Add current webVC.
-  _webVC = webVC;
-  [self addChildViewController:webVC];
-  [webVC addObserver:self];
-  [_webViewContainer addSubview:webVC.view];
-  _webViewConstraints =
-      CreateSameSizeConstraints(_webViewContainer, webVC.view);
+  // Add current webView.
+  _webView = webView;
+  webView.translatesAutoresizingMaskIntoConstraints = NO;
+  [webView addObserver:self];
+  [_webViewContainer addSubview:webView];
+  _webViewConstraints = CreateSameSizeConstraints(_webViewContainer, webView);
   [NSLayoutConstraint activateConstraints:_webViewConstraints];
 
   // Update UI.
-  if (webVC.incognito) {
+  if (webView.incognito) {
     _topToolbar.barTintColor = UIColor.darkGrayColor;
     _topToolbar.tintColor = UIColor.whiteColor;
     _bottomToolbar.barTintColor = UIColor.darkGrayColor;
@@ -193,22 +191,22 @@
     _bottomToolbar.barTintColor = UIColor.whiteColor;
     _bottomToolbar.tintColor = nil;
   }
-  _backBtn.enabled = webVC.webView.canGoBack;
-  _forwardBtn.enabled = webVC.webView.canGoForward;
+  _backBtn.enabled = webView.WKWebView.canGoBack;
+  _forwardBtn.enabled = webView.WKWebView.canGoForward;
 }
 
 #pragma mark - Button callbacks
 
 - (void)onTapBackBtn {
-  [self.webVC.webView goBack];
+  [self.webView.WKWebView goBack];
 }
 
 - (void)onTapForwardBtn {
-  [self.webVC.webView goForward];
+  [self.webView.WKWebView goForward];
 }
 
 - (void)onTapRefreshBtn {
-  [self.webVC.webView reload];
+  [self.webView.WKWebView reload];
 }
 
 - (void)onTapTabSwitcherBtn {
