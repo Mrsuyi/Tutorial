@@ -60,7 +60,7 @@
 
 - (void)tabSwitcher:(id)tabSwitcher didSelectTab:(TabModel*)tabModel {
   WebView* webView = (WebView*)tabModel.ID;
-  self.browserVC.webView = webView;
+  [self.browserVC setWebView:webView];
   [self showBrowserVC];
 }
 
@@ -109,16 +109,22 @@
 
 #pragma mark - WebObserver
 
-- (void)WebView:(WebView*)oldwebView didCreateWebView:(WebView*)newwebView {
+- (void)webView:(WebView*)oldwebView didCreateWebView:(WebView*)newwebView {
   [self addAndShowWebView:newwebView];
 }
 
-- (void)WebViewDidChangeTitle:(WebView*)webView {
+- (void)webViewDidChangeTitle:(WebView*)webView {
   [self.tabSwitcherVC
       updateTabModel:[TabModel modelWithID:webView
                                  incognito:webView.incognito
                                      title:webView.WKWebView.title
                                 screenShot:nil]];
+}
+
+- (void)webViewDidStartLoading:(WebView*)webVC {
+}
+
+- (void)webViewDidFinishLoading:(WebView*)webVC {
 }
 
 #pragma mark - Helper methods
@@ -156,7 +162,7 @@
                                               incognito:webView.incognito
                                                   title:webView.WKWebView.title
                                              screenShot:nil]];
-  self.browserVC.webView = webView;
+  [self.browserVC setWebView:webView];
 }
 
 @end

@@ -9,14 +9,16 @@
 #import "WebView.h"
 #import "../base/LayoutUtils.h"
 #import "../base/Observers.h"
+#import "UI/UIHandler.h"
 #import "WebViewConfiguration.h"
 #import "WebsiteDataStore.h"
-#import "navigation/WKNavigationHandler.h"
+#import "navigation/NavigationHandler.h"
 
-@interface WebView () <WKUIDelegate>
+@interface WebView () <WKUIDelegate, NavigationDelegate>
 
 @property(nonatomic, readwrite) BOOL incognito;
-@property(nonatomic, readonly, strong) WKNavigationHandler* navigationHandler;
+@property(nonatomic, readonly, strong) NavigationHandler* navigationHandler;
+@property(nonatomic, readonly, strong) UIHandler* UIHandler;
 
 @end
 
@@ -42,9 +44,11 @@
     _WKWebView = [[WKWebView alloc] initWithFrame:CGRectZero
                                     configuration:configuration];
     _WKWebView.UIDelegate = self;
-
     _observers = [Observers new];
-    _navigationHandler = [[WKNavigationHandler alloc] init];
+
+    // Set up NavigationHandler.
+    _navigationHandler = [[NavigationHandler alloc] init];
+    _navigationHandler.delegate = self;
     _WKWebView.navigationDelegate = _navigationHandler;
 
     for (NSString* key in [self WKWebViewKVOKeyPaths]) {
@@ -59,7 +63,7 @@
   return self;
 }
 
-#pragma mark - WKUIDelegate
+#pragma mark - UIDelegate
 
 - (WKWebView*)webView:(WKWebView*)webView
     createWebViewWithConfiguration:(WKWebViewConfiguration*)configuration
@@ -68,104 +72,21 @@
   WebView* newWebVC =
       [[WebView alloc] initWithWKWebViewConfiguration:configuration];
   newWebVC.incognito = _incognito;
-  [_observers notify:@selector(WebView:didCreateWebView:) withObject:newWebVC];
+  [_observers notify:@selector(webView:didCreateWebView:) withObject:newWebVC];
   return newWebVC.WKWebView;
-}
-
-- (void)webView:(WKWebView*)webView
-    runJavaScriptAlertPanelWithMessage:(NSString*)message
-                      initiatedByFrame:(WKFrameInfo*)frame
-                     completionHandler:(void (^)(void))completionHandler {
-  UIAlertController* alert =
-      [UIAlertController alertControllerWithTitle:@"Alert from page"
-                                          message:message
-                                   preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction* ok =
-      [UIAlertAction actionWithTitle:@"OK"
-                               style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction* _Nonnull action) {
-                               completionHandler();
-                             }];
-  [alert addAction:ok];
-  //  [self presentViewController:alert
-  //                     animated:YES
-  //                   completion:^{
-  //                   }];
-}
-
-- (void)webView:(WKWebView*)webView
-    runJavaScriptConfirmPanelWithMessage:(NSString*)message
-                        initiatedByFrame:(WKFrameInfo*)frame
-                       completionHandler:(void (^)(BOOL))completionHandler {
-  UIAlertController* alert =
-      [UIAlertController alertControllerWithTitle:@"Confirm from page"
-                                          message:message
-                                   preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction* ok =
-      [UIAlertAction actionWithTitle:@"OK"
-                               style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction* _Nonnull action) {
-                               completionHandler(YES);
-                             }];
-  UIAlertAction* cancel =
-      [UIAlertAction actionWithTitle:@"Cancel"
-                               style:UIAlertActionStyleCancel
-                             handler:^(UIAlertAction* _Nonnull action) {
-                               completionHandler(NO);
-                             }];
-  [alert addAction:ok];
-  [alert addAction:cancel];
-  //  [self presentViewController:alert
-  //                     animated:YES
-  //                   completion:^{
-  //                   }];
-}
-
-- (void)webView:(WKWebView*)webView
-    runJavaScriptTextInputPanelWithPrompt:(NSString*)prompt
-                              defaultText:(NSString*)defaultText
-                         initiatedByFrame:(WKFrameInfo*)frame
-                        completionHandler:
-                            (void (^)(NSString* _Nullable))completionHandler {
-  UIAlertController* alert =
-      [UIAlertController alertControllerWithTitle:@"Prompt from page"
-                                          message:prompt
-                                   preferredStyle:UIAlertControllerStyleAlert];
-  [alert
-      addTextFieldWithConfigurationHandler:^(UITextField* _Nonnull textField) {
-        textField.text = defaultText;
-      }];
-  __weak UIAlertController* weakAlert = alert;
-  UIAlertAction* ok =
-      [UIAlertAction actionWithTitle:@"OK"
-                               style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction* _Nonnull action) {
-                               completionHandler(weakAlert.textFields[0].text);
-                             }];
-  [alert addAction:ok];
-  //  [self presentViewController:alert
-  //                     animated:YES
-  //                   completion:^{
-  //                   }];
 }
 
 - (void)webViewDidClose:(WKWebView*)webView {
 }
 
-- (BOOL)webView:(WKWebView*)webView
-    shouldPreviewElement:(WKPreviewElementInfo*)elementInfo {
-  return NO;
+#pragma mark - NavigationDelegate
+
+- (void)navigationHandlerDidStartLoading:(NavigationHandler*)navigationHandler {
+  [_observers notify:@selector(webViewDidStartLoading:) withObject:self];
 }
 
-- (UIViewController*)webView:(WKWebView*)webView
-    previewingViewControllerForElement:(WKPreviewElementInfo*)elementInfo
-                        defaultActions:
-                            (NSArray<id<WKPreviewActionItem>>*)previewActions {
-  return nil;
-}
-
-- (void)webView:(WKWebView*)webView
-    commitPreviewingViewController:(UIViewController*)previewingViewController {
+- (void)navigationHandlerDidStopLoading:(NavigationHandler*)navigationHandler {
+  [_observers notify:@selector(webViewDidStopLoading:)];
 }
 
 #pragma mark - NSObject
@@ -180,18 +101,22 @@
 
 #pragma mark - Public methods
 
+- (void)loadURL:(NSString*)URL {
+  NSURL* url = [NSURL URLWithString:URL];
+  NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url];
+  [self.WKWebView loadRequest:request];
+}
+
+- (void)loadNTP {
+  [self loadURL:@"about:blank"];
+}
+
 - (void)addObserver:(id<WebObserver>)delegate {
   [_observers addObserver:delegate];
 }
 
 - (void)removeObserver:(id<WebObserver>)delegate {
   [_observers removeObserver:delegate];
-}
-
-- (void)loadNTP {
-  [self.WKWebView loadHTMLString:@"<html><head><title>NTP</title></"
-                                 @"head><body><h1>NTP</h1></body></html>"
-                         baseURL:[NSURL URLWithString:@"http://ntp.com"]];
 }
 
 #pragma mark - Private methods

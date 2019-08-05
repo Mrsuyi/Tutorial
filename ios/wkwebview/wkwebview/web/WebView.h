@@ -17,14 +17,14 @@
 @protocol WebObserver <NSObject>
 
 @optional
-- (void)WebView:(WebView*)WebVC didCreateWebView:(WebView*)newWebVC;
-- (void)WebViewDidChangeURL:(WebView*)webVC;
-- (void)WebViewDidChangeTitle:(WebView*)webVC;
-- (void)WebViewDidChangeEstimatedProgress:(WebView*)webVC;
-- (void)WebViewDidChangeCanGoBack:(WebView*)webVC;
-- (void)WebViewDidChangeCanGoForward:(WebView*)webVC;
-- (void)WebViewDidStartLoading:(WebView*)webVC;
-- (void)WebViewDidFinishLoading:(WebView*)webVC;
+- (void)webView:(WebView*)WebVC didCreateWebView:(WebView*)newWebVC;
+- (void)webViewDidChangeURL:(WebView*)webVC;
+- (void)webViewDidChangeTitle:(WebView*)webVC;
+- (void)webViewDidChangeEstimatedProgress:(WebView*)webVC;
+- (void)webViewDidChangeCanGoBack:(WebView*)webVC;
+- (void)webViewDidChangeCanGoForward:(WebView*)webVC;
+- (void)webViewDidStartLoading:(WebView*)webVC;
+- (void)webViewDidStopLoading:(WebView*)webVC;
 
 @end
 
@@ -36,6 +36,7 @@
 @property(nonatomic, readonly) BOOL incognito;
 @property(nonatomic, strong) WKWebView* WKWebView;
 
+- (void)loadURL:(NSString*)URL;
 - (void)loadNTP;
 - (void)addObserver:(id<WebObserver>)delegate;
 - (void)removeObserver:(id<WebObserver>)delegate;

@@ -1,14 +1,14 @@
 //
-//  WKNavigationHandler.m
+//  NavigationHandler.m
 //  wkwebview
 //
 //  Created by Yi Su on 7/9/19.
 //  Copyright © 2019 google. All rights reserved.
 //
 
-#import "WKNavigationHandler.h"
+#import "NavigationHandler.h"
 
-@implementation WKNavigationHandler
+@implementation NavigationHandler
 
 #pragma mark - WKNavigationDelegate
 
@@ -16,7 +16,8 @@
     decidePolicyForNavigationAction:(WKNavigationAction*)navigationAction
                     decisionHandler:
                         (void (^)(WKNavigationActionPolicy))decisionHandler {
-  NSLog(@"webView:decidePolicyForNavigationAction:decisionHandler:");
+  NSLog(@"webView:decidePolicyForNavigationAction:decisionHandler: %@",
+        navigationAction.request.URL);
   decisionHandler(WKNavigationActionPolicyAllow);
 }
 
@@ -24,7 +25,8 @@
     decidePolicyForNavigationResponse:(WKNavigationResponse*)navigationResponse
                       decisionHandler:(void (^)(WKNavigationResponsePolicy))
                                           decisionHandler {
-  NSLog(@"webView:decidePolicyForNavigationResponse:decisionHandler:");
+  NSLog(@"webView:decidePolicyForNavigationResponse:decisionHandler: %@",
+        navigationResponse.response.URL);
   decisionHandler(WKNavigationResponsePolicyAllow);
 }
 

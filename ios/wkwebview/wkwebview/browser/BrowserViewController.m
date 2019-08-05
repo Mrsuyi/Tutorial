@@ -136,29 +136,27 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField {
   [textField resignFirstResponder];
-  NSURLRequest* request =
-      [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_omnibox.text]];
-  [self.webView.WKWebView loadRequest:request];
+  [self.webView loadURL:_omnibox.text];
   return YES;
 }
 
 #pragma mark - WebObserver
 
-- (void)WebViewDidChangeTitle:(WebView*)webView {
+- (void)webViewDidChangeTitle:(WebView*)webView {
 }
 
-- (void)WebViewDidChangeURL:(WebView*)webView {
+- (void)webViewDidChangeURL:(WebView*)webView {
   _omnibox.text = webView.WKWebView.URL.absoluteString;
 }
 
-- (void)WebViewDidChangeEstimatedProgress:(WebView*)webView {
+- (void)webViewDidChangeEstimatedProgress:(WebView*)webView {
 }
 
-- (void)WebViewDidChangeCanGoBack:(WebView*)webView {
+- (void)webViewDidChangeCanGoBack:(WebView*)webView {
   _backBtn.enabled = webView.WKWebView.canGoBack;
 }
 
-- (void)WebViewDidChangeCanGoForward:(WebView*)webView {
+- (void)webViewDidChangeCanGoForward:(WebView*)webView {
   _forwardBtn.enabled = webView.WKWebView.canGoForward;
 }
 
