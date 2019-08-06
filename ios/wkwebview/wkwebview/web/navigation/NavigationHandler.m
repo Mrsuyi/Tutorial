@@ -18,6 +18,7 @@
                         (void (^)(WKNavigationActionPolicy))decisionHandler {
   NSLog(@"webView:decidePolicyForNavigationAction:decisionHandler: %@",
         navigationAction.request.URL);
+  [self.delegate navigationHandlerDidStartLoading:self];
   decisionHandler(WKNavigationActionPolicyAllow);
 }
 
@@ -99,6 +100,7 @@
 - (void)webView:(WKWebView*)webView
     didFinishNavigation:(WKNavigation*)navigation {
   NSLog(@"webView:didFinishNavigation:");
+  [self.delegate navigationHandlerDidStopLoading:self];
 }
 
 - (void)webView:(WKWebView*)webView
@@ -115,6 +117,8 @@
   NSString* html =
       [NSString stringWithFormat:template, error.localizedDescription];
   [webView loadHTMLString:html baseURL:[NSURL URLWithString:originalURL]];
+
+  [self.delegate navigationHandlerDidStopLoading:self];
 }
 
 - (void)webViewWebContentProcessDidTerminate:(WKWebView*)webView {

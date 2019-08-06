@@ -108,7 +108,10 @@
 }
 
 - (void)loadNTP {
-  [self loadURL:@"about:blank"];
+  //  [self loadURL:@"about:blank"];
+  NSString* path = [NSBundle.mainBundle pathForResource:@"ntp" ofType:@"html"];
+  NSURL* url = [NSURL fileURLWithPath:path];
+  [self.WKWebView loadFileURL:url allowingReadAccessToURL:url];
 }
 
 - (void)addObserver:(id<WebObserver>)delegate {
@@ -123,11 +126,11 @@
 
 - (NSDictionary<NSString*, NSString*>*)WKWebViewKVOKeyPaths {
   return @{
-    @"title" : @"WebViewDidChangeTitle:",
-    @"URL" : @"WebViewDidChangeURL:",
-    @"estimatedProgress" : @"WebViewDidChangeEstimatedProgress",
-    @"canGoBack" : @"WebViewDidChangeCanGoBack:",
-    @"canGoForward" : @"WebViewDidChangeCanGoForward:"
+    @"title" : @"webViewDidChangeTitle:",
+    @"URL" : @"webViewDidChangeURL:",
+    @"estimatedProgress" : @"webViewDidChangeEstimatedProgress",
+    @"canGoBack" : @"webViewDidChangeCanGoBack:",
+    @"canGoForward" : @"webViewDidChangeCanGoForward:"
   };
 }
 
