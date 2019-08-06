@@ -79,16 +79,6 @@
 - (void)webViewDidClose:(WKWebView*)webView {
 }
 
-#pragma mark - NavigationDelegate
-
-- (void)navigationHandlerDidStartLoading:(NavigationHandler*)navigationHandler {
-  [_observers notify:@selector(webViewDidStartLoading:) withObject:self];
-}
-
-- (void)navigationHandlerDidStopLoading:(NavigationHandler*)navigationHandler {
-  [_observers notify:@selector(webViewDidStopLoading:)];
-}
-
 #pragma mark - NSObject
 
 - (void)observeValueForKeyPath:(NSString*)keyPath
@@ -130,7 +120,8 @@
     @"URL" : @"webViewDidChangeURL:",
     @"estimatedProgress" : @"webViewDidChangeEstimatedProgress",
     @"canGoBack" : @"webViewDidChangeCanGoBack:",
-    @"canGoForward" : @"webViewDidChangeCanGoForward:"
+    @"canGoForward" : @"webViewDidChangeCanGoForward:",
+    @"loading" : @"webViewDidChangeLoading:",
   };
 }
 

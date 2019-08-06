@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "url/UrlAppDelegate.h"
-#import "control/CtrlAppDelegate.h"
 #import "autolayout/AutoLayoutAppDelegate.h"
+#import "control/CtrlAppDelegate.h"
+#import "url/UrlAppDelegate.h"
 
-int main(int argc, char * argv[]) {
+int main(int argc, char* argv[]) {
   @autoreleasepool {
     return 0;
-//      return UIApplicationMain(argc, argv, nil, NSStringFromClass([AutoLayoutAppDelegate class]));
+    //      return UIApplicationMain(argc, argv, nil,
+    //      NSStringFromClass([AutoLayoutAppDelegate class]));
   }
 }

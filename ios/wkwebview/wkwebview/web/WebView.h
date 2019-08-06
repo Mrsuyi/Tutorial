@@ -17,14 +17,13 @@
 @protocol WebObserver <NSObject>
 
 @optional
-- (void)webView:(WebView*)WebVC didCreateWebView:(WebView*)newWebVC;
-- (void)webViewDidChangeURL:(WebView*)webVC;
-- (void)webViewDidChangeTitle:(WebView*)webVC;
-- (void)webViewDidChangeEstimatedProgress:(WebView*)webVC;
-- (void)webViewDidChangeCanGoBack:(WebView*)webVC;
-- (void)webViewDidChangeCanGoForward:(WebView*)webVC;
-- (void)webViewDidStartLoading:(WebView*)webVC;
-- (void)webViewDidStopLoading:(WebView*)webVC;
+- (void)webView:(WebView*)oldWebView didCreateWebView:(WebView*)newWebView;
+- (void)webViewDidChangeURL:(WebView*)webView;
+- (void)webViewDidChangeTitle:(WebView*)webView;
+- (void)webViewDidChangeEstimatedProgress:(WebView*)webView;
+- (void)webViewDidChangeCanGoBack:(WebView*)webView;
+- (void)webViewDidChangeCanGoForward:(WebView*)webView;
+- (void)webViewDidChangeLoading:(WebView*)webView;
 
 @end
 

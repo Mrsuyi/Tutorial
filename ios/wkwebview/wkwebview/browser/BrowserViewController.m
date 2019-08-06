@@ -25,8 +25,11 @@
   UIToolbar* _bottomToolbar;
   UIBarButtonItem* _backBtn;
   UIBarButtonItem* _forwardBtn;
-  UIBarButtonItem* _refreshBtn;
+  //  UIBarButtonItem* _reloadBtn;
   UIBarButtonItem* _tabSwitcherBtn;
+
+  UIButton* _reloadBtn;
+  UIButton* _stopLoadingBtn;
 }
 
 #pragma mark - UIViewController
@@ -35,6 +38,23 @@
   [super viewDidLoad];
 
   // Init top toolbar.
+  _reloadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+  _reloadBtn.frame = CGRectMake(0, 0, 28, 28);
+  [_reloadBtn setTitle:@"↻" forState:UIControlStateNormal];
+  [_reloadBtn setTitleColor:UIColor.darkTextColor
+                   forState:UIControlStateNormal];
+  [_reloadBtn addTarget:self
+                 action:@selector(onTapReloadBtn:)
+       forControlEvents:UIControlEventTouchUpInside];
+  _stopLoadingBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+  _stopLoadingBtn.frame = CGRectMake(0, 0, 28, 28);
+  [_stopLoadingBtn setTitle:@"X" forState:UIControlStateNormal];
+  [_stopLoadingBtn setTitleColor:UIColor.darkTextColor
+                        forState:UIControlStateNormal];
+  [_stopLoadingBtn addTarget:self
+                      action:@selector(onTapStopLoadingBtn:)
+            forControlEvents:UIControlEventTouchUpInside];
+
   _omnibox = [UITextField new];
   _omnibox.translatesAutoresizingMaskIntoConstraints = NO;
   _omnibox.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -61,22 +81,18 @@
   _backBtn = [[UIBarButtonItem alloc] initWithTitle:@"←"
                                               style:UIBarButtonItemStylePlain
                                              target:self
-                                             action:@selector(onTapBackBtn)];
+                                             action:@selector(onTapBackBtn:)];
   _forwardBtn =
       [[UIBarButtonItem alloc] initWithTitle:@"→"
                                        style:UIBarButtonItemStylePlain
                                       target:self
-                                      action:@selector(onTapForwardBtn)];
-  _refreshBtn =
-      [[UIBarButtonItem alloc] initWithTitle:@"⟲"
-                                       style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(onTapRefreshBtn)];
+                                      action:@selector(onTapForwardBtn:)];
+
   _tabSwitcherBtn =
       [[UIBarButtonItem alloc] initWithTitle:@"∑"
                                        style:UIBarButtonItemStylePlain
                                       target:self
-                                      action:@selector(onTapTabSwitcherBtn)];
+                                      action:@selector(onTapTabSwitcherBtn:)];
   UIBarButtonItem* space = [[UIBarButtonItem alloc]
       initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                            target:nil
@@ -87,9 +103,8 @@
   _bottomToolbar.translucent = YES;
   [_bottomToolbar setShadowImage:[UIImage new]
               forToolbarPosition:UIBarPositionAny];
-  [_bottomToolbar setItems:@[
-    _backBtn, space, _forwardBtn, space, _refreshBtn, space, _tabSwitcherBtn
-  ]];
+  [_bottomToolbar
+      setItems:@[ _backBtn, space, _forwardBtn, space, _tabSwitcherBtn ]];
 
   // Layout self.view.
   [self.view addSubview:_topToolbar];
@@ -160,6 +175,15 @@
   _forwardBtn.enabled = webView.WKWebView.canGoForward;
 }
 
+- (void)webViewDidChangeLoading:(WebView*)webView {
+  _omnibox.rightViewMode = UITextFieldViewModeAlways;
+  if (webView.WKWebView.loading) {
+    _omnibox.rightView = _stopLoadingBtn;
+  } else {
+    _omnibox.rightView = _reloadBtn;
+  }
+}
+
 #pragma mark - Property accessors
 
 - (void)setWebView:(WebView*)webView {
@@ -195,19 +219,23 @@
 
 #pragma mark - Button callbacks
 
-- (void)onTapBackBtn {
-  [self.webView.WKWebView goBack];
-}
-
-- (void)onTapForwardBtn {
-  [self.webView.WKWebView goForward];
-}
-
-- (void)onTapRefreshBtn {
+- (void)onTapReloadBtn:(id)sender {
   [self.webView.WKWebView reload];
 }
 
-- (void)onTapTabSwitcherBtn {
+- (void)onTapStopLoadingBtn:(id)sender {
+  [self.webView.WKWebView stopLoading];
+}
+
+- (void)onTapBackBtn:(id)sender {
+  [self.webView.WKWebView goBack];
+}
+
+- (void)onTapForwardBtn:(id)sender {
+  [self.webView.WKWebView goForward];
+}
+
+- (void)onTapTabSwitcherBtn:(id)sender {
   [self.delegate browserDidTapTabSwitcherButton:self];
 }
 

@@ -14,8 +14,6 @@
 @class NavigationHandler;
 
 @protocol NavigationDelegate <NSObject>
-- (void)navigationHandlerDidStartLoading:(NavigationHandler*)navigationHandler;
-- (void)navigationHandlerDidStopLoading:(NavigationHandler*)navigationHandler;
 @end
 
 @interface NavigationHandler : NSObject <WKNavigationDelegate>
