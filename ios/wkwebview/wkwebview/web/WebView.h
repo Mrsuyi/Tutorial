@@ -19,11 +19,11 @@
 @optional
 - (void)webView:(WebView*)oldWebView didCreateWebView:(WebView*)newWebView;
 - (void)webViewDidChangeURL:(WebView*)webView;
+- (void)webViewDidChangeLoading:(WebView*)webView;
 - (void)webViewDidChangeTitle:(WebView*)webView;
 - (void)webViewDidChangeEstimatedProgress:(WebView*)webView;
 - (void)webViewDidChangeCanGoBack:(WebView*)webView;
 - (void)webViewDidChangeCanGoForward:(WebView*)webView;
-- (void)webViewDidChangeLoading:(WebView*)webView;
 
 @end
 

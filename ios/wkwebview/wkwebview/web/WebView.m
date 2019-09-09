@@ -14,6 +14,12 @@
 #import "WebsiteDataStore.h"
 #import "navigation/NavigationHandler.h"
 
+#define LOG                                                                  \
+  NSLog(@"URL: %@ loading: %d cur-URL: %@ init-URL: %@", self.WKWebView.URL, \
+        self.WKWebView.loading,                                              \
+        self.WKWebView.backForwardList.currentItem.URL,                      \
+        self.WKWebView.backForwardList.currentItem.initialURL)
+
 @interface WebView () <WKUIDelegate, NavigationDelegate>
 
 @property(nonatomic, readwrite) BOOL incognito;
@@ -85,8 +91,41 @@
                       ofObject:(id)object
                         change:(NSDictionary<NSKeyValueChangeKey, id>*)change
                        context:(void*)context {
-  SEL sel = NSSelectorFromString([self WKWebViewKVOKeyPaths][keyPath]);
+  NSString* callbackName = [self WKWebViewKVOKeyPaths][keyPath];
+
+  // Invoke on |self|.
+  SEL sel = NSSelectorFromString(callbackName);
+  IMP imp = [self methodForSelector:sel];
+  void (*func)(id, SEL) = (void*)imp;
+  func(self, sel);
+
+  // Dispatch to observers.
+  sel = NSSelectorFromString([NSString stringWithFormat:@"%@:", callbackName]);
   [_observers notify:sel withObject:self];
+}
+
+#pragma mark - KVO
+
+- (void)webViewDidChangeURL {
+  NSLog(@"KVO-URL");
+  LOG;
+}
+
+- (void)webViewDidChangeLoading {
+  NSLog(@"KVO-loading");
+  LOG;
+}
+
+- (void)webViewDidChangeTitle {
+}
+
+- (void)webViewDidChangeEstimatedProgress {
+}
+
+- (void)webViewDidChangeCanGoBack {
+}
+
+- (void)webViewDidChangeCanGoForward {
 }
 
 #pragma mark - Public methods
@@ -116,12 +155,12 @@
 
 - (NSDictionary<NSString*, NSString*>*)WKWebViewKVOKeyPaths {
   return @{
-    @"title" : @"webViewDidChangeTitle:",
-    @"URL" : @"webViewDidChangeURL:",
+    @"title" : @"webViewDidChangeTitle",
+    @"URL" : @"webViewDidChangeURL",
     @"estimatedProgress" : @"webViewDidChangeEstimatedProgress",
-    @"canGoBack" : @"webViewDidChangeCanGoBack:",
-    @"canGoForward" : @"webViewDidChangeCanGoForward:",
-    @"loading" : @"webViewDidChangeLoading:",
+    @"canGoBack" : @"webViewDidChangeCanGoBack",
+    @"canGoForward" : @"webViewDidChangeCanGoForward",
+    @"loading" : @"webViewDidChangeLoading",
   };
 }
 
