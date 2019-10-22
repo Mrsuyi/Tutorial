@@ -32,8 +32,10 @@
   if (self) {
     _regularTabsCollectionVC = [TabsCollectionViewController new];
     _regularTabsCollectionVC.delegate = self;
+    _regularTabsCollectionVC.webViewList = GetRegularWebViewList();
     _incognitoTabsCollectionVC = [TabsCollectionViewController new];
     _incognitoTabsCollectionVC.delegate = self;
+    _incognitoTabsCollectionVC.webViewList = GetIncognitoWebViewList();
 
     _shownTabsCollectionVC = nil;
   }
@@ -130,12 +132,9 @@
 
 #pragma mark - TabsCollectionDelegate
 
-- (void)tabsCollection:(id)tabsCollectionVC didSelectTab:(TabModel*)tabModel {
-  [self.delegate tabSwitcher:self didSelectTab:tabModel];
-}
-
-- (void)tabsCollection:(id)tabsCollectionVC willCloseTab:(TabModel*)tabModel {
-  [self.delegate tabSwitcher:self willCloseTab:tabModel];
+- (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC
+      didSelectWebView:(WebView*)webView {
+  [self.delegate tabSwitcher:self didSelectWebView:webView];
 }
 
 #pragma mark - Button callbacks
@@ -173,20 +172,14 @@
   [self.delegate tabSwitcherDidTapDoneButton:self];
 }
 
-#pragma mark - Public methods
+#pragma mark - Public
 
-- (void)addTabModel:(TabModel*)tabModel {
-  if (tabModel.incognito)
-    [_incognitoTabsCollectionVC addTabModel:tabModel];
-  else
-    [_regularTabsCollectionVC addTabModel:tabModel];
-}
-
-- (void)updateTabModel:(TabModel*)tabModel {
-  if (tabModel.incognito)
-    [_incognitoTabsCollectionVC updateTabModel:tabModel];
-  else
-    [_regularTabsCollectionVC updateTabModel:tabModel];
+- (void)updateWebViewScreenShot:(WebView*)webView {
+  if (webView.incognito) {
+    [self.incognitoTabsCollectionVC updateWebViewScreenShot:webView];
+  } else {
+    [self.regularTabsCollectionVC updateWebViewScreenShot:webView];
+  }
 }
 
 @end

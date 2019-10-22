@@ -10,15 +10,9 @@
 
 @implementation TabModel
 
-+ (instancetype)modelWithID:(id)ID
-                  incognito:(BOOL)incognito
-                      title:(NSString*)title
-                 screenShot:(UIImage*)screenShot {
-  TabModel* model = [TabModel new];
-  model.ID = ID;
-  model.incognito = incognito;
-  model.title = title;
-  model.screenShot = screenShot;
++ (instancetype)modelWithWebView:(WebView*)webView {
+  TabModel* model = [[TabModel alloc] init];
+  model.webView = webView;
   return model;
 }
 

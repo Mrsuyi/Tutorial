@@ -14,10 +14,11 @@
 
 @class WebView;
 
-@protocol WebObserver <NSObject>
+#pragma mark - WebViewObserver
+
+@protocol WebViewObserver <NSObject>
 
 @optional
-- (void)webView:(WebView*)oldWebView didCreateWebView:(WebView*)newWebView;
 - (void)webViewDidChangeURL:(WebView*)webView;
 - (void)webViewDidChangeLoading:(WebView*)webView;
 - (void)webViewDidChangeTitle:(WebView*)webView;
@@ -27,6 +28,19 @@
 
 @end
 
+#pragma mark - WebViewDelegate
+
+@protocol WebViewDelegate <NSObject>
+
+@optional
+
+- (void)webView:(WebView*)oldWebView didCreateWebView:(WebView*)newWebView;
+- (void)webViewDidClose:(WebView*)webView;
+
+@end
+
+#pragma mark - WebView
+
 @interface WebView : UIView
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -34,11 +48,12 @@
 
 @property(nonatomic, readonly) BOOL incognito;
 @property(nonatomic, strong) WKWebView* WKWebView;
+@property(nonatomic, weak) id<WebViewDelegate> delegate;
 
 - (void)loadURL:(NSString*)URL;
 - (void)loadNTP;
-- (void)addObserver:(id<WebObserver>)delegate;
-- (void)removeObserver:(id<WebObserver>)delegate;
+- (void)addObserver:(id<WebViewObserver>)delegate;
+- (void)removeObserver:(id<WebViewObserver>)delegate;
 
 @end
 

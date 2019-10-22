@@ -11,7 +11,8 @@
 
 @interface BrowserViewController () <UIToolbarDelegate,
                                      UITextFieldDelegate,
-                                     WebObserver>
+                                     WebViewObserver,
+                                     WebViewListObserver>
 
 @end
 
@@ -187,6 +188,9 @@
 #pragma mark - Property accessors
 
 - (void)setWebView:(WebView*)webView {
+  if (webView == _webView) {
+    return;
+  }
   // Remove previous webView.
   if (_webView) {
     [_webView removeFromSuperview];
@@ -195,23 +199,25 @@
   }
   // Add current webView.
   _webView = webView;
-  webView.translatesAutoresizingMaskIntoConstraints = NO;
-  [webView addObserver:self];
-  [_webViewContainer addSubview:webView];
-  _webViewConstraints = CreateSameSizeConstraints(_webViewContainer, webView);
-  [NSLayoutConstraint activateConstraints:_webViewConstraints];
+  if (webView) {
+    webView.translatesAutoresizingMaskIntoConstraints = NO;
+    [webView addObserver:self];
+    [_webViewContainer addSubview:webView];
+    _webViewConstraints = CreateSameSizeConstraints(_webViewContainer, webView);
+    [NSLayoutConstraint activateConstraints:_webViewConstraints];
 
-  // Update UI.
-  if (webView.incognito) {
-    _topToolbar.barTintColor = UIColor.darkGrayColor;
-    _topToolbar.tintColor = UIColor.whiteColor;
-    _bottomToolbar.barTintColor = UIColor.darkGrayColor;
-    _bottomToolbar.tintColor = UIColor.whiteColor;
-  } else {
-    _topToolbar.barTintColor = UIColor.whiteColor;
-    _topToolbar.tintColor = nil;
-    _bottomToolbar.barTintColor = UIColor.whiteColor;
-    _bottomToolbar.tintColor = nil;
+    // Update UI.
+    if (webView.incognito) {
+      _topToolbar.barTintColor = UIColor.darkGrayColor;
+      _topToolbar.tintColor = UIColor.whiteColor;
+      _bottomToolbar.barTintColor = UIColor.darkGrayColor;
+      _bottomToolbar.tintColor = UIColor.whiteColor;
+    } else {
+      _topToolbar.barTintColor = UIColor.whiteColor;
+      _topToolbar.tintColor = nil;
+      _bottomToolbar.barTintColor = UIColor.whiteColor;
+      _bottomToolbar.tintColor = nil;
+    }
   }
   _backBtn.enabled = webView.WKWebView.canGoBack;
   _forwardBtn.enabled = webView.WKWebView.canGoForward;
@@ -237,6 +243,22 @@
 
 - (void)onTapTabSwitcherBtn:(id)sender {
   [self.delegate browserDidTapTabSwitcherButton:self];
+}
+
+#pragma mark - WebViewListObserver
+
+- (void)webViewList:(WebViewList*)webViewlist
+    didActivateWebView:(WebView*)webView
+               atIndex:(NSUInteger)index {
+  self.webView = webView;
+}
+
+- (void)webViewList:(WebViewList*)webViewList
+    willRemoveWebView:(WebView*)webView
+              atIndex:(NSUInteger)index {
+  if (webView == self.webView) {
+    self.webView = nil;
+  }
 }
 
 @end

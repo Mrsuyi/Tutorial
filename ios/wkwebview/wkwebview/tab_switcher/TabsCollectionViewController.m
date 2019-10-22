@@ -12,11 +12,14 @@
 NSString* const kTabCellReuseIdentifier = @"shit";
 
 @interface TabsCollectionViewController () <UICollectionViewDelegateFlowLayout,
-                                            TabCellDelegate>
+                                            TabCellDelegate,
+                                            WebViewListObserver>
+
+@property(nonatomic, strong) NSMutableArray<TabModel*>* tabModels;
+
 @end
 
 @implementation TabsCollectionViewController {
-  NSMutableArray<TabModel*>* _tabModels;
   UICollectionViewFlowLayout* _flowLayout;
   TabCell* _sizeReferenceCell;
 }
@@ -59,17 +62,17 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
 - (NSInteger)collectionView:(UICollectionView*)collectionView
      numberOfItemsInSection:(NSInteger)section {
-  return _tabModels.count;
+  return self.tabModels.count;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView
                  cellForItemAtIndexPath:(NSIndexPath*)indexPath {
-  TabModel* tabModel = _tabModels[indexPath.item];
+  TabModel* tabModel = self.tabModels[indexPath.item];
   TabCell* cell = (TabCell*)[collectionView
       dequeueReusableCellWithReuseIdentifier:kTabCellReuseIdentifier
                                 forIndexPath:indexPath];
-  cell.incognito = tabModel.incognito;
-  cell.titleLabel.text = tabModel.title;
+  cell.incognito = tabModel.webView.incognito;
+  cell.titleLabel.text = tabModel.webView.WKWebView.title;
   cell.screenShotView.image = tabModel.screenShot;
   cell.delegate = self;
   return cell;
@@ -80,7 +83,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 - (CGSize)collectionView:(UICollectionView*)collectionView
                     layout:(UICollectionViewLayout*)collectionViewLayout
     sizeForItemAtIndexPath:(NSIndexPath*)indexPath {
-  if (_tabModels.count == 0) {
+  if (self.tabModels.count == 0) {
     _flowLayout.minimumLineSpacing = 0;
     _flowLayout.minimumInteritemSpacing = 0;
     _flowLayout.sectionInset = UIEdgeInsetsZero;
@@ -96,7 +99,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
                          ? 3
                          : 4;
   }
-  NSUInteger cellsPerRow = MIN(_tabModels.count, maxCellsPerRow);
+  NSUInteger cellsPerRow = MIN(self.tabModels.count, maxCellsPerRow);
   CGSize collectionViewSize = self.collectionView.frame.size;
 
   // Calculate space between rows, columns, and padding.
@@ -111,8 +114,8 @@ NSString* const kTabCellReuseIdentifier = @"shit";
   CGSize cellSize = [_sizeReferenceCell.contentView
       systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
   cellSize.width = width;
-  if (_tabModels[0].screenShot) {
-    CGSize screenShotSize = _tabModels[0].screenShot.size;
+  if (self.tabModels[0].screenShot) {
+    CGSize screenShotSize = self.tabModels[0].screenShot.size;
     cellSize.height += screenShotSize.height * (width / screenShotSize.width);
   }
   return cellSize;
@@ -122,7 +125,12 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
 - (void)collectionView:(UICollectionView*)collectionView
     didSelectItemAtIndexPath:(NSIndexPath*)indexPath {
-  [self.delegate tabsCollection:self didSelectTab:_tabModels[indexPath.item]];
+  NSAssert(indexPath.item >= 0 && indexPath.item < self.webViewList.count,
+           @"selected tab must have a valid index");
+  self.webViewList.activeIndex = indexPath.item;
+  [self.delegate
+        tabsCollection:self
+      didSelectWebView:[self.webViewList webViewAtIndex:indexPath.item]];
   [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
@@ -130,43 +138,82 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 
 - (void)tabCellDidTapCloseButton:(TabCell*)tabCell {
   NSIndexPath* indexPath = [self.collectionView indexPathForCell:tabCell];
-  [self.delegate tabsCollection:self willCloseTab:_tabModels[indexPath.item]];
-  [_tabModels removeObjectAtIndex:indexPath.item];
-  [self.collectionView deleteItemsAtIndexPaths:@[ indexPath ]];
+  [self.webViewList removeWebViewAtIndex:indexPath.item];
+}
+
+#pragma mark - WebViewListObserver
+
+- (void)webViewList:(WebViewList*)webViewList
+    didActivateWebView:(WebView*)webView
+               atIndex:(NSUInteger)index {
+  NSAssert(webViewList == self.webViewList, @"WebViewList mismatch");
+}
+
+- (void)webViewList:(WebViewList*)webViewList
+    didInsertWebView:(WebView*)webView
+             atIndex:(NSUInteger)index {
+  NSAssert(webViewList == self.webViewList, @"WebViewList mismatch");
+  [self.tabModels insertObject:[TabModel modelWithWebView:webView]
+                       atIndex:self.tabModels.count];
+  [self.collectionView reloadData];
+}
+
+- (void)webViewList:(WebViewList*)webViewList
+    willRemoveWebView:(WebView*)webView
+              atIndex:(NSUInteger)index {
+  NSAssert(webViewList == self.webViewList, @"WebViewList mismatch");
+
+  if (index == webViewList.activeIndex) {
+    NSUInteger count = webViewList.count;
+    if (count > index + 1) {
+      webViewList.activeIndex = index + 1;
+    } else if (index > 0) {
+      webViewList.activeIndex = index - 1;
+    }
+  }
+
+  [self.tabModels removeObjectAtIndex:index];
+  [self.collectionView
+      deleteItemsAtIndexPaths:@[ [NSIndexPath indexPathForItem:index
+                                                     inSection:0] ]];
 }
 
 #pragma mark - Public methods
 
-- (void)addTabModel:(TabModel*)tabModel {
-  [_tabModels addObject:tabModel];
-  [self.collectionView reloadData];
-}
-
-- (BOOL)hasTabModel:(TabModel*)tabModel {
-  for (NSInteger i = 0; i < _tabModels.count; ++i) {
-    if (_tabModels[i].ID == tabModel.ID)
-      return YES;
+- (void)setWebViewList:(WebViewList*)webViewList {
+  if (_webViewList) {
+    [_webViewList removeObserver:self];
   }
-  return NO;
+  _webViewList = webViewList;
+  [webViewList addObserver:self];
 }
 
-- (void)updateTabModel:(TabModel*)tabModel {
-  for (NSUInteger i = 0; i < _tabModels.count; ++i) {
-    // Ignore TabModel.incognito.
-    if (_tabModels[i].ID == tabModel.ID) {
-      if (tabModel.title)
-        _tabModels[i].title = tabModel.title;
-      if (tabModel.screenShot)
-        _tabModels[i].screenShot = tabModel.screenShot;
-      [self.collectionView
-          reloadItemsAtIndexPaths:@[ [NSIndexPath indexPathForItem:i
-                                                         inSection:0] ]];
-      return;
-    }
-  }
-  NSAssert(NO, @"TabModel not found in TabsCollectionVC");
+- (void)updateWebViewScreenShot:(WebView*)webView {
+  WKSnapshotConfiguration* conf = [[WKSnapshotConfiguration alloc] init];
+  __weak TabsCollectionViewController* weakSelf = self;
+  [webView.WKWebView
+      takeSnapshotWithConfiguration:conf
+                  completionHandler:^(UIImage* _Nullable snapshotImage,
+                                      NSError* _Nullable error) {
+                    if (error) {
+                      NSLog(@"WKWebView takeSnapshot failed: %@", error);
+                      return;
+                    }
+                    if (!weakSelf) {
+                      return;
+                    }
+                    TabsCollectionViewController* strongSelf = weakSelf;
+                    NSUInteger index =
+                        [strongSelf.webViewList indexOfWebView:webView];
+                    if (index == NSNotFound) {
+                      NSLog(@"WebView not found after screenshot is taken");
+                      return;
+                    }
+                    strongSelf.tabModels[index].screenShot = snapshotImage;
+                    [strongSelf.collectionView reloadItemsAtIndexPaths:@[
+                      [NSIndexPath indexPathForItem:index inSection:0]
+                    ]];
+                  }];
 }
-
-#pragma mark - Private methods
 
 @end

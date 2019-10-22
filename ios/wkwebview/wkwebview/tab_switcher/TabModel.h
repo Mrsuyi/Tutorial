@@ -10,17 +10,13 @@
 #define TabModel_h
 
 #import <UIKit/UIKit.h>
+#import "../web/WebView.h"
 
 @interface TabModel : NSObject
 
-+ (instancetype)modelWithID:(id)ID
-                  incognito:(BOOL)incognito
-                      title:(NSString*)title
-                 screenShot:(UIImage*)screenShot;
++ (instancetype)modelWithWebView:(WebView*)webView;
 
-@property(nonatomic, weak) id ID;
-@property(nonatomic, assign) BOOL incognito;
-@property(nonatomic, copy) NSString* title;
+@property(nonatomic, weak) WebView* webView;
 @property(nonatomic, strong) UIImage* screenShot;
 
 @end

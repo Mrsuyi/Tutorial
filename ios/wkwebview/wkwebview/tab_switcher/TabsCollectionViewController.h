@@ -10,6 +10,7 @@
 #define TabsCollectionViewController_h
 
 #import <UIKit/UIKit.h>
+#import "../WebViewList.h"
 #import "TabModel.h"
 
 @class TabsCollectionViewController;
@@ -17,19 +18,16 @@
 @protocol TabsCollectionDelegate
 
 - (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC
-          didSelectTab:(TabModel*)tabModel;
-- (void)tabsCollection:(TabsCollectionViewController*)tabsCollectionVC
-          willCloseTab:(TabModel*)tabModel;
+      didSelectWebView:(WebView*)webView;
 
 @end
 
 @interface TabsCollectionViewController : UICollectionViewController
 
 @property(nonatomic, weak) id<TabsCollectionDelegate> delegate;
+@property(nonatomic, weak) WebViewList* webViewList;
 
-- (void)addTabModel:(TabModel*)tabModel;
-- (BOOL)hasTabModel:(TabModel*)tabModel;
-- (void)updateTabModel:(TabModel*)tabModel;
+- (void)updateWebViewScreenShot:(WebView*)webView;
 
 @end
 

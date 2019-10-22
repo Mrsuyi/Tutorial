@@ -7,15 +7,19 @@
 //
 
 #import "ViewController.h"
+#import "WebViewList.h"
 #import "base/LayoutUtils.h"
 #import "browser/BrowserViewController.h"
 #import "tab_switcher/TabSwitcherViewController.h"
 #import "web/WebView.h"
 #import "web/WebViewConfiguration.h"
 
-@interface ViewController () <TabSwitcherDelegate, BrowserDelegate, WebObserver>
+@interface ViewController () <TabSwitcherDelegate,
+                              BrowserDelegate,
+                              WebViewDelegate,
+                              WebViewObserver,
+                              WebViewListObserver>
 
-@property(nonatomic, strong) NSMutableSet<WebView*>* webViews;
 @property(nonatomic, strong) TabSwitcherViewController* tabSwitcherVC;
 @property(nonatomic, strong) BrowserViewController* browserVC;
 
@@ -25,11 +29,18 @@
 
 - (instancetype)init {
   if (self = [super init]) {
-    _webViews = [NSMutableSet new];
+    WebViewList* regularWebViewList = GetRegularWebViewList();
+    WebViewList* incognitoWebViewList = GetIncognitoWebViewList();
+
     _tabSwitcherVC = [TabSwitcherViewController new];
     _tabSwitcherVC.delegate = self;
+    [regularWebViewList addObserver:_tabSwitcherVC];
+    [incognitoWebViewList addObserver:_tabSwitcherVC];
+
     _browserVC = [BrowserViewController new];
     _browserVC.delegate = self;
+    [regularWebViewList addObserver:_browserVC];
+    [incognitoWebViewList addObserver:_browserVC];
   }
   return self;
 }
@@ -45,9 +56,12 @@
   [self.view addSubview:self.browserVC.view];
 
   // Init and display first webView.
-  WebView* newTab = [[WebView alloc] initInIncognitoMode:NO];
-  [self addAndShowWebView:newTab];
-  [newTab loadNTP];
+  WebView* newWebView = [[WebView alloc] initInIncognitoMode:NO];
+  newWebView.delegate = self;
+  WebViewList* webViewList = GetRegularWebViewList();
+  [webViewList appendWebView:newWebView];
+  webViewList.activeIndex = webViewList.count - 1;
+  [newWebView loadNTP];
 }
 
 #pragma mark - UIViewController
@@ -58,9 +72,8 @@
 
 #pragma mark - TabSwitcherDelegate
 
-- (void)tabSwitcher:(id)tabSwitcher didSelectTab:(TabModel*)tabModel {
-  WebView* webView = (WebView*)tabModel.ID;
-  [self.browserVC setWebView:webView];
+- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher
+    didSelectWebView:(WebView*)webView {
   [self showBrowserVC];
 }
 
@@ -70,61 +83,48 @@
 
 - (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher
     didTapNewTabButtonInIncognitoMode:(BOOL)inIncognitoMode {
-  WebView* newTab = [[WebView alloc] initInIncognitoMode:inIncognitoMode];
-  [self addAndShowWebView:newTab];
-  [newTab loadNTP];
-  [self showBrowserVC];
-}
-
-- (void)tabSwitcher:(TabSwitcherViewController*)tabSwitcher
-       willCloseTab:(TabModel*)tabModel {
-  [_webViews removeObject:(WebView*)tabModel.ID];
+  WebView* newWebView = [[WebView alloc] initInIncognitoMode:inIncognitoMode];
+  newWebView.delegate = self;
+  WebViewList* webViewList =
+      inIncognitoMode ? GetIncognitoWebViewList() : GetRegularWebViewList();
+  [webViewList appendWebView:newWebView];
+  [newWebView loadNTP];
 }
 
 #pragma mark - BrowserDelegate
 
 - (void)browserDidTapTabSwitcherButton:(BrowserViewController*)browser {
-  WKWebView* webView = self.browserVC.webView.WKWebView;
-  WKSnapshotConfiguration* conf = [[WKSnapshotConfiguration alloc] init];
-  __weak ViewController* weakSelf = self;
-  [webView
-      takeSnapshotWithConfiguration:conf
-                  completionHandler:^(UIImage* _Nullable snapshotImage,
-                                      NSError* _Nullable error) {
-                    if (error) {
-                      NSLog(@"WKWebView takeSnapshot failed: %@", error);
-                      return;
-                    }
-                    [weakSelf.tabSwitcherVC
-                        updateTabModel:[TabModel
-                                           modelWithID:weakSelf.browserVC
-                                                           .webView
-                                             incognito:weakSelf.browserVC
-                                                           .webView.incognito
-                                                 title:nil
-                                            screenShot:snapshotImage]];
-                  }];
   [self hideBrowserVC];
+  [self.tabSwitcherVC updateWebViewScreenShot:browser.webView];
 }
 
-#pragma mark - WebObserver
+#pragma mark - WebViewDelegate
 
-- (void)webView:(WebView*)oldwebView didCreateWebView:(WebView*)newwebView {
-  [self addAndShowWebView:newwebView];
+- (void)webView:(WebView*)oldWebView didCreateWebView:(WebView*)newWebView {
+  WebViewList* webViewList = newWebView.incognito ? GetIncognitoWebViewList()
+                                                  : GetRegularWebViewList();
+  [webViewList appendWebView:newWebView];
+  webViewList.activeIndex = webViewList.count - 1;
 }
 
-- (void)webViewDidChangeTitle:(WebView*)webView {
-  [self.tabSwitcherVC
-      updateTabModel:[TabModel modelWithID:webView
-                                 incognito:webView.incognito
-                                     title:webView.WKWebView.title
-                                screenShot:nil]];
+- (void)webViewDidClose:(WebView*)webView {
+  if (webView.incognito) {
+    [GetIncognitoWebViewList() removeWebView:webView];
+  } else {
+    [GetRegularWebViewList() removeWebView:webView];
+  }
 }
 
-- (void)webViewDidStartLoading:(WebView*)webVC {
-}
+#pragma mark - WebViewObserver
 
-- (void)webViewDidFinishLoading:(WebView*)webVC {
+#pragma mark - WebViewListObserver
+
+- (void)webViewList:(WebViewList*)webViewlist
+    didActivateWebView:(WebView*)webView
+               atIndex:(NSUInteger)index {
+  if (!_browserVC.parentViewController) {
+    [self showBrowserVC];
+  }
 }
 
 #pragma mark - Helper methods
@@ -153,16 +153,6 @@
         [self.browserVC.view removeFromSuperview];
         [self.browserVC removeFromParentViewController];
       }];
-}
-
-- (void)addAndShowWebView:(WebView*)webView {
-  [self.webViews addObject:webView];
-  [webView addObserver:self];
-  [self.tabSwitcherVC addTabModel:[TabModel modelWithID:webView
-                                              incognito:webView.incognito
-                                                  title:webView.WKWebView.title
-                                             screenShot:nil]];
-  [self.browserVC setWebView:webView];
 }
 
 @end
