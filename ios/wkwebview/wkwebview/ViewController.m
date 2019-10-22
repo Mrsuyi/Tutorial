@@ -109,8 +109,9 @@
 
 #pragma mark - WebObserver
 
-- (void)webView:(WebView*)oldwebView didCreateWebView:(WebView*)newwebView {
-  [self addAndShowWebView:newwebView];
+- (void)webView:(WebView*)oldWebView didCreateWebView:(WebView*)newWebView {
+  NSAssert(newWebView, @"newly created WebView is nil");
+  [self addAndShowWebView:newWebView];
 }
 
 - (void)webViewDidChangeTitle:(WebView*)webView {

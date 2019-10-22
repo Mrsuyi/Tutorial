@@ -14,6 +14,8 @@
 
 @class WebView;
 
+#pragma mark - WebObserver
+
 @protocol WebObserver <NSObject>
 
 @optional
@@ -27,6 +29,18 @@
 
 @end
 
+#pragma mark - WebViewDelegate
+
+@protocol WebViewDelegate <NSObject>
+
+@optional
+
+- (void)webViewDidClose:(WebView*)webView;
+
+@end
+
+#pragma mark - WebView
+
 @interface WebView : UIView
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -34,6 +48,7 @@
 
 @property(nonatomic, readonly) BOOL incognito;
 @property(nonatomic, strong) WKWebView* WKWebView;
+@property(nonatomic, weak) id<WebViewDelegate> delegate;
 
 - (void)loadURL:(NSString*)URL;
 - (void)loadNTP;
