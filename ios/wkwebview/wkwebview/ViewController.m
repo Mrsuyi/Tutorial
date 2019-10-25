@@ -101,6 +101,7 @@
 #pragma mark - WebViewDelegate
 
 - (void)webView:(WebView*)oldWebView didCreateWebView:(WebView*)newWebView {
+  NSAssert(newWebView, @"newly created WebView is nil");
   WebViewList* webViewList = newWebView.incognito ? GetIncognitoWebViewList()
                                                   : GetRegularWebViewList();
   [webViewList appendWebView:newWebView];

@@ -75,7 +75,11 @@
     _WKWebView.navigationDelegate = _navigationHandler;
 
     // Set up KVO.
+<<<<<<< HEAD
     _observers = [ObserverList new];
+=======
+    _observers = [Observers new];
+>>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
     for (NSString* key in [self WKWebViewKVOKeyPaths]) {
       [_WKWebView addObserver:self forKeyPath:key options:0 context:nil];
     }
@@ -97,9 +101,17 @@
                     windowFeatures:(WKWindowFeatures*)windowFeatures {
   WebView* newWebView =
       [[WebView alloc] initWithWKWebViewConfiguration:configuration];
+<<<<<<< HEAD
   newWebView.incognito = _incognito;
   [self.delegate webView:self didCreateWebView:newWebView];
   return newWebView.WKWebView;
+=======
+  newWebVC.incognito = _incognito;
+  [_observers notify:@selector(webView:didCreateWebView:)
+          withObject:self
+          withObject:newWebVC];
+  return newWebVC.WKWebView;
+>>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 }
 
 - (void)webViewDidClose:(WKWebView*)webView {
