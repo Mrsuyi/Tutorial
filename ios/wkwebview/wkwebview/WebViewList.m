@@ -7,27 +7,20 @@
 //
 
 #import "WebViewList.h"
-<<<<<<< HEAD
 #import "base/ObserverList.h"
-=======
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 
 #pragma mark - WebViewList
 
 @interface WebViewList ()
 
 @property(nonatomic, strong) NSMutableArray<WebView*>* webViews;
-<<<<<<< HEAD
 @property(nonatomic, strong)
     ObserverList<id<WebViewListObserver>>* observerList;
-=======
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 
 @end
 
 @implementation WebViewList
 
-<<<<<<< HEAD
 - (instancetype)init {
   if (self = [super init]) {
     _webViews = [[NSMutableArray alloc] init];
@@ -63,31 +56,10 @@
 }
 
 - (WebView*)webViewAtIndex:(NSUInteger)index {
-=======
-- (void)setActiveIndex:(NSInteger)activeIndex {
-  _activeIndex = activeIndex;
-}
-
-- (NSInteger)count {
-  return self.webViews.count;
-}
-
-- (NSInteger)getIndexOfWebView:(WebView*)webView {
-  for (NSInteger i = 0; i < self.webViews.count; ++i) {
-    if (self.webViews[i] == webView) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-- (WebView*)webViewAtIndex:(NSInteger)index {
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
   return self.webViews[index];
 }
 
 - (void)removeWebView:(WebView*)webView {
-<<<<<<< HEAD
   NSUInteger index = [self.webViews indexOfObject:webView];
   if (index == NSNotFound) {
     return;
@@ -121,24 +93,12 @@
 
 - (void)appendWebView:(WebView*)webView {
   [self insertWebView:webView atIndex:self.webViews.count];
-=======
-  [self.webViews removeObject:webView];
-}
-
-- (void)insertWebView:(WebView*)webView AtIndex:(NSInteger)index {
-  [self.webViews insertObject:webView atIndex:index];
-}
-
-- (void)appendWebView:(WebView*)webView {
-  [self.webViews insertObject:webView atIndex:self.webViews.count];
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 }
 
 - (void)createNewWebView {
   NSAssert(NO, @"WebViewList.createNewWebView must be overridden");
 }
 
-<<<<<<< HEAD
 - (void)addObserver:(id<WebViewListObserver>)observer {
   [self.observerList addObserver:observer];
 }
@@ -147,30 +107,22 @@
   [self.observerList removeObserver:observer];
 }
 
-=======
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 @end
 
 #pragma mark - RegularWebViewList
 
 @interface RegularWebViewList : WebViewList
-<<<<<<< HEAD
-=======
 
 - (void)createNewWebView;
 
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 @end
 
 @implementation RegularWebViewList
 
-<<<<<<< HEAD
 - (BOOL)incognito {
   return NO;
 }
 
-=======
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 - (void)createNewWebView {
   WebView* webView = [[WebView alloc] initInIncognitoMode:NO];
   [self appendWebView:webView];
@@ -181,23 +133,17 @@
 #pragma mark -IncognitoWebViewList
 
 @interface IncognitoWebViewList : WebViewList
-<<<<<<< HEAD
-=======
 
 - (void)createNewWebView;
 
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 @end
 
 @implementation IncognitoWebViewList
 
-<<<<<<< HEAD
 - (BOOL)incognito {
   return YES;
 }
 
-=======
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 - (void)createNewWebView {
   WebView* webView = [[WebView alloc] initInIncognitoMode:YES];
   [self appendWebView:webView];

@@ -11,7 +11,6 @@
 
 #import "web/WebView.h"
 
-<<<<<<< HEAD
 @class WebViewList;
 
 #pragma mark - WebViewListObserver
@@ -35,13 +34,10 @@
 
 @end
 
-=======
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 #pragma mark - WebViewList
 
 @interface WebViewList : NSObject
 
-<<<<<<< HEAD
 @property(nonatomic, assign) NSUInteger activeIndex;
 @property(nonatomic, assign, readonly) NSUInteger count;
 @property(nonatomic, assign, readonly) BOOL incognito;
@@ -52,27 +48,14 @@
 - (void)removeWebView:(WebView*)webView;
 - (void)removeWebViewAtIndex:(NSUInteger)index;
 - (void)insertWebView:(WebView*)webView atIndex:(NSInteger)index;
-=======
-@property(nonatomic, assign) NSInteger activeIndex;
-@property(nonatomic, assign, readonly) NSInteger count;
-
-- (NSInteger)getIndexOfWebView:(WebView*)webView;
-- (WebView*)webViewAtIndex:(NSInteger)index;
-
-- (void)removeWebView:(WebView*)webView;
-- (void)insertWebView:(WebView*)webView AtIndex:(NSInteger)index;
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 - (void)appendWebView:(WebView*)webView;
 
 // Creates a new WebView and append it to the end of the list.
 - (void)createNewWebView;
 
-<<<<<<< HEAD
 - (void)addObserver:(id<WebViewListObserver>)observer;
 - (void)removeObserver:(id<WebViewListObserver>)observer;
 
-=======
->>>>>>> 2b0ed2b59c7da3e5e2821ebc7c4a45a9c46d11ee
 @end
 
 #pragma mark - Global Vars
