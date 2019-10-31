@@ -31,6 +31,7 @@
 - (void)webViewList:(WebViewList*)webViewList
     didRemoveWebView:(WebView*)webView
              atIndex:(NSUInteger)index;
+// Might be invoked with index1==index2.
 - (void)webViewList:(WebViewList*)webViewList
     willActivateWebView:(WebView*)webView1
                 atIndex:(NSUInteger)index1

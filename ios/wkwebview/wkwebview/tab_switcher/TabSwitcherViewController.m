@@ -9,7 +9,8 @@
 #import "TabSwitcherViewController.h"
 #import "TabsCollectionViewController.h"
 
-@interface TabSwitcherViewController () <TabsCollectionDelegate>
+@interface TabSwitcherViewController () <TabsCollectionDelegate,
+                                         WebViewListObserver>
 
 @property(nonatomic, strong)
     TabsCollectionViewController* regularTabsCollectionVC;
@@ -36,6 +37,9 @@
     _incognitoTabsCollectionVC = [TabsCollectionViewController new];
     _incognitoTabsCollectionVC.delegate = self;
     _incognitoTabsCollectionVC.webViewList = GetIncognitoWebViewList();
+
+    [GetRegularWebViewList() addObserver:self];
+    [GetIncognitoWebViewList() addObserver:self];
 
     _shownTabsCollectionVC = nil;
   }
@@ -137,15 +141,41 @@
   [self.delegate tabSwitcher:self didSelectWebView:webView];
 }
 
+#pragma mark - WebViewListObserver
+
+- (void)webViewList:(WebViewList*)webViewList
+    didInsertWebView:(WebView*)webView
+             atIndex:(NSUInteger)index {
+  self.doneBtn.enabled =
+      (webViewList.incognito ? GetIncognitoWebViewList().count
+                             : GetRegularWebViewList().count) > 0;
+}
+
+- (void)webViewList:(WebViewList*)webViewList
+    didRemoveWebView:(WebView*)webView
+             atIndex:(NSUInteger)index {
+  self.doneBtn.enabled =
+      (webViewList.incognito ? GetIncognitoWebViewList().count
+                             : GetRegularWebViewList().count) > 0;
+}
+
 #pragma mark - Button callbacks
 
 - (void)onIncognitoBtnTapped:(id)sender {
+  self.incognitoBtn.enabled = NO;
   self.newTabBtn.enabled = NO;
+  self.doneBtn.enabled = NO;
 
+  BOOL toIncognito = self.shownTabsCollectionVC == self.regularTabsCollectionVC;
   TabsCollectionViewController* hiddenTabsCollectionVC =
-      (self.shownTabsCollectionVC == self.regularTabsCollectionVC)
-          ? self.incognitoTabsCollectionVC
-          : self.regularTabsCollectionVC;
+      toIncognito ? self.incognitoTabsCollectionVC
+                  : self.regularTabsCollectionVC;
+  if (toIncognito) {
+    GetIncognitoWebViewList().activeIndex =
+        GetIncognitoWebViewList().activeIndex;
+  } else {
+    GetRegularWebViewList().activeIndex = GetRegularWebViewList().activeIndex;
+  }
   [UIView transitionFromView:self.shownTabsCollectionVC.view
                       toView:hiddenTabsCollectionVC.view
                     duration:0.3
@@ -154,11 +184,22 @@
                              UIViewAnimationCurveEaseInOut
                   completion:^(BOOL finished) {
                     self.shownTabsCollectionVC = hiddenTabsCollectionVC;
+                    self.incognitoBtn.enabled = YES;
                     self.newTabBtn.enabled = YES;
-                    self.incognitoBtn.title =
-                        [self.incognitoBtn.title isEqualToString:@"Regular"]
-                            ? @"Incognito"
-                            : @"Regular";
+                    if (toIncognito) {
+                      self.incognitoBtn.title = @"Incognito";
+                      self.incognitoBtn.tintColor = UIColor.lightGrayColor;
+                      self.newTabBtn.tintColor = UIColor.lightGrayColor;
+                      self.doneBtn.enabled =
+                          GetIncognitoWebViewList().count > 0;
+                      self.doneBtn.tintColor = UIColor.lightGrayColor;
+                    } else {
+                      self.incognitoBtn.title = @"Regular";
+                      self.incognitoBtn.tintColor = nil;
+                      self.newTabBtn.tintColor = nil;
+                      self.doneBtn.enabled = GetRegularWebViewList().count > 0;
+                      self.doneBtn.tintColor = nil;
+                    }
                   }];
 }
 

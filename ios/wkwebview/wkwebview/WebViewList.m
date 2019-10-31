@@ -31,9 +31,6 @@
 }
 
 - (void)setActiveIndex:(NSUInteger)activeIndex {
-  if (activeIndex == _activeIndex) {
-    return;
-  }
   NSAssert((0 <= activeIndex && activeIndex < self.webViews.count) ||
                activeIndex == NSNotFound,
            @"activeIndex must be valid");

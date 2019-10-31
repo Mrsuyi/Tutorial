@@ -144,21 +144,14 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 #pragma mark - WebViewListObserver
 
 - (void)webViewList:(WebViewList*)webViewList
-    willActivateWebView:(WebView*)webView
-                atIndex:(NSUInteger)index {
-  NSAssert(webViewList == self.webViewList, @"WebViewList mismatch");
-  // Unhighlight current active tab.
-  [self.collectionView reloadItemsAtIndexPaths:@[
-    [NSIndexPath indexPathForItem:self.webViewList.activeIndex inSection:0]
-  ]];
-}
-
-- (void)webViewList:(WebViewList*)webViewList
     didActivateWebView:(WebView*)webView1
                atIndex:(NSUInteger)index1
        deactiveWebView:(WebView*)webView2
                atIndex:(NSUInteger)index2 {
   NSAssert(webViewList == self.webViewList, @"WebViewList mismatch");
+  if (index1 == index2) {
+    return;
+  }
   // Highlight new active tab.
   [self.collectionView reloadItemsAtIndexPaths:@[
     [NSIndexPath indexPathForItem:index1 inSection:0],
