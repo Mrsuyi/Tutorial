@@ -9,15 +9,17 @@
 #ifndef WKNavigationHandler_h
 #define WKNavigationHandler_h
 
-#import <WebKit/WebKit.h>
+#import "../WebView.h"
 
 @class NavigationHandler;
 
-@protocol NavigationDelegate <NSObject>
+@protocol NavigationHandlerDelegate <NSObject>
+- (void)navigationHandler:(NavigationHandler*)navigationHandler
+    didFinishNavigationWithError:(NSError*)error;
 @end
 
 @interface NavigationHandler : NSObject <WKNavigationDelegate>
-@property(nonatomic, weak) id<NavigationDelegate> delegate;
+@property(nonatomic, weak) id<NavigationHandlerDelegate> delegate;
 @end
 
 #endif /* WKNavigationHandler_h */

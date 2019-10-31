@@ -74,6 +74,7 @@ NSString* const kTabCellReuseIdentifier = @"shit";
   cell.incognito = tabModel.webView.incognito;
   cell.titleLabel.text = tabModel.webView.WKWebView.title;
   cell.screenShotView.image = tabModel.screenShot;
+  cell.highlighted = self.webViewList.activeIndex == indexPath.item;
   cell.delegate = self;
   return cell;
 }
@@ -128,9 +129,8 @@ NSString* const kTabCellReuseIdentifier = @"shit";
   NSAssert(indexPath.item >= 0 && indexPath.item < self.webViewList.count,
            @"selected tab must have a valid index");
   self.webViewList.activeIndex = indexPath.item;
-  [self.delegate
-        tabsCollection:self
-      didSelectWebView:[self.webViewList webViewAtIndex:indexPath.item]];
+  [self.delegate tabsCollection:self
+               didSelectWebView:self.webViewList[indexPath.item]];
   [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
@@ -144,9 +144,26 @@ NSString* const kTabCellReuseIdentifier = @"shit";
 #pragma mark - WebViewListObserver
 
 - (void)webViewList:(WebViewList*)webViewList
-    didActivateWebView:(WebView*)webView
-               atIndex:(NSUInteger)index {
+    willActivateWebView:(WebView*)webView
+                atIndex:(NSUInteger)index {
   NSAssert(webViewList == self.webViewList, @"WebViewList mismatch");
+  // Unhighlight current active tab.
+  [self.collectionView reloadItemsAtIndexPaths:@[
+    [NSIndexPath indexPathForItem:self.webViewList.activeIndex inSection:0]
+  ]];
+}
+
+- (void)webViewList:(WebViewList*)webViewList
+    didActivateWebView:(WebView*)webView1
+               atIndex:(NSUInteger)index1
+       deactiveWebView:(WebView*)webView2
+               atIndex:(NSUInteger)index2 {
+  NSAssert(webViewList == self.webViewList, @"WebViewList mismatch");
+  // Highlight new active tab.
+  [self.collectionView reloadItemsAtIndexPaths:@[
+    [NSIndexPath indexPathForItem:index1 inSection:0],
+    [NSIndexPath indexPathForItem:index2 inSection:0]
+  ]];
 }
 
 - (void)webViewList:(WebViewList*)webViewList
@@ -162,16 +179,6 @@ NSString* const kTabCellReuseIdentifier = @"shit";
     willRemoveWebView:(WebView*)webView
               atIndex:(NSUInteger)index {
   NSAssert(webViewList == self.webViewList, @"WebViewList mismatch");
-
-  if (index == webViewList.activeIndex) {
-    NSUInteger count = webViewList.count;
-    if (count > index + 1) {
-      webViewList.activeIndex = index + 1;
-    } else if (index > 0) {
-      webViewList.activeIndex = index - 1;
-    }
-  }
-
   [self.tabModels removeObjectAtIndex:index];
   [self.collectionView
       deleteItemsAtIndexPaths:@[ [NSIndexPath indexPathForItem:index

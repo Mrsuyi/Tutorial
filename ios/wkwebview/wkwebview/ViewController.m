@@ -41,6 +41,9 @@
     _browserVC.delegate = self;
     [regularWebViewList addObserver:_browserVC];
     [incognitoWebViewList addObserver:_browserVC];
+
+    [regularWebViewList addObserver:self];
+    [incognitoWebViewList addObserver:self];
   }
   return self;
 }
@@ -88,7 +91,9 @@
   WebViewList* webViewList =
       inIncognitoMode ? GetIncognitoWebViewList() : GetRegularWebViewList();
   [webViewList appendWebView:newWebView];
+  webViewList.activeIndex = webViewList.count - 1;
   [newWebView loadNTP];
+  [self showBrowserVC];
 }
 
 #pragma mark - BrowserDelegate
@@ -109,6 +114,7 @@
 }
 
 - (void)webViewDidClose:(WebView*)webView {
+  [webView removeObserver:self];
   if (webView.incognito) {
     [GetIncognitoWebViewList() removeWebView:webView];
   } else {
@@ -118,19 +124,32 @@
 
 #pragma mark - WebViewObserver
 
+- (void)webViewDidFinishNavigation:(WebView*)webView withError:(NSError*)error {
+  if ([self.tabSwitcherVC parentViewController]) {
+    [self.tabSwitcherVC updateWebViewScreenShot:webView];
+  }
+}
+
 #pragma mark - WebViewListObserver
 
-- (void)webViewList:(WebViewList*)webViewlist
-    didActivateWebView:(WebView*)webView
-               atIndex:(NSUInteger)index {
-  if (!_browserVC.parentViewController) {
-    [self showBrowserVC];
-  }
+- (void)webViewList:(WebViewList*)webViewList
+    didInsertWebView:(WebView*)webView
+             atIndex:(NSUInteger)index {
+  [webView addObserver:self];
+}
+
+- (void)webViewList:(WebViewList*)webViewList
+    willRemoveWebView:(WebView*)webView
+              atIndex:(NSUInteger)index {
+  [webView removeObserver:self];
 }
 
 #pragma mark - Helper methods
 
 - (void)showBrowserVC {
+  if (self.browserVC.parentViewController) {
+    return;
+  }
   [self addChildViewController:self.browserVC];
   [self.view addSubview:self.browserVC.view];
   [UIView animateWithDuration:0.25
@@ -144,6 +163,9 @@
 }
 
 - (void)hideBrowserVC {
+  if (!self.browserVC.parentViewController) {
+    return;
+  }
   [UIView animateWithDuration:0.25
       delay:0
       options:UIViewAnimationOptionCurveEaseIn

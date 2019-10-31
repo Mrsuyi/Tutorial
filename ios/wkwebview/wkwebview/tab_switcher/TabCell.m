@@ -72,6 +72,19 @@
   return self;
 }
 
+- (void)setHighlighted:(BOOL)highlighted {
+  [super setHighlighted:highlighted];
+  if (highlighted) {
+    self.contentView.layer.borderColor = UIColor.orangeColor.CGColor;
+    self.contentView.layer.borderWidth = 3.0f;
+  } else {
+    self.contentView.layer.borderColor = UIColor.clearColor.CGColor;
+    self.contentView.layer.borderWidth = 0.0f;
+  }
+}
+
+#pragma mark - Public
+
 - (void)setIncognito:(BOOL)incognito {
   _incognito = incognito;
   if (incognito) {

@@ -112,6 +112,7 @@
 - (void)webView:(WKWebView*)webView
     didFinishNavigation:(WKNavigation*)navigation {
   NSLog(@"Nav-finish: %@", navigation);
+  [self.delegate navigationHandler:self didFinishNavigationWithError:nil];
   LOG;
 }
 

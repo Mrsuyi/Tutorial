@@ -25,6 +25,7 @@
 - (void)webViewDidChangeEstimatedProgress:(WebView*)webView;
 - (void)webViewDidChangeCanGoBack:(WebView*)webView;
 - (void)webViewDidChangeCanGoForward:(WebView*)webView;
+- (void)webViewDidFinishNavigation:(WebView*)webView withError:(NSError*)error;
 
 @end
 

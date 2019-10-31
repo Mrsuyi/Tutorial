@@ -25,6 +25,12 @@
       withObject:(id)object1
       withObject:(id)object2
     withUInteger:(NSUInteger)uinteger;
+- (void)notify:(SEL)sel
+      withObject:(id)object1
+      withObject:(id)object2
+    withUInteger:(NSUInteger)uinteger1
+      withObject:(id)object3
+    withUInteger:(NSUInteger)uinteger2;
 
 @end
 

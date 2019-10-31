@@ -20,6 +20,9 @@
 @optional
 
 - (void)webViewList:(WebViewList*)webViewList
+    willInsertWebView:(WebView*)webView
+              atIndex:(NSUInteger)index;
+- (void)webViewList:(WebViewList*)webViewList
     didInsertWebView:(WebView*)webView
              atIndex:(NSUInteger)index;
 - (void)webViewList:(WebViewList*)webViewList
@@ -28,9 +31,16 @@
 - (void)webViewList:(WebViewList*)webViewList
     didRemoveWebView:(WebView*)webView
              atIndex:(NSUInteger)index;
+- (void)webViewList:(WebViewList*)webViewList
+    willActivateWebView:(WebView*)webView1
+                atIndex:(NSUInteger)index1
+      deactivateWebView:(WebView*)webView2
+                atIndex:(NSUInteger)index2;
 - (void)webViewList:(WebViewList*)webViewlist
-    didActivateWebView:(WebView*)webView
-               atIndex:(NSUInteger)index;
+    didActivateWebView:(WebView*)webView1
+               atIndex:(NSUInteger)index1
+       deactiveWebView:(WebView*)webView2
+               atIndex:(NSUInteger)index2;
 
 @end
 
@@ -38,20 +48,22 @@
 
 @interface WebViewList : NSObject
 
+// activeIndex must be assignd with a valid value [0, count), or NSNotFound.
 @property(nonatomic, assign) NSUInteger activeIndex;
 @property(nonatomic, assign, readonly) NSUInteger count;
 @property(nonatomic, assign, readonly) BOOL incognito;
 
 - (NSUInteger)indexOfWebView:(WebView*)webView;
-- (WebView*)webViewAtIndex:(NSUInteger)index;
+- (WebView*)objectAtIndexedSubscript:(NSUInteger)index;
 
-- (void)removeWebView:(WebView*)webView;
-- (void)removeWebViewAtIndex:(NSUInteger)index;
 - (void)insertWebView:(WebView*)webView atIndex:(NSInteger)index;
 - (void)appendWebView:(WebView*)webView;
-
-// Creates a new WebView and append it to the end of the list.
-- (void)createNewWebView;
+// Remove active webView will update the activeIndex:
+//   1. To next webView after current one;
+//   2. To previous one if current one is the last one;
+//   3. To NSNotFound if none exists after removal.
+- (void)removeWebView:(WebView*)webView;
+- (void)removeWebViewAtIndex:(NSUInteger)index;
 
 - (void)addObserver:(id<WebViewListObserver>)observer;
 - (void)removeObserver:(id<WebViewListObserver>)observer;

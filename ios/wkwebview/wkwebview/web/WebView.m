@@ -32,7 +32,7 @@
 
 #pragma mark - WebView
 
-@interface WebView () <NavigationDelegate, UIDelegate>
+@interface WebView () <NavigationHandlerDelegate, UIDelegate>
 
 @property(nonatomic, readwrite) BOOL incognito;
 @property(nonatomic, readonly, strong) NavigationHandler* navigationHandler;
@@ -87,6 +87,15 @@
         activateConstraints:CreateSameSizeConstraints(self, _WKWebView)];
   }
   return self;
+}
+
+#pragma mark - NavigationHandlerDelegate
+
+- (void)navigationHandler:(NavigationHandler*)navigationHandler
+    didFinishNavigationWithError:(NSError*)error {
+  [_observers notify:@selector(webViewDidFinishNavigation:withError:)
+          withObject:self
+          withObject:error];
 }
 
 #pragma mark - UIHandlerDelegate

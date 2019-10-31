@@ -248,9 +248,11 @@
 #pragma mark - WebViewListObserver
 
 - (void)webViewList:(WebViewList*)webViewlist
-    didActivateWebView:(WebView*)webView
-               atIndex:(NSUInteger)index {
-  self.webView = webView;
+    didActivateWebView:(WebView*)webView1
+               atIndex:(NSUInteger)index1
+       deactiveWebView:(WebView*)webView2
+               atIndex:(NSUInteger)index2 {
+  self.webView = webView1;
 }
 
 - (void)webViewList:(WebViewList*)webViewList

@@ -84,4 +84,21 @@
   }
 }
 
+- (void)notify:(SEL)sel
+      withObject:(id)object1
+      withObject:(id)object2
+    withUInteger:(NSUInteger)uinteger1
+      withObject:(id)object3
+    withUInteger:(NSUInteger)uinteger2 {
+  [self.observers compact];
+  for (NSUInteger i = 0; i < self.observers.count; ++i) {
+    id observer = (id)[self.observers pointerAtIndex:i];
+    if ([observer respondsToSelector:sel]) {
+      IMP imp = [observer methodForSelector:sel];
+      void (*func)(id, SEL, id, id, NSUInteger, id, NSUInteger) = (void*)imp;
+      func(observer, sel, object1, object2, uinteger1, object3, uinteger2);
+    }
+  }
+}
+
 @end
