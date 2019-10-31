@@ -34,8 +34,10 @@
     _closeButton.titleLabel.font =
         [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     _closeButton.titleLabel.adjustsFontForContentSizeCategory = YES;
-    [_closeButton setContentHuggingPriority:UILayoutPriorityRequired
-                                    forAxis:UILayoutConstraintAxisHorizontal];
+    [_closeButton
+        setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                        forAxis:
+                                            UILayoutConstraintAxisHorizontal];
     [_closeButton addTarget:self
                      action:@selector(didTapCloseButton:)
            forControlEvents:UIControlEventTouchUpInside];
