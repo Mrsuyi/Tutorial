@@ -17,6 +17,7 @@
 		FD03BE9D225CD223005FEB54 /* TabCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE9C225CD223005FEB54 /* TabCell.m */; };
 		FD03BEA0225CD256005FEB54 /* TabsCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BE9F225CD256005FEB54 /* TabsCollectionViewController.m */; };
 		FD03BEA3225CD2F9005FEB54 /* TabModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FD03BEA2225CD2F9005FEB54 /* TabModel.m */; };
+		FD12226923720B120078E79D /* ErrorPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FD12226823720B120078E79D /* ErrorPage.m */; };
 		FDB98F05235F39DA00F473A9 /* WebViewList.m in Sources */ = {isa = PBXBuildFile; fileRef = FDB98F04235F39DA00F473A9 /* WebViewList.m */; };
 		FDD4E3F122F871960036A407 /* UIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD4E3F022F871960036A407 /* UIHandler.m */; };
 		FDD4E3F622F97FAC0036A407 /* ntp.html in Resources */ = {isa = PBXBuildFile; fileRef = FDD4E3F522F97FAC0036A407 /* ntp.html */; };
@@ -51,6 +52,8 @@
 		FD03BEA1225CD26E005FEB54 /* TabsCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabsCollectionViewController.h; sourceTree = "<group>"; };
 		FD03BEA2225CD2F9005FEB54 /* TabModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabModel.m; sourceTree = "<group>"; };
 		FD03BEA4225CD333005FEB54 /* TabModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabModel.h; sourceTree = "<group>"; };
+		FD12226823720B120078E79D /* ErrorPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorPage.m; sourceTree = "<group>"; };
+		FD12226A23720B240078E79D /* ErrorPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorPage.h; sourceTree = "<group>"; };
 		FDB98F04235F39DA00F473A9 /* WebViewList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewList.m; sourceTree = "<group>"; };
 		FDB98F06235F39EC00F473A9 /* WebViewList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewList.h; sourceTree = "<group>"; };
 		FDD4E3F022F871960036A407 /* UIHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIHandler.m; sourceTree = "<group>"; };
@@ -191,6 +194,8 @@
 				FDEFA72E22D4D10A00228A7F /* NavigationHandler.h */,
 				FDEFA73122D5DD3100228A7F /* error_page_string.html */,
 				FDEFA73322D5DD5500228A7F /* error_page_file.html */,
+				FD12226823720B120078E79D /* ErrorPage.m */,
+				FD12226A23720B240078E79D /* ErrorPage.h */,
 			);
 			path = navigation;
 			sourceTree = "<group>";
@@ -274,6 +279,7 @@
 				FD03BE8E225B7226005FEB54 /* main.m in Sources */,
 				FDE2FFAA2269BFE600E950BD /* WebViewConfiguration.m in Sources */,
 				FDFBA39122638B33006EA4F9 /* LayoutUtils.m in Sources */,
+				FD12226923720B120078E79D /* ErrorPage.m in Sources */,
 				FDB98F05235F39DA00F473A9 /* WebViewList.m in Sources */,
 				FDE2FF7C225F7E7600E950BD /* ObserverList.m in Sources */,
 				FDE2FF7F2260E36D00E950BD /* WebsiteDataStore.m in Sources */,

@@ -53,11 +53,12 @@
   NSString* encodedOriginalURL =
       [originalURL stringByAddingPercentEncodingWithAllowedCharacters:
                        NSCharacterSet.URLQueryAllowedCharacterSet];
-  NSString* path =
-      [NSBundle.mainBundle pathForResource:@"error_page_placeholder"
-                                    ofType:@"html"];
+  NSString* filePath = [NSBundle.mainBundle pathForResource:@"error_page_file"
+                                                     ofType:@"html"];
   NSString* pathURL =
-      [NSString stringWithFormat:@"file://%@#%@", path, encodedOriginalURL];
+      [NSString stringWithFormat:@"file://%@&url=%@&error=%@&dontReload=%@",
+                                 filePath, encodedOriginalURL,
+                                 error.localizedRecoverySuggestion, @"true"];
   NSURL* errorPageURL = [NSURL URLWithString:pathURL];
 
   // If current navigation item is an error page for the same |failedURL|,
