@@ -173,8 +173,12 @@
   if (url && !url.scheme) {
     url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", URL]];
   }
-  NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url];
-  [self.WKWebView loadRequest:request];
+  if ([url.scheme isEqualToString:@"file"]) {
+    [self.WKWebView loadFileURL:url allowingReadAccessToURL:url];
+  } else {
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url];
+    [self.WKWebView loadRequest:request];
+  }
 }
 
 - (void)loadNTP {

@@ -26,8 +26,8 @@
 		FDE2FFA72269B8C800E950BD /* LocalSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FFA62269B8C800E950BD /* LocalSchemeHandler.m */; };
 		FDE2FFAA2269BFE600E950BD /* WebViewConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = FDE2FFA92269BFE600E950BD /* WebViewConfiguration.m */; };
 		FDEFA72D22D4D0F000228A7F /* NavigationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FDEFA72C22D4D0F000228A7F /* NavigationHandler.m */; };
-		FDEFA73222D5DD3200228A7F /* error_page_content.html in Resources */ = {isa = PBXBuildFile; fileRef = FDEFA73122D5DD3100228A7F /* error_page_content.html */; };
-		FDEFA73422D5DD5500228A7F /* error_page_placeholder.html in Resources */ = {isa = PBXBuildFile; fileRef = FDEFA73322D5DD5500228A7F /* error_page_placeholder.html */; };
+		FDEFA73222D5DD3200228A7F /* error_page_string.html in Resources */ = {isa = PBXBuildFile; fileRef = FDEFA73122D5DD3100228A7F /* error_page_string.html */; };
+		FDEFA73422D5DD5500228A7F /* error_page_file.html in Resources */ = {isa = PBXBuildFile; fileRef = FDEFA73322D5DD5500228A7F /* error_page_file.html */; };
 		FDFBA39122638B33006EA4F9 /* LayoutUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FDFBA39022638B33006EA4F9 /* LayoutUtils.m */; };
 /* End PBXBuildFile section */
 
@@ -68,8 +68,8 @@
 		FDE2FFAB2269BFFA00E950BD /* WebViewConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewConfiguration.h; sourceTree = "<group>"; };
 		FDEFA72C22D4D0F000228A7F /* NavigationHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationHandler.m; sourceTree = "<group>"; };
 		FDEFA72E22D4D10A00228A7F /* NavigationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationHandler.h; sourceTree = "<group>"; };
-		FDEFA73122D5DD3100228A7F /* error_page_content.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = error_page_content.html; sourceTree = "<group>"; };
-		FDEFA73322D5DD5500228A7F /* error_page_placeholder.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = error_page_placeholder.html; sourceTree = "<group>"; };
+		FDEFA73122D5DD3100228A7F /* error_page_string.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = error_page_string.html; sourceTree = "<group>"; };
+		FDEFA73322D5DD5500228A7F /* error_page_file.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = error_page_file.html; sourceTree = "<group>"; };
 		FDFBA39022638B33006EA4F9 /* LayoutUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutUtils.m; sourceTree = "<group>"; };
 		FDFBA39322638B51006EA4F9 /* LayoutUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutUtils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,8 +189,8 @@
 			children = (
 				FDEFA72C22D4D0F000228A7F /* NavigationHandler.m */,
 				FDEFA72E22D4D10A00228A7F /* NavigationHandler.h */,
-				FDEFA73122D5DD3100228A7F /* error_page_content.html */,
-				FDEFA73322D5DD5500228A7F /* error_page_placeholder.html */,
+				FDEFA73122D5DD3100228A7F /* error_page_string.html */,
+				FDEFA73322D5DD5500228A7F /* error_page_file.html */,
 			);
 			path = navigation;
 			sourceTree = "<group>";
@@ -252,10 +252,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FDEFA73422D5DD5500228A7F /* error_page_placeholder.html in Resources */,
+				FDEFA73422D5DD5500228A7F /* error_page_file.html in Resources */,
 				FD03BE8B225B7226005FEB54 /* LaunchScreen.storyboard in Resources */,
 				FDD4E3F622F97FAC0036A407 /* ntp.html in Resources */,
-				FDEFA73222D5DD3200228A7F /* error_page_content.html in Resources */,
+				FDEFA73222D5DD3200228A7F /* error_page_string.html in Resources */,
 				FD03BE88225B7226005FEB54 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

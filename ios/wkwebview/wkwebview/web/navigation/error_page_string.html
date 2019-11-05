@@ -6,13 +6,13 @@
     // When back/forward/refresh this error page, reload the page.
     window.addEventListener('pageshow', function(event) {
       window.onpageshow = function(event) {
-                            location.reload();
-                            }}, {once: true});
+        window.replace('%@');
+      }, {once: true});
     </script>
   </head>
   <body>
-    <h1>Injected Error Page</h1>
-    <br>
+    <h1>Error Page loaded by [WKWebView loadHTMLString:baseURL:]</h1>
+    <h2>%@</h2>
     <h2>%@</h2>
   </body>
 </html>

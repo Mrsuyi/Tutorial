@@ -1,0 +1,37 @@
+<!--<!DOCTYPE html>-->
+<html>
+  <head>
+    <title>Mrsuyi</title>
+    <script type="text/javascript">
+      let params = new URLSearchParams(window.location.search.substring(1));
+
+      let originalUrl = decodeURIComponent(params.get('url'));
+      let reload = () => {
+        window.location.replace(originalUrl);
+      };
+
+      if (params.get('dontReload')) {
+        params.delete('dontReload');
+        let url = window.location.pathname + '?' + params.toString();
+        window.history.replaceState(null, document.title, url);
+        window.addEventListener('pageshow', function(event) {
+          window.onpageshow = reload;
+        }, {once: true});
+      } else {
+        reload();
+      }
+
+      // Display original URL and error info.
+      window.addEventListener('load', () => {
+        document.getElementById('originalUrl').textContent = originalUrl;
+        let error = params.get('error');
+        document.getElementById('error').textContent = error;
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Error page</h1>
+    <h2 id='originalUrl'></h2>
+    <h2 id='error'></h2>
+  </body>
+</html>
