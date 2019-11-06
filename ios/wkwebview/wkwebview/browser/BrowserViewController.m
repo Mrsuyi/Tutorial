@@ -7,7 +7,7 @@
 //
 
 #import "BrowserViewController.h"
-#import "../base/LayoutUtils.h"
+#import "../base/Utils.h"
 
 @interface BrowserViewController () <UIToolbarDelegate,
                                      UITextFieldDelegate,
@@ -162,7 +162,7 @@
 }
 
 - (void)webViewDidChangeURL:(WebView*)webView {
-  _omnibox.text = webView.WKWebView.URL.absoluteString;
+  _omnibox.text = SimplifyFilePath(webView.WKWebView.URL.absoluteString);
 }
 
 - (void)webViewDidChangeEstimatedProgress:(WebView*)webView {

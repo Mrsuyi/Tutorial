@@ -7,18 +7,12 @@
 //
 
 #import "WebView.h"
-#import "../base/LayoutUtils.h"
 #import "../base/ObserverList.h"
+#import "../base/Utils.h"
 #import "UI/UIHandler.h"
 #import "WebViewConfiguration.h"
 #import "WebsiteDataStore.h"
 #import "navigation/NavigationHandler.h"
-
-#define LOG                                                                  \
-  NSLog(@"URL: %@ loading: %d cur-URL: %@ init-URL: %@", self.WKWebView.URL, \
-        self.WKWebView.loading,                                              \
-        self.WKWebView.backForwardList.currentItem.URL,                      \
-        self.WKWebView.backForwardList.currentItem.initialURL)
 
 #pragma mark - WebKit Private API
 
@@ -138,32 +132,32 @@
 
 - (void)webViewDidChangeURL {
   NSLog(@"KVO-URL");
-  LOG;
+  LOG(self.WKWebView);
 }
 
 - (void)webViewDidChangeLoading {
   NSLog(@"KVO-loading");
-  LOG;
+  LOG(self.WKWebView);
 }
 
 - (void)webViewDidChangeTitle {
   NSLog(@"KVO-title");
-  LOG;
+  LOG(self.WKWebView);
 }
 
 - (void)webViewDidChangeEstimatedProgress {
   NSLog(@"KVO-estimated-progress");
-  LOG;
+  LOG(self.WKWebView);
 }
 
 - (void)webViewDidChangeCanGoBack {
   NSLog(@"KVO-go-back");
-  LOG;
+  LOG(self.WKWebView);
 }
 
 - (void)webViewDidChangeCanGoForward {
   NSLog(@"KVO-go-forward");
-  LOG;
+  LOG(self.WKWebView);
 }
 
 #pragma mark - Public methods

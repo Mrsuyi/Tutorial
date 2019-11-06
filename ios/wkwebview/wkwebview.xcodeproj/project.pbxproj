@@ -29,7 +29,7 @@
 		FDEFA72D22D4D0F000228A7F /* NavigationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FDEFA72C22D4D0F000228A7F /* NavigationHandler.m */; };
 		FDEFA73222D5DD3200228A7F /* error_page_string.html in Resources */ = {isa = PBXBuildFile; fileRef = FDEFA73122D5DD3100228A7F /* error_page_string.html */; };
 		FDEFA73422D5DD5500228A7F /* error_page_file.html in Resources */ = {isa = PBXBuildFile; fileRef = FDEFA73322D5DD5500228A7F /* error_page_file.html */; };
-		FDFBA39122638B33006EA4F9 /* LayoutUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FDFBA39022638B33006EA4F9 /* LayoutUtils.m */; };
+		FDFBA39122638B33006EA4F9 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = FDFBA39022638B33006EA4F9 /* Utils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,8 +73,8 @@
 		FDEFA72E22D4D10A00228A7F /* NavigationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationHandler.h; sourceTree = "<group>"; };
 		FDEFA73122D5DD3100228A7F /* error_page_string.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = error_page_string.html; sourceTree = "<group>"; };
 		FDEFA73322D5DD5500228A7F /* error_page_file.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = error_page_file.html; sourceTree = "<group>"; };
-		FDFBA39022638B33006EA4F9 /* LayoutUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayoutUtils.m; sourceTree = "<group>"; };
-		FDFBA39322638B51006EA4F9 /* LayoutUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutUtils.h; sourceTree = "<group>"; };
+		FDFBA39022638B33006EA4F9 /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		FDFBA39322638B51006EA4F9 /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,8 +181,8 @@
 			children = (
 				FDE2FF7B225F7E7600E950BD /* ObserverList.m */,
 				FDE2FF7D225F7E8400E950BD /* ObserverList.h */,
-				FDFBA39022638B33006EA4F9 /* LayoutUtils.m */,
-				FDFBA39322638B51006EA4F9 /* LayoutUtils.h */,
+				FDFBA39022638B33006EA4F9 /* Utils.m */,
+				FDFBA39322638B51006EA4F9 /* Utils.h */,
 			);
 			path = base;
 			sourceTree = "<group>";
@@ -278,7 +278,7 @@
 				FDE2FFA72269B8C800E950BD /* LocalSchemeHandler.m in Sources */,
 				FD03BE8E225B7226005FEB54 /* main.m in Sources */,
 				FDE2FFAA2269BFE600E950BD /* WebViewConfiguration.m in Sources */,
-				FDFBA39122638B33006EA4F9 /* LayoutUtils.m in Sources */,
+				FDFBA39122638B33006EA4F9 /* Utils.m in Sources */,
 				FD12226923720B120078E79D /* ErrorPage.m in Sources */,
 				FDB98F05235F39DA00F473A9 /* WebViewList.m in Sources */,
 				FDE2FF7C225F7E7600E950BD /* ObserverList.m in Sources */,

@@ -6,7 +6,7 @@
 //  Copyright © 2019 google. All rights reserved.
 //
 
-#import "LayoutUtils.h"
+#import "Utils.h"
 
 NSArray<NSLayoutConstraint*>* CreateSameSizeConstraints(UIView* view1,
                                                         UIView* view2) {
@@ -16,4 +16,10 @@ NSArray<NSLayoutConstraint*>* CreateSameSizeConstraints(UIView* view1,
     [view1.leadingAnchor constraintEqualToAnchor:view2.leadingAnchor],
     [view1.trailingAnchor constraintEqualToAnchor:view2.trailingAnchor]
   ];
+}
+
+NSString* SimplifyFilePath(NSString* path) {
+  return
+      [path stringByReplacingOccurrencesOfString:NSBundle.mainBundle.bundlePath
+                                      withString:@"."];
 }

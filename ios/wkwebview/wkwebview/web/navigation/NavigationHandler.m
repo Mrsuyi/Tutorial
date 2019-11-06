@@ -7,11 +7,8 @@
 //
 
 #import "NavigationHandler.h"
-
-#define LOG                                                           \
-  NSLog(@"URL: %@ loading: %d cur-URL: %@ init-URL: %@", webView.URL, \
-        webView.loading, webView.backForwardList.currentItem.URL,     \
-        webView.backForwardList.currentItem.initialURL)
+#import "../../base/Utils.h"
+#import "ErrorPage.h"
 
 @implementation NavigationHandler
 
@@ -22,7 +19,7 @@
                     decisionHandler:
                         (void (^)(WKNavigationActionPolicy))decisionHandler {
   NSLog(@"Nav-action %@", navigationAction);
-  LOG;
+  LOG(webView);
   decisionHandler(WKNavigationActionPolicyAllow);
 }
 
@@ -33,34 +30,23 @@
   NSLog(@"Nav-response: URL: %@ main-frame %ul MIME: %@",
         navigationResponse.response.URL, navigationResponse.isForMainFrame,
         navigationResponse.response.MIMEType);
-  LOG;
+  LOG(webView);
   decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 - (void)webView:(WKWebView*)webView
     didStartProvisionalNavigation:(WKNavigation*)navigation {
   NSLog(@"Nav-start-provision: %@", navigation);
-  LOG;
+  LOG(webView);
 }
 
 - (void)webView:(WKWebView*)webView
     didFailProvisionalNavigation:(WKNavigation*)navigation
                        withError:(NSError*)error {
   NSLog(@"Nav-fail-provision: %@ error: %@", navigation, error);
-  LOG;
+  LOG(webView);
 
-  NSString* originalURL = error.userInfo[NSURLErrorFailingURLStringErrorKey];
-  NSString* encodedOriginalURL =
-      [originalURL stringByAddingPercentEncodingWithAllowedCharacters:
-                       NSCharacterSet.URLQueryAllowedCharacterSet];
-  NSString* filePath = [NSBundle.mainBundle pathForResource:@"error_page_file"
-                                                     ofType:@"html"];
-  NSString* pathURL =
-      [NSString stringWithFormat:@"file://%@&url=%@&error=%@&dontReload=%@",
-                                 filePath, encodedOriginalURL,
-                                 error.localizedRecoverySuggestion, @"true"];
-  NSURL* errorPageURL = [NSURL URLWithString:pathURL];
-
+  ErrorPage* errorPage = [[ErrorPage alloc] initWithError:error];
   // If current navigation item is an error page for the same |failedURL|,
   // inject the error message into the page; otherwise load a new error page.
   WKBackForwardListItem* item = webView.backForwardList.currentItem;
@@ -71,25 +57,19 @@
   //   3. Current nav item is an irrelevant page.
   // For 1&2, inject error page HTML into current page;
   // For 3, load "loaded_error_page.html" to create a nav item for error page.
-  if ([item.URL isEqual:errorPageURL] ||
-      [item.URL isEqual:[NSURL URLWithString:originalURL]]) {
-    NSString* path = [NSBundle.mainBundle pathForResource:@"error_page_content"
-                                                   ofType:@"html"];
-    NSString* template = [NSString stringWithContentsOfFile:path
-                                                   encoding:NSUTF8StringEncoding
-                                                      error:nil];
-    NSString* html =
-        [NSString stringWithFormat:template, error.localizedDescription];
-    [webView loadHTMLString:html baseURL:[NSURL URLWithString:originalURL]];
+  if ([errorPage matchURL:item.URL] ||
+      [item.URL isEqual:errorPage.originalURL]) {
+    [webView loadHTMLString:errorPage.html baseURL:errorPage.originalURL];
   } else {
-    [webView loadFileURL:errorPageURL allowingReadAccessToURL:errorPageURL];
+    [webView loadFileURL:errorPage.fileURL
+        allowingReadAccessToURL:errorPage.fileURL];
   }
 }
 
 - (void)webView:(WKWebView*)webView
     didReceiveServerRedirectForProvisionalNavigation:(WKNavigation*)navigation {
   NSLog(@"Nav-redir: %@", navigation);
-  LOG;
+  LOG(webView);
 }
 
 - (void)webView:(WKWebView*)webView
@@ -100,28 +80,28 @@
                             completionHandler {
   NSLog(@"Nav-auth: %@://%@:%ld", challenge.protectionSpace.protocol,
         challenge.protectionSpace.host, challenge.protectionSpace.port);
-  LOG;
+  LOG(webView);
   completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
 }
 
 - (void)webView:(WKWebView*)webView
     didCommitNavigation:(WKNavigation*)navigation {
   NSLog(@"Nav-commit: %@", navigation);
-  LOG;
+  LOG(webView);
 }
 
 - (void)webView:(WKWebView*)webView
     didFinishNavigation:(WKNavigation*)navigation {
   NSLog(@"Nav-finish: %@", navigation);
   [self.delegate navigationHandler:self didFinishNavigationWithError:nil];
-  LOG;
+  LOG(webView);
 }
 
 - (void)webView:(WKWebView*)webView
     didFailNavigation:(WKNavigation*)navigation
             withError:(NSError*)error {
   NSLog(@"Nav-fail: %@ error: %@", navigation, error);
-  LOG;
+  LOG(webView);
 
   NSString* originalURL = error.userInfo[NSURLErrorFailingURLStringErrorKey];
   NSString* path = [NSBundle.mainBundle pathForResource:@"error_page_content"
@@ -136,7 +116,7 @@
 
 - (void)webViewWebContentProcessDidTerminate:(WKWebView*)webView {
   NSLog(@"Nav-terminate");
-  LOG;
+  LOG(webView);
 }
 
 @end
