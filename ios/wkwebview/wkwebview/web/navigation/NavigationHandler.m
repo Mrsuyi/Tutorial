@@ -102,16 +102,8 @@
             withError:(NSError*)error {
   NSLog(@"Nav-fail: %@ error: %@", navigation, error);
   LOG(webView);
-
-  NSString* originalURL = error.userInfo[NSURLErrorFailingURLStringErrorKey];
-  NSString* path = [NSBundle.mainBundle pathForResource:@"error_page_content"
-                                                 ofType:@"html"];
-  NSString* template = [NSString stringWithContentsOfFile:path
-                                                 encoding:NSUTF8StringEncoding
-                                                    error:nil];
-  NSString* html =
-      [NSString stringWithFormat:template, error.localizedDescription];
-  [webView loadHTMLString:html baseURL:[NSURL URLWithString:originalURL]];
+  ErrorPage* errorPage = [[ErrorPage alloc] initWithError:error];
+  [webView loadHTMLString:errorPage.html baseURL:errorPage.originalURL];
 }
 
 - (void)webViewWebContentProcessDidTerminate:(WKWebView*)webView {

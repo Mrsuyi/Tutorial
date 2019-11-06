@@ -38,6 +38,9 @@
         setContentCompressionResistancePriority:UILayoutPriorityRequired
                                         forAxis:
                                             UILayoutConstraintAxisHorizontal];
+    [_closeButton
+        setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                        forAxis:UILayoutConstraintAxisVertical];
     [_closeButton addTarget:self
                      action:@selector(didTapCloseButton:)
            forControlEvents:UIControlEventTouchUpInside];

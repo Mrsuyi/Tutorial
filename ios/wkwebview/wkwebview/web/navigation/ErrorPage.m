@@ -51,26 +51,28 @@ NSString* encodeHTML(NSString* text) {
 
 - (NSURL*)fileURL {
   if (!_fileURL) {
-    NSString* encodedOriginalURL = [self.originalURLString
-        stringByAddingPercentEncodingWithAllowedCharacters:
-            NSCharacterSet.URLQueryAllowedCharacterSet];
-    NSString* encodedErrorInfo = [_error.localizedDescription
-        stringByAddingPercentEncodingWithAllowedCharacters:
-            NSCharacterSet.URLQueryAllowedCharacterSet];
-    NSString* filePath = [NSBundle.mainBundle pathForResource:@"error_page_file"
-                                                       ofType:@"html"];
-    NSString* pathURL = [NSString
-        stringWithFormat:@"file://%@?url=%@&error=%@&dontReload=true", filePath,
-                         encodedOriginalURL, encodedErrorInfo];
-    _fileURL = [NSURL URLWithString:pathURL];
+    NSURLQueryItem* itemURL =
+        [NSURLQueryItem queryItemWithName:@"url" value:self.originalURLString];
+    NSURLQueryItem* itemError =
+        [NSURLQueryItem queryItemWithName:@"error"
+                                    value:_error.localizedDescription];
+    NSURLQueryItem* itemDontReload =
+        [NSURLQueryItem queryItemWithName:@"dontReload" value:@"true"];
+    NSURLComponents* url = [[NSURLComponents alloc] initWithString:@"file:///"];
+    url.path = [NSBundle.mainBundle pathForResource:@"error_page_file"
+                                             ofType:@"html"];
+    url.queryItems = @[ itemURL, itemError, itemDontReload ];
+    NSAssert(url.URL, @"file URL should be valid");
+    _fileURL = url.URL;
   }
   return _fileURL;
 }
 
 - (NSString*)html {
   if (!_html) {
-    NSString* path = [NSBundle.mainBundle pathForResource:@"error_page_content"
+    NSString* path = [NSBundle.mainBundle pathForResource:@"error_page_string"
                                                    ofType:@"html"];
+    NSAssert(path, @"error_page_string.html should exist");
     NSString* template = [NSString stringWithContentsOfFile:path
                                                    encoding:NSUTF8StringEncoding
                                                       error:nil];
@@ -88,16 +90,16 @@ NSString* encodeHTML(NSString* text) {
     return NO;
   }
   // Check that |url| has the same original URL as |self|.
-  NSString* originalURL = nil;
-  NSArray<NSString*>* kvs = [url.query componentsSeparatedByString:@"&"];
-  for (NSString* kv in kvs) {
-    NSRange range = [kv rangeOfString:@"url="];
-    if (range.location != NSNotFound) {
-      originalURL = [kv substringFromIndex:range.location + range.length];
+  NSURLComponents* urlComponents = [NSURLComponents componentsWithURL:url
+                                              resolvingAgainstBaseURL:NO];
+  NSURL* originalURL = nil;
+  for (NSURLQueryItem* item in urlComponents.queryItems) {
+    if ([item.name isEqualToString:@"url"]) {
+      originalURL = [NSURL URLWithString:item.value];
       break;
     }
   }
-  return originalURL && [originalURL isEqualToString:self.originalURLString];
+  return [originalURL isEqual:self.originalURL];
 }
 
 @end
