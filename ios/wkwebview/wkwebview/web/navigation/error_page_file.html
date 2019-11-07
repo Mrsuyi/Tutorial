@@ -5,33 +5,33 @@
     <script type="text/javascript">
       let params = new URLSearchParams(window.location.search.substring(1));
 
-      let originalUrl = decodeURIComponent(params.get('url'));
-      let reload = () => {
-        window.location.replace(originalUrl);
+      let failedUrl = decodeURIComponent(params.get('url'));
+      let load = () => {
+        window.location.replace(failedUrl);
       };
 
-      if (params.get('dontReload')) {
-        params.delete('dontReload');
+      if (params.get('dontLoad')) {
+        params.delete('dontLoad');
         let url = window.location.pathname + '?' + params.toString();
         window.history.replaceState(null, document.title, url);
         window.addEventListener('pageshow', function(event) {
-          window.onpageshow = reload;
+          window.onpageshow = load;
         }, {once: true});
       } else {
-        reload();
+        load();
       }
 
-      // Display original URL and error info.
+      // Display failed URL and error info.
       window.addEventListener('load', () => {
-        document.getElementById('originalUrl').textContent = originalUrl;
+        document.getElementById('failedUrl').textContent = failedUrl;
         let error = params.get('error');
         document.getElementById('error').textContent = error;
       });
     </script>
   </head>
   <body>
-    <h1>Error page</h1>
-    <h2 id='originalUrl'></h2>
+    <h1>Error page loaded by [WKWebview loadFileURL:allowingReadAccessToURL:]</h1>
+    <h2 id='failedUrl'></h2>
     <h2 id='error'></h2>
   </body>
 </html>

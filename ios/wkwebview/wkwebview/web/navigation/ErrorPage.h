@@ -13,9 +13,9 @@
 
 @interface ErrorPage : NSObject
 
-// Original URL of the failed navigation.
-@property(nonatomic, strong, readonly) NSURL* originalURL;
-@property(nonatomic, strong, readonly) NSString* originalURLString;
+// Failed URL of the failed navigation.
+@property(nonatomic, strong, readonly) NSURL* failedURL;
+@property(nonatomic, strong, readonly) NSString* failedURLString;
 // The error page file to be loaded as a new page.
 @property(nonatomic, strong, readonly) NSURL* fileURL;
 // The error page HTML content to be injected into current page.

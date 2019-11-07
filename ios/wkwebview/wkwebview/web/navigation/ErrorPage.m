@@ -27,7 +27,7 @@ NSString* encodeHTML(NSString* text) {
 
 @implementation ErrorPage
 
-@synthesize originalURL = _originalURL;
+@synthesize failedURL = _failedURL;
 @synthesize fileURL = _fileURL;
 @synthesize html = _html;
 
@@ -38,30 +38,30 @@ NSString* encodeHTML(NSString* text) {
   return self;
 }
 
-- (NSURL*)originalURL {
-  if (!_originalURL) {
-    _originalURL = [NSURL URLWithString:self.originalURLString];
+- (NSURL*)failedURL {
+  if (!_failedURL) {
+    _failedURL = [NSURL URLWithString:self.failedURLString];
   }
-  return _originalURL;
+  return _failedURL;
 }
 
-- (NSString*)originalURLString {
+- (NSString*)failedURLString {
   return self.error.userInfo[NSURLErrorFailingURLStringErrorKey];
 }
 
 - (NSURL*)fileURL {
   if (!_fileURL) {
     NSURLQueryItem* itemURL =
-        [NSURLQueryItem queryItemWithName:@"url" value:self.originalURLString];
+        [NSURLQueryItem queryItemWithName:@"url" value:self.failedURLString];
     NSURLQueryItem* itemError =
         [NSURLQueryItem queryItemWithName:@"error"
                                     value:_error.localizedDescription];
-    NSURLQueryItem* itemDontReload =
-        [NSURLQueryItem queryItemWithName:@"dontReload" value:@"true"];
+    NSURLQueryItem* itemDontLoad = [NSURLQueryItem queryItemWithName:@"dontLoad"
+                                                               value:@"true"];
     NSURLComponents* url = [[NSURLComponents alloc] initWithString:@"file:///"];
     url.path = [NSBundle.mainBundle pathForResource:@"error_page_file"
                                              ofType:@"html"];
-    url.queryItems = @[ itemURL, itemError, itemDontReload ];
+    url.queryItems = @[ itemURL, itemError, itemDontLoad ];
     NSAssert(url.URL, @"file URL should be valid");
     _fileURL = url.URL;
   }
@@ -76,10 +76,10 @@ NSString* encodeHTML(NSString* text) {
     NSString* template = [NSString stringWithContentsOfFile:path
                                                    encoding:NSUTF8StringEncoding
                                                       error:nil];
-    NSString* originalURLString = encodeHTML(self.originalURLString);
+    NSString* failedURLString = encodeHTML(self.failedURLString);
     NSString* errorInfo = encodeHTML(self.error.localizedDescription);
-    _html = [NSString stringWithFormat:template, originalURLString,
-                                       originalURLString, errorInfo];
+    _html = [NSString
+        stringWithFormat:template, failedURLString, failedURLString, errorInfo];
   }
   return _html;
 }
@@ -89,17 +89,17 @@ NSString* encodeHTML(NSString* text) {
   if (!url.fileURL || ![url.path isEqualToString:self.fileURL.path]) {
     return NO;
   }
-  // Check that |url| has the same original URL as |self|.
+  // Check that |url| has the same failed URL as |self|.
   NSURLComponents* urlComponents = [NSURLComponents componentsWithURL:url
                                               resolvingAgainstBaseURL:NO];
-  NSURL* originalURL = nil;
+  NSURL* failedURL = nil;
   for (NSURLQueryItem* item in urlComponents.queryItems) {
     if ([item.name isEqualToString:@"url"]) {
-      originalURL = [NSURL URLWithString:item.value];
+      failedURL = [NSURL URLWithString:item.value];
       break;
     }
   }
-  return [originalURL isEqual:self.originalURL];
+  return [failedURL isEqual:self.failedURL];
 }
 
 @end

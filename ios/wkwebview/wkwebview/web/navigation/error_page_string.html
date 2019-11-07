@@ -4,8 +4,8 @@
     <title>Mrsuyi</title>
     <script type="text/javascript">
     // When back/forward/refresh this error page, reload the page.
-    window.addEventListener('pageshow', function(event) {
-      window.onpageshow = function(event) {
+    window.addEventListener('pageshow', (event) => {
+      window.onpageshow = (event) => {
         window.replace('%@');
       }, {once: true});
     </script>

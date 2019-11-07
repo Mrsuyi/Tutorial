@@ -23,3 +23,13 @@ NSString* SimplifyFilePath(NSString* path) {
       [path stringByReplacingOccurrencesOfString:NSBundle.mainBundle.bundlePath
                                       withString:@"."];
 }
+
+void Log(WKWebView* webView) {
+  NSString* URL = SimplifyFilePath(webView.URL.absoluteString);
+  NSString* curURL =
+      SimplifyFilePath(webView.backForwardList.currentItem.URL.absoluteString);
+  NSString* initURL = SimplifyFilePath(
+      webView.backForwardList.currentItem.initialURL.absoluteString);
+  NSLog(@"loading: %d URL: %@ curURL: %@ initURL: %@", webView.loading, URL,
+        curURL, initURL);
+}

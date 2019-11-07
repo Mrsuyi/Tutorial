@@ -132,32 +132,32 @@
 
 - (void)webViewDidChangeURL {
   NSLog(@"KVO-URL");
-  LOG(self.WKWebView);
+  Log(self.WKWebView);
 }
 
 - (void)webViewDidChangeLoading {
   NSLog(@"KVO-loading");
-  LOG(self.WKWebView);
+  Log(self.WKWebView);
 }
 
 - (void)webViewDidChangeTitle {
   NSLog(@"KVO-title");
-  LOG(self.WKWebView);
+  Log(self.WKWebView);
 }
 
 - (void)webViewDidChangeEstimatedProgress {
   NSLog(@"KVO-estimated-progress");
-  LOG(self.WKWebView);
+  Log(self.WKWebView);
 }
 
 - (void)webViewDidChangeCanGoBack {
   NSLog(@"KVO-go-back");
-  LOG(self.WKWebView);
+  Log(self.WKWebView);
 }
 
 - (void)webViewDidChangeCanGoForward {
   NSLog(@"KVO-go-forward");
-  LOG(self.WKWebView);
+  Log(self.WKWebView);
 }
 
 #pragma mark - Public methods
