@@ -123,9 +123,13 @@
 
 - (void)tableView:(UITableView*)tableView
     didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
-  [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-  [self.navigationController pushViewController:[TableViewController new]
-                                       animated:YES];
+  //  if (self.editing) {
+  //    return;
+  //  }
+  //
+  //  [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+  //  [self.navigationController pushViewController:[TableViewController new]
+  //                                       animated:YES];
 }
 
 - (UIView*)tableView:(UITableView*)tableView

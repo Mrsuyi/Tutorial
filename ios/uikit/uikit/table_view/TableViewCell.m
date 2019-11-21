@@ -19,11 +19,13 @@ NSString* const kTableViewCellReuseIdentifier = @"TableViewCellReuseIdentifier";
     self.textLabel.text = @"text";
     self.detailTextLabel.text = @"detail text";
     self.imageView.image = [UIImage imageNamed:@"chrome_32_32.png"];
+    self.selectionStyle = UITableViewCellSelectionStyleBlue;
   }
   return self;
 }
 
 - (void)prepareForReuse {
+  [super prepareForReuse];
   NSLog(@"prepareForReuse TableViewCell");
 }
 
