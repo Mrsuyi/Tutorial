@@ -9,7 +9,7 @@
 #ifndef ErrorPage_h
 #define ErrorPage_h
 
-#import <Foundation/Foundation.h>
+#import <WebKit/WebKit.h>
 
 @interface ErrorPage : NSObject
 
@@ -18,6 +18,8 @@
 @property(nonatomic, strong, readonly) NSString* failedURLString;
 // The error page file to be loaded as a new page.
 @property(nonatomic, strong, readonly) NSURL* fileURL;
+// The error page html to be injected into existing page.
+@property(nonatomic, strong, readonly) NSString* injectHTML;
 // The error page HTML content to be injected into current page.
 @property(nonatomic, strong, readonly) NSString* injectScript;
 

@@ -29,6 +29,7 @@ NSString* encodeHTML(NSString* text) {
 
 @synthesize failedURL = _failedURL;
 @synthesize fileURL = _fileURL;
+@synthesize injectHTML = _injectHTML;
 @synthesize injectScript = _injectScript;
 
 - (instancetype)initWithError:(NSError*)error {
@@ -68,8 +69,8 @@ NSString* encodeHTML(NSString* text) {
   return _fileURL;
 }
 
-- (NSString*)injectScript {
-  if (!_injectScript) {
+- (NSString*)injectHTML {
+  if (!_injectHTML) {
     NSString* path = [NSBundle.mainBundle pathForResource:@"error_page_string"
                                                    ofType:@"html"];
     NSAssert(path, @"error_page_string.html should exist");
@@ -79,12 +80,19 @@ NSString* encodeHTML(NSString* text) {
                                      error:nil];
     NSString* failedURLString = encodeHTML(self.failedURLString);
     NSString* errorInfo = encodeHTML(self.error.localizedDescription);
-    NSString* html = [NSString stringWithFormat:htmlTemplate, failedURLString,
-                                                failedURLString, errorInfo];
+    _injectHTML = [NSString stringWithFormat:htmlTemplate, failedURLString,
+                                             failedURLString, errorInfo];
+  }
+  return _injectHTML;
+}
+
+- (NSString*)injectScript {
+  if (!_injectScript) {
     NSString* json = [[NSString alloc]
-        initWithData:[NSJSONSerialization dataWithJSONObject:@[ html ]
-                                                     options:0
-                                                       error:nil]
+        initWithData:[NSJSONSerialization
+                         dataWithJSONObject:@[ self.injectHTML ]
+                                    options:0
+                                      error:nil]
             encoding:NSUTF8StringEncoding];
     NSString* escapedHtml =
         [json substringWithRange:NSMakeRange(1, json.length - 2)];

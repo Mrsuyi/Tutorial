@@ -60,6 +60,8 @@
               completionHandler:^(id result, NSError* error) {
                 NSLog(@"inject error page failed: %@", error);
               }];
+    //    [webView loadHTMLString:errorPage.injectHTML
+    //    baseURL:errorPage.failedURL];
   } else {
     [webView loadFileURL:errorPage.fileURL
         allowingReadAccessToURL:errorPage.fileURL];
@@ -103,10 +105,11 @@
   NSLog(@"Nav-fail: %@ error: %@", navigation, error);
   Log(webView);
   ErrorPage* errorPage = [[ErrorPage alloc] initWithError:error];
-  [webView evaluateJavaScript:errorPage.injectScript
-            completionHandler:^(id result, NSError* error) {
-              NSLog(@"inject error page failed: %@", error);
-            }];
+  //  [webView evaluateJavaScript:errorPage.injectScript
+  //            completionHandler:^(id result, NSError* error) {
+  //              NSLog(@"inject error page failed: %@", error);
+  //            }];
+  [webView loadHTMLString:errorPage.injectHTML baseURL:errorPage.failedURL];
 }
 
 - (void)webViewWebContentProcessDidTerminate:(WKWebView*)webView {
