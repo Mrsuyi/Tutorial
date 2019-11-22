@@ -19,7 +19,7 @@
 // The error page file to be loaded as a new page.
 @property(nonatomic, strong, readonly) NSURL* fileURL;
 // The error page HTML content to be injected into current page.
-@property(nonatomic, strong, readonly) NSString* html;
+@property(nonatomic, strong, readonly) NSString* injectScript;
 
 - (instancetype)initWithError:(NSError*)error;
 

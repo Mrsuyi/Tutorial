@@ -29,7 +29,7 @@ NSString* encodeHTML(NSString* text) {
 
 @synthesize failedURL = _failedURL;
 @synthesize fileURL = _fileURL;
-@synthesize html = _html;
+@synthesize injectScript = _injectScript;
 
 - (instancetype)initWithError:(NSError*)error {
   if (self = [super init]) {
@@ -68,20 +68,35 @@ NSString* encodeHTML(NSString* text) {
   return _fileURL;
 }
 
-- (NSString*)html {
-  if (!_html) {
+- (NSString*)injectScript {
+  if (!_injectScript) {
     NSString* path = [NSBundle.mainBundle pathForResource:@"error_page_string"
                                                    ofType:@"html"];
     NSAssert(path, @"error_page_string.html should exist");
-    NSString* template = [NSString stringWithContentsOfFile:path
-                                                   encoding:NSUTF8StringEncoding
-                                                      error:nil];
+    NSString* htmlTemplate =
+        [NSString stringWithContentsOfFile:path
+                                  encoding:NSUTF8StringEncoding
+                                     error:nil];
     NSString* failedURLString = encodeHTML(self.failedURLString);
     NSString* errorInfo = encodeHTML(self.error.localizedDescription);
-    _html = [NSString
-        stringWithFormat:template, failedURLString, failedURLString, errorInfo];
+    NSString* html = [NSString stringWithFormat:htmlTemplate, failedURLString,
+                                                failedURLString, errorInfo];
+    NSString* json = [[NSString alloc]
+        initWithData:[NSJSONSerialization dataWithJSONObject:@[ html ]
+                                                     options:0
+                                                       error:nil]
+            encoding:NSUTF8StringEncoding];
+    NSString* escapedHtml =
+        [json substringWithRange:NSMakeRange(1, json.length - 2)];
+
+    _injectScript =
+        [NSString stringWithFormat:
+                      @"document.open(); document.write(%@); document.close();",
+                      escapedHtml];
+
+    NSLog(@"%@", _injectScript);
   }
-  return _html;
+  return _injectScript;
 }
 
 - (BOOL)matchURL:(NSURL*)url {

@@ -56,7 +56,10 @@
   // For 1&2, load error page HTML into current page;
   // For 3, load error page file to create a new nav item.
   if ([errorPage matchURL:item.URL] || [item.URL isEqual:errorPage.failedURL]) {
-    [webView loadHTMLString:errorPage.html baseURL:errorPage.failedURL];
+    [webView evaluateJavaScript:errorPage.injectScript
+              completionHandler:^(id result, NSError* error) {
+                NSLog(@"inject error page failed: %@", error);
+              }];
   } else {
     [webView loadFileURL:errorPage.fileURL
         allowingReadAccessToURL:errorPage.fileURL];
@@ -100,7 +103,10 @@
   NSLog(@"Nav-fail: %@ error: %@", navigation, error);
   Log(webView);
   ErrorPage* errorPage = [[ErrorPage alloc] initWithError:error];
-  [webView loadHTMLString:errorPage.html baseURL:errorPage.failedURL];
+  [webView evaluateJavaScript:errorPage.injectScript
+            completionHandler:^(id result, NSError* error) {
+              NSLog(@"inject error page failed: %@", error);
+            }];
 }
 
 - (void)webViewWebContentProcessDidTerminate:(WKWebView*)webView {

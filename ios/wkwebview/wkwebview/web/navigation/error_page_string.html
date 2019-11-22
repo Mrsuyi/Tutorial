@@ -6,13 +6,15 @@
     // When back/forward/refresh this error page, reload the page.
     window.addEventListener('pageshow', (event) => {
       window.onpageshow = (event) => {
-        window.replace('%@');
-      }, {once: true});
+        window.location.replace('%@');
+      };
+    }, {once: true});
     </script>
   </head>
   <body>
-    <h1>Error Page loaded by [WKWebView loadHTMLString:baseURL:]</h1>
+    <h1>Error Page by rewritting window.document</h1>
     <h2>%@</h2>
     <h2>%@</h2>
+    <h1 id='shit'></h1>
   </body>
 </html>
