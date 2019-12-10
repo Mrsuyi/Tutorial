@@ -62,6 +62,7 @@ NSString* encodeHTML(NSString* text) {
     NSURLComponents* url = [[NSURLComponents alloc] initWithString:@"file:///"];
     url.path = [NSBundle.mainBundle pathForResource:@"error_page_file"
                                              ofType:@"html"];
+    NSAssert(url.path, @"error_page_file.html should exist");
     url.queryItems = @[ itemURL, itemError, itemDontLoad ];
     NSAssert(url.URL, @"file URL should be valid");
     _fileURL = url.URL;

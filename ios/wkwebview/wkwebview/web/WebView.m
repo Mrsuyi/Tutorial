@@ -179,6 +179,10 @@
   NSString* path = [NSBundle.mainBundle pathForResource:@"ntp" ofType:@"html"];
   NSURL* url = [NSURL fileURLWithPath:path];
   [self.WKWebView loadFileURL:url allowingReadAccessToURL:url];
+  //  NSString* html = @"<html><h1>shit</h1></html>";
+  //  [self.WKWebView loadHTMLString:html baseURL:url];
+  //  [self.WKWebView loadData:[html dataUsingEncoding:NSUTF8StringEncoding]
+  //  MIMEType:@"text/html" characterEncodingName:@"UTF-8" baseURL:url];
 }
 
 - (void)addObserver:(id<WebViewObserver>)delegate {
